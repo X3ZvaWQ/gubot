@@ -1,0 +1,15 @@
+{
+  "name": "gubot",
+  "version": "1.0.0",
+  "description": "A qq group robot is used to provide some jx3-related functional support",
+  "main": "app.js",
+  "author": "X3ZvaWQ",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "koa": "^2.13.0"
+  },
+  "scripts": {
+    "run": "node app.js"
+  }
+}
