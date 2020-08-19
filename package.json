@@ -7,9 +7,15 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "koa": "^2.13.0"
+    "axios": "^0.19.2",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^9.4.0",
+    "mysql2": "^2.1.0",
+    "sequelize": "^6.3.4",
+    "shell-quote": "^1.7.2"
   },
   "scripts": {
-    "run": "node app.js"
+    "debug": "node app.js"
   }
 }
