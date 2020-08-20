@@ -18,7 +18,7 @@ class Alias extends Model {
             }else{
                 let real_scope = await Alias.get(scope, 'scope');
                 if(real_scope == null) {
-                    return null;
+                    return alias;
                 }
                 let result = await Alias.get(alias, real_scope);
                 return result;
