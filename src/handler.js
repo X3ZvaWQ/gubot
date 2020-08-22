@@ -11,6 +11,8 @@ class Handler{
         if(route[command] != undefined) {
             let handler = new route[command]();
             return handler.handle(this.args);
+        }else{
+            return "ERROR:Unknown command! Please contact administrator.\n错误:未知命令！请联系管理员。";
         }
     }
 }

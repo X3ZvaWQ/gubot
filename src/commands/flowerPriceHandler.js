@@ -31,7 +31,7 @@ module.exports = class FlowerPriceHandler{
                     data: JSON.stringify(data)
                 });
             }else{
-                return 'ERROR: Empty Response.'
+                return 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }
         }
 
