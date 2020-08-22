@@ -39,17 +39,20 @@ module.exports = class FlowerPriceHandler{
         let price = JSON.parse(flowerPrice.data);
         for(let i in price) {
             let lines = price[i]['maxLine'].slice(0,3).join(',');
-            text = text + `${params.server}·${i}·${params.map}·最高${price[i]['max']}家园币\n线路：${lines}\n日期：${flowerPrice.date}\n------------------\n`
+            text = text + `${params.server}·${i}·${params.map}·最高${price[i]['max']}家园币
+            线路：${lines}
+            日期：${flowerPrice.date}
+            ------------------
+            `
         }
-        return text;
+        return text.replace(/[ ]{2,}/g,"");;
     }
 
     static helpText() {
-        return `
-            花价查询命令，可用命令有flower、花价、hj以及群管理员自定义的别名。可接受0~3个参数\n
-            1.花的种类，可为空，默认为绣球花\n
-            2.服务器，可为空，默认为唯我独尊\n
+        return `花价查询命令，可用命令有flower、花价、hj以及群管理员自定义的别名。可接受0~3个参数
+            1.花的种类，可为空，默认为绣球花
+            2.服务器，可为空，默认为唯我独尊
             3.地图，可为空，默认为广陵邑
-        `
+        `.replace(/[ ]{2,}/g,"");
     }
 }
