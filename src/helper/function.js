@@ -33,4 +33,19 @@ async function getFlowerPriceFromSpider(params) {
     return result;
 }
 
-module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider}
+async function getExamAnswer(key) {
+    let response = await axios.get(`https://next.jx3box.com/api/exam?search=${encodeURIComponent(key)}`,{
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*'
+        }
+    });
+    let hits = response.data['hits'];
+    let qa = {}
+    for (let i in hits) {
+        qa[hits[i]['_source']['title']] = hits[i]['_source']['options']
+    }
+    return qa;
+}
+
+module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider, getExamAnswer}
