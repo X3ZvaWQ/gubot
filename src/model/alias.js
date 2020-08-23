@@ -37,7 +37,12 @@ Alias.init({
         type: DataTypes.STRING,
     },
     scope: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue: '*'
+    },
+    group: {
+        type: DataTypes.STRING,
+        defaultValue: '*'
     }
 }, {
     sequelize,

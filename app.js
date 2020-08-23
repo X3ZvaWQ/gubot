@@ -19,7 +19,10 @@ const Handler = require('./src/handler');
 
 const app = new Koa();
 
+const permission = require('./src/middleware/permissions');
+
 app.use(bodyParser());
+app.use(permission);
 app.use(async ctx => {
     if(ctx.method == 'POST') {
         const data = ctx.request.body;
@@ -27,7 +30,7 @@ app.use(async ctx => {
             if(data.message.split('')[0] == '/'){
                 let args = helper.commandParse(data.message);
                 let command = args.shift().toString().substr(1);
-                let handler = new Handler(command, args);
+                let handler = new Handler(command, args, data);
                 let result = await handler.handle();
                 if(result !== null) {
                     ctx.response.type = 'application/json'

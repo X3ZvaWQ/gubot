@@ -2,7 +2,7 @@ const FlowerPrice = require('../model/flowerPrice');
 const Alias = require('../model/alias');
 
 module.exports = class FlowerPriceHandler{
-    async handle(args) {
+    async handle(args, data) {
         let time = helper.getJX3DayStart();
         
         let params = {

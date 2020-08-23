@@ -8,7 +8,9 @@ const sequelize = new Sequelize(ENV.db_database, ENV.db_username, ENV.db_passwor
 global.sequelize = sequelize;
 
 const Alias = require("./src/model/alias");
-const flowerPrice = require("./src/model/flowerPrice");
+const FlowerPrice = require("./src/model/flowerPrice");
+const User = require('./src/model/user');
 
-Alias.sync();
-flowerPrice.sync();
+Alias.sync({ alter: true });
+FlowerPrice.sync({ alter: true });
+User.sync({ alter: true });

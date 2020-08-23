@@ -1,7 +1,7 @@
 const Alias = require('../model/alias')
 
 module.exports = class HelpHandler{
-    async handle(args) {
+    async handle(args, data) {
         if(args[0] != undefined) {
             if(route[args[0]] != undefined) {
                 return route[args[0]].helpText();
@@ -13,7 +13,9 @@ module.exports = class HelpHandler{
             }
         }
         return `欢迎使用“咕-bot”，以下是功能清单以及相关命令：
-            1.花价查询 命令:/[花价/flower] [花的类型] [服务器] [地图]
+            1.花价查询 命令:/flowerPrice 花 服务器 地图
+            2.科举查询 命令:/exam 关键字
+            3.别名设置 请/help alias 查看
             如有更多需求请在该机器人的github仓库区提交issue。
             本机器人所有功能皆开源在github社区，禁止用于商业盈利。
         `.replace(/[ ]{2,}/g,"");
