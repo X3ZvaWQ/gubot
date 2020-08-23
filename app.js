@@ -22,7 +22,7 @@ const app = new Koa();
 const permission = require('./src/middleware/permissions');
 
 app.use(bodyParser());
-app.use(permission);
+/* app.use(permission); */
 app.use(async ctx => {
     if(ctx.method == 'POST') {
         const data = ctx.request.body;
