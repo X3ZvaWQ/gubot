@@ -35,17 +35,15 @@ module.exports = class FlowerPriceHandler{
             }
         }
 
-        let text = '------------------\n';
+        let text = [];
         let price = JSON.parse(flowerPrice.data);
         for(let i in price) {
             let lines = price[i]['maxLine'].slice(0,3).join(',');
-            text = text + `${params.server}·${i}·${params.map}·最高${price[i]['max']}家园币
+            text.push(`${params.server}·${i}·${params.map}·最高${price[i]['max']}家园币
             线路：${lines}
-            日期：${flowerPrice.date}
-            ------------------
-            `
+            日期：${flowerPrice.date}`);
         }
-        return text.replace(/[ ]{2,}/g,"");;
+        return text.join('\n—————————\n').replace(/[ ]{2,}/g,"");
     }
 
     static helpText() {
