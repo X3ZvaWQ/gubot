@@ -10,7 +10,9 @@ module.exports = class HelpHandler{
         return `欢迎使用“咕-bot”，以下是功能清单以及相关命令：
             1.花价查询 命令:/flowerPrice 花 服务器 地图
             2.科举查询 命令:/exam 关键字
-            3.别名设置 请/help alias 查看
+            3.金价查询 命令:/goldPrice 服务器
+            4.开服查询 命令:/serverStatus 服务器
+            所有的命令都可以使用简写以及群管理员自定义的别名
             如有更多需求请在该机器人的github仓库区提交issue。
             本机器人所有功能皆开源在github社区，禁止用于商业盈利。
         `.replace(/[ ]{2,}/g,"");

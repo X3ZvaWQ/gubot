@@ -54,6 +54,7 @@ async function getFlowerPriceFromSpider(params) {
     });
     return result;
 }
+
 async function getExamAnswer(key) {
     let response = await axios.get(`https://next.jx3box.com/api/exam?search=${encodeURIComponent(key)}`,{
         headers: {
@@ -89,4 +90,16 @@ async function getGoldPrice() {
     return data;
 }
 
-module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider, getExamAnswer, getGoldPrice}
+async function getServerStatus() {
+    let url = 'https://spider.jx3box.com/jx3servers';
+    let response = await axios.get(url,{
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*'
+        }
+    });
+    let data = response.data;
+    return data;
+}
+
+module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider, getExamAnswer, getGoldPrice, getServerStatus}
