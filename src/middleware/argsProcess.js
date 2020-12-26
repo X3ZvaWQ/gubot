@@ -14,22 +14,30 @@ module.exports = async (ctx, next) => {
                     for(let i in argsList) {
                         let arg = argsList[i];
                         let value = undefined;
-
                         if(shortArgs != null && shortArgs[arg.shortArgs] != undefined) {
                             value = shortArgs[arg.shortArgs];
                         }
                         if(longArgs != null && longArgs[arg.longArgs] != undefined) {
                             value = longArgs[arg.longArgs];
                         }
-                        if(value != undefined) {
-                            value = defaultArgs[arg.defaultArgs];
+
+                        if(value == undefined) {
+                            value = defaultArgs[arg.defaultIndex - 1];
                         }
 
                         if(value == undefined || value == null){
-                            value = arg.default;
+                            if(arg.nullable) {
+                                value = arg.default;
+                            }else{
+                                ctx.response.type = 'application/json',
+                                ctx.response.body = JSON.stringify({
+                                    reply: route[command].argsMissingError()
+                                });
+                                return;
+                            }
                         }
 
-                        if(arg.alias != null) {
+                        if(arg.alias != null && value != null) {
                             value = await Alias.get(value, arg.alias);
                         }
 

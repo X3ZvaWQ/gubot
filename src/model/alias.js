@@ -24,13 +24,13 @@ class Alias extends Model {
                     return null;
                 }else{
                     let real_scope = await Alias.get(scope, 'scope');
-                    if(real_scope == null) {
-                        await redis.set(where_string, alias);
-                        return alias;
+                    if(real_scope != null) {
+                        let result = await Alias.get(alias, real_scope);
+                        await redis.set(where_string, result);
+                        return result;
                     }
-                    let result = await Alias.get(alias, real_scope);
-                    await redis.set(where_string, result);
-                    return result;
+                    await redis.set(where_string, alias);
+                    return alias;
                 }
             }else{
                 await redis.set(where_string, alias_instance.real);

@@ -59,14 +59,15 @@ module.exports = class AliasHandler{
         }
     }
 
-    static args() {
-
+    static argsList() {
+    
     }
 
     static helpText() {
         return `设置别名相关的东西，可以接受3-4个参数
-            1.行为，必填参数。可选项为{add:[添加
-                2.有效区域/别名类型，必填参数。可选项为{command:命令别名，scope:别名类型别名, server:服务器别名，flower:花别名}
+            1.行为，必填参数。可选项为{
+            add:[添加
+                2.有效区域/别名类型，必填参数。默认全部
                 3.真名，必填参数
                 4.别名，必填参数]
             rm:[删除

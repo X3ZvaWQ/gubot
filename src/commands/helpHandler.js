@@ -2,15 +2,10 @@ const Alias = require('../model/alias')
 
 module.exports = class HelpHandler{
     async handle(ctx) {
-        if(args[0] != undefined) {
-            if(route[args[0]] != undefined) {
-                return route[args[0]].helpText();
-            }else{
-                let command = await Alias.get(args[0], 'command');
-                if(route[command] != undefined) {
-                    return route[command].helpText();
-                }
-            }
+        let args = ctx.state.args;
+        console.log(args);
+        if(args['command'] != null && route[args['command']] != undefined) {
+            return route[args['command']].helpText();
         }
         return `欢迎使用“咕-bot”，以下是功能清单以及相关命令：
             1.花价查询 命令:/flowerPrice 花 服务器 地图
@@ -21,8 +16,22 @@ module.exports = class HelpHandler{
         `.replace(/[ ]{2,}/g,"");
     }
 
-    static args() {
+    static argsList() {
+        return [{
+            name: 'command',
+            alias: 'command',
+            type: 'string',
+            defaultIndex: 1,
+            shortArgs: null,
+            longArgs: 'command',
+            limit: null,
+            nullable: true,
+            default: null
+        }];
+    }
 
+    static argsMissingError() {
+        return this.helpText();
     }
 
     static helpText() {

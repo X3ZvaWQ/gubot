@@ -77,6 +77,10 @@ module.exports = class FlowerPriceHandler{
         ];
     }
 
+    static argsMissingError() {
+        return this.helpText();
+    }
+    
     static helpText() {
         return `花价查询命令，可用命令有flower、花价、hj以及群管理员自定义的别名。可接受0~3个参数
             1.花的种类(--flower)，可为空，默认为绣球花

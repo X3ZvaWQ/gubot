@@ -46,7 +46,6 @@ app.use(async ctx => {
     if(ctx.method == 'POST') {
         const data = ctx.request.body;
         if(data.post_type == 'message'){
-            
             if(data.message.split('')[0] == '/'){
                 let handler = new Handler(ctx);
                 let result = await handler.handle();
