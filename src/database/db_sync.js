@@ -1,4 +1,4 @@
-const ENV = require('../../env');
+const ENV = require('../../env.json');
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(ENV.db_database, ENV.db_username, ENV.db_password, {
   dialect: ENV.db_dialect,
@@ -13,7 +13,6 @@ const User = require('./src/model/user');
 */
 const models = {
   alias : require("../model/alias"),
-  flowerPrice : require("../model/flowerPrice"),
   user : require('../model/user')
 }
 for(let i in models){
