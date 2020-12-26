@@ -1,7 +1,7 @@
 const Alias = require('../model/alias')
 
 module.exports = class HelpHandler{
-    async handle(args, data) {
+    async handle(ctx) {
         if(args[0] != undefined) {
             if(route[args[0]] != undefined) {
                 return route[args[0]].helpText();
@@ -19,6 +19,10 @@ module.exports = class HelpHandler{
             如有更多需求请在该机器人的github仓库区提交issue。
             本机器人所有功能皆开源在github社区，禁止用于商业盈利。
         `.replace(/[ ]{2,}/g,"");
+    }
+
+    static args() {
+
     }
 
     static helpText() {

@@ -1,9 +1,7 @@
 const Alias = require('../model/alias');
 
 module.exports = class AliasHandler{
-    async handle(args, data) {
-        let time = helper.getJX3DayStart();
-        
+    async handle(ctx) {
         let params = {
             action: args[0]            
         }
@@ -59,6 +57,10 @@ module.exports = class AliasHandler{
         if (alias != null) {
             alias.destroy();
         }
+    }
+
+    static args() {
+
     }
 
     static helpText() {

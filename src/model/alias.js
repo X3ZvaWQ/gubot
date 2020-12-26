@@ -5,26 +5,37 @@ var Model = Sequelize.Model;
 let sequelize = global.sequelize;
 
 class Alias extends Model {
-    static async get(alias,scope){
-        let alias_instance = await Alias.findOne({
-            where : {
-                alias: alias,
-                scope: scope
-            }
-        })
-        if(alias_instance == null) {
-            if(scope == 'scope'){
-                return null;
-            }else{
-                let real_scope = await Alias.get(scope, 'scope');
-                if(real_scope == null) {
-                    return alias;
-                }
-                let result = await Alias.get(alias, real_scope);
-                return result;
-            }
+    static async get(alias,scope,group){
+        let where = {
+            alias: alias,
+            scope: scope,
+            group: group || '*'
+        };
+        let where_string = JSON.stringify(where);
+        let redis_alias = await redis.get(where_string);
+        if(redis_alias != null && redis_alias != undefined){
+            return redis_alias;
         }else{
-            return alias_instance.real;
+            let alias_instance = await Alias.findOne({
+                where : where
+            })
+            if(alias_instance == null) {
+                if(scope == 'scope'){
+                    return null;
+                }else{
+                    let real_scope = await Alias.get(scope, 'scope');
+                    if(real_scope == null) {
+                        await redis.set(where_string, alias);
+                        return alias;
+                    }
+                    let result = await Alias.get(alias, real_scope);
+                    await redis.set(where_string, result);
+                    return result;
+                }
+            }else{
+                await redis.set(where_string, alias_instance.real);
+                return alias_instance.real;
+            }
         }
     }
 }

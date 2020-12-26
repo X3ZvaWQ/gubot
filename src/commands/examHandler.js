@@ -1,5 +1,5 @@
 module.exports = class ExamHandler{
-    async handle(args, data) {
+    async handle(ctx) {
         let time = helper.getJX3DayStart();
         if(args[0] == undefined) {
             return 'ERROR: Empty search key.\n错误: 请输入科举试题的连续几个字。'
@@ -19,6 +19,10 @@ module.exports = class ExamHandler{
             `
         }
         return text.replace(/[ ]{2,}/g,"");;
+    }
+
+    static args() {
+
     }
 
     static helpText() {
