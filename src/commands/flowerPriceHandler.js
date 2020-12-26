@@ -86,7 +86,7 @@ module.exports = class FlowerPriceHandler{
             1.花的种类(--flower)，可为空，默认为绣球花
             2.服务器(--server)，可为空，默认为唯我独尊
             3.地图(--map)，可为空，默认为广陵邑
-            4.更新(-u,--update)，可为空，默认不更新
+            4.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
 
         `.replace(/[ ]{2,}/g,"");
     } 

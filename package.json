@@ -11,6 +11,7 @@
     "@jx3box/jx3box-data": "^0.5.8",
     "async-redis": "^1.1.7",
     "axios": "^0.19.2",
+    "js-md5": "^0.7.3",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.4.0",

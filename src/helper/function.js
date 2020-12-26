@@ -1,6 +1,6 @@
 const shellQuote = require('shell-quote');
 const axios = require('axios');
-const route = require('../route');
+const md5 = require('js-md5');
 
 function version() {
     return '1.0.0'
@@ -69,4 +69,24 @@ async function getExamAnswer(key) {
     return qa;
 }
 
-module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider, getExamAnswer}
+async function getGoldPrice() {
+    let priceUrl = "https://box.arkwish.com/api/gold";
+    // 准备参数
+    let ts = Math.round(new Date().getTime() / 1000);
+    let access_token = md5(`${ts}secret`);
+    let params = {
+        ts: ts,
+        access_token: access_token,
+    };
+    let response = await axios.get(priceUrl,{
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*'
+        },
+        params: params
+    });
+    let data = response.data;
+    return data;
+}
+
+module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider, getExamAnswer, getGoldPrice}
