@@ -1,7 +1,9 @@
+const Api = require('../service/api');
+
 module.exports = class ExamHandler{
     async handle(ctx) {
         let args = ctx.state.args;
-        let qa = await helper.getExamAnswer(args['key']);
+        let qa = await Api.getExamAnswer(args['key']);
         let text = '------------------\n';
         for(let i in qa) {
             text = text + `Q: ${i}

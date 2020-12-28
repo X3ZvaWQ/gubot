@@ -25,7 +25,7 @@ module.exports = async (ctx, next) => {
                             value = defaultArgs[arg.defaultIndex - 1];
                         }
 
-                        if(value == undefined || value == null){
+                        if(value == undefined || value == null || value == '-'){
                             if(arg.nullable) {
                                 value = arg.default;
                             }else{

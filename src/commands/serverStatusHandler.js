@@ -1,3 +1,5 @@
+const Api = require('../service/api');
+
 module.exports = class ServerStatusHandler{
     async handle(ctx) {
         //get args from state
@@ -10,7 +12,7 @@ module.exports = class ServerStatusHandler{
         if(serverStatus != undefined && serverStatus != null && !args['update']) {
             servers = JSON.parse(serverStatus);
         }else{
-            let data = await helper.getServerStatus();
+            let data = await Api.getServerStatus();
             if(data.code != 0) {
                 return (`ERROR: ${data.msg}`);
             }else{

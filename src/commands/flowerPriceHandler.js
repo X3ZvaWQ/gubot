@@ -1,16 +1,18 @@
+const Api = require('../service/api');
+
 const moment = require('moment');
 module.exports = class FlowerPriceHandler{
     async handle(ctx) {
         //get args from state
         let args = ctx.state.args;
-        let key = JSON.stringify(args);
+        let key = JSON.stringify('FlowerPrice:'+args);
         //get data from redis
         let flowerPrice = await redis.get(key);
         //check data is empty?
         if(flowerPrice != undefined && flowerPrice != null && !args['update']) {
             flowerPrice = JSON.parse(flowerPrice);
         }else{
-            let response = await helper.getFlowerPriceFromSpider(args);
+            let response = await Api.getFlowerPriceFromSpider(args);
             if(JSON.stringify(response.data) == '{}') {
                 return 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }

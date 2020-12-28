@@ -1,4 +1,5 @@
 const { htmlToText } = require('html-to-text');
+const Api = require('../service/api');
 
 module.exports = class AchievementHandler{
     async handle(ctx) {
@@ -9,7 +10,7 @@ module.exports = class AchievementHandler{
         if(context != null && context != undefined){
             result = context
         }else{
-            let search = await helper.getAchievementSearch(args.achievement);
+            let search = await Api.getAchievementSearch(args.achievement);
             let achievementID;
 
             if(search.code == 200 && search.data.achievements.length > 0){
@@ -18,7 +19,7 @@ module.exports = class AchievementHandler{
             }else{
                 return 'ERROR: Unknown Achievement!\n错误：没找到这个成就的数据。';
             }
-            let post = await helper.getAchievementPost(achievementID);
+            let post = await Api.getAchievementPost(achievementID);
 
             if(post.code == 200) {
                 post = post.data.post.content;

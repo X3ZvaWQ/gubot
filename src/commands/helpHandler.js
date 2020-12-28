@@ -1,5 +1,3 @@
-const Alias = require('../model/alias')
-
 module.exports = class HelpHandler{
     async handle(ctx) {
         let args = ctx.state.args;

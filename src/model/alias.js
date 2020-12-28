@@ -11,7 +11,7 @@ class Alias extends Model {
             scope: scope,
             group: group || '*'
         };
-        let where_string = JSON.stringify(where);
+        let where_string = 'Alias:'+JSON.stringify(where);
         let redis_alias = await redis.get(where_string);
         if(redis_alias != null && redis_alias != undefined){
             return redis_alias;

@@ -1,5 +1,6 @@
 const moment = require('moment');
 const _ = require('lodash');
+const Api = require('../service/api');
 
 module.exports = class GoldPriceHandler{
     async handle(ctx) {
@@ -12,7 +13,7 @@ module.exports = class GoldPriceHandler{
         if(goldPrice != undefined && goldPrice != null && !args['update']) {
             goldPrice = JSON.parse(goldPrice);
         }else{
-            let data = await helper.getGoldPrice();
+            let data = await Api.getGoldPrice();
             if(data.code != 0) {
                 return (`ERROR: ${data.msg}`);
             }else{

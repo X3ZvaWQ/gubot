@@ -4,6 +4,7 @@ const GoldPriceHandler = require('./commands/goldPriceHandler');
 const HelpHandler = require('./commands/helpHandler');
 const ServerStatusHandler = require('./commands/serverStatusHandler');
 const AchievementHandler = require('./commands/achievementHandler');
+const SerendipityHandler = require('./commands/serendipityHandler');
 
 module.exports = {
     flowerPrice: FlowerPriceHandler,
@@ -11,5 +12,6 @@ module.exports = {
     help: HelpHandler,
     exam: ExamHandler,
     serverStatus: ServerStatusHandler,
-    achievement: AchievementHandler
+    achievement: AchievementHandler,
+    serendipity: SerendipityHandler
 }
