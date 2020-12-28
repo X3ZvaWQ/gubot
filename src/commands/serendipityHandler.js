@@ -14,16 +14,16 @@ module.exports = class SerendipityHandler{
             data = JSON.parse(data);
         }else{
             let serendipitys = allSerendipity
-                .filter(s => (s.name == args.serendipity || s.type == args.serendipity))
+                .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
                 .map(x => x.name).join(',');
             if(serendipitys == '') {
                 return 'ERROR: Serendipity Not Found.\n错误: 你写的这玩意......他真的存在吗?';
             }
-            let data = await Api.getSerendipity({
+            data = await Api.getSerendipity({
                 role: args.player,
                 server: args.server,
                 serendipity: serendipitys,
-                pageSize: 1024,
+                pageSize: 50,
                 start: 0
             });
             if(data.code == 0) {
