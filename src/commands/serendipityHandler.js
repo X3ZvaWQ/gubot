@@ -6,7 +6,7 @@ module.exports = class SerendipityHandler{
     async handle(ctx) {
         //get args from state
         let args = ctx.state.args;
-        let key = JSON.stringify('Serendipity:'+args);
+        let key = JSON.stringify('Serendipity:'+ JSON.stringify(args));
         //get data from redis
         let data = await redis.get(key);
         //check data is empty?
@@ -31,15 +31,19 @@ module.exports = class SerendipityHandler{
             }else{
                 return 'ERROR: Server Error.\n错误: 接口炸了，不关机器人的事儿';
             }
-            
             await redis.set(key, JSON.stringify(data));
             await redis.expire(key, 300);
         }
         //combine datas to string reply.
         let text = [];
-        for(let i in data) {
-            text.push(`${allSerendipity.filter(x => x.name == data[i].serendipity)[0].type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime*1000).format('YYYY-MM-DD HH:mm:ss')}`);
+        if(data == 'null') {
+            for(let i in data) {
+                text.push(`${allSerendipity.filter(x => x.name == data[i].serendipity)[0].type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime*1000).format('YYYY-MM-DD HH:mm:ss')}`);
+            }
+        }else{
+            text.push('这位侠士这里光秃秃的，什么也没有。');
         }
+        
         return (`--${args.player} 的奇遇记录--
             ${text.join('\n')}
             ----------------------
