@@ -29,7 +29,7 @@ module.exports = class AchievementHandler{
                         'imgFormatter': function (elem, walk, builder, formatOptions) {
                             const attribs = elem.attribs || {};
                             const alt = (attribs.alt)
-                            ? he.decode(attribs.alt, builder.options.decodeOptions)
+                            ? attribs.alt
                             : '';
                             const src = (!attribs.src)
                             ? ''
