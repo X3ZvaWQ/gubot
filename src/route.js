@@ -1,10 +1,11 @@
-const ExamHandler = require('./commands/examHandler');
-const FlowerPriceHandler = require('./commands/flowerPriceHandler');
-const GoldPriceHandler = require('./commands/goldPriceHandler');
-const HelpHandler = require('./commands/helpHandler');
-const ServerStatusHandler = require('./commands/serverStatusHandler');
-const AchievementHandler = require('./commands/achievementHandler');
-const SerendipityHandler = require('./commands/serendipityHandler');
+const ExamHandler = require('./commands/exam');
+const FlowerPriceHandler = require('./commands/flowerPrice');
+const GoldPriceHandler = require('./commands/goldPrice');
+const HelpHandler = require('./commands/help');
+const ServerStatusHandler = require('./commands/serverStatus');
+const AchievementHandler = require('./commands/achievement');
+const SerendipityHandler = require('./commands/serendipity');
+const MacroHandler = require('./commands/macro');
 
 module.exports = {
     flowerPrice: FlowerPriceHandler,
@@ -13,5 +14,6 @@ module.exports = {
     exam: ExamHandler,
     serverStatus: ServerStatusHandler,
     achievement: AchievementHandler,
-    serendipity: SerendipityHandler
+    serendipity: SerendipityHandler,
+    macro: MacroHandler
 }

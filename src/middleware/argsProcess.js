@@ -37,6 +37,16 @@ module.exports = async (ctx, next) => {
                             }
                         }
 
+                        if(typeof arg.limit == 'object' && arg.type == 'integer'){
+                            if(value < arg.limit[0] || value > arg.limit[1]){
+                                ctx.response.type = 'application/json',
+                                ctx.response.body = JSON.stringify({
+                                    reply: route[command].argsMissingError()
+                                });
+                                return;
+                            }
+                        }
+
                         if(arg.alias != null && value != null) {
                             value = await Alias.get(value, arg.alias);
                         }

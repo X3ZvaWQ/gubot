@@ -130,6 +130,19 @@ class Api{
         let data = response.data;
         return data;
     }
+
+    static async getQiXue(version){
+        version = version || 'v20201030';
+        let url = `https://oss.jx3box.com/data/qixue/${version}.json`
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            }
+        });
+        let data = response.data;
+        return data;
+    }
 }
 
 module.exports = Api;
