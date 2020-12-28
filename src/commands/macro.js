@@ -61,7 +61,7 @@ module.exports = class MacroHandler{
             -------------
             请在茗伊插件集打开云端宏按钮显示之后在宏界面同步云端宏
             以上内容全部来自jx3box，机器人只是一个无情的搬运工
-            该文章请到此处查看：[发不出链接了，被风控的死死的pid=${rank.pid}]`
+            该文章请到此处查看：www[去掉我].jx3box[去掉我].com[去掉我]/macro/?pid=${rank.pid}`
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }
