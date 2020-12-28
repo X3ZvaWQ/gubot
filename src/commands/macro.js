@@ -48,19 +48,22 @@ module.exports = class MacroHandler{
                 }else{
                     qixues = ['无奇穴方案'];
                 }
-                return `注意：${macro.desc}
+                return `
+                云端宏：${post.author}#${macro.name}
                 奇穴：${qixues.join(',')}
                 加速：${macro.speed}
-                宏内容：${macro.macro}`
+                备注：
+                ${macro.desc}`
             });
 
-            result = `下面是30内同步次数第 ${args.rank} 的、由jx3box用户 ${post.author} 提供的宏：${post.post_title}
+            result = `下面是30天内同步次数第 ${args.rank} 的、由jx3box用户 ${post.author} 提供的宏：${post.post_title}
             版本：${post.meta_1}，适用心法:${xfids[post.meta_2]}
             -------------
             ${macros.join('\n-------------------\n')}
             -------------
+            请在茗伊插件集打开云端宏按钮显示之后在宏界面同步云端宏
             以上内容全部来自jx3box，机器人只是一个无情的搬运工
-            该文章请到此处查看：https://www.jx3box.com/macro/?pid=${rank.pid}#/`
+            该文章请到此处查看：[发不出链接了，被风控的死死的pid=${rank.pid}]`
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }
