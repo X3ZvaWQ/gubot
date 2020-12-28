@@ -50,9 +50,8 @@ module.exports = class MacroHandler{
                 }
                 return `云端宏：${post.author}#${macro.name}
                 奇穴：${qixues.join(',')}
-                加速：${macro.speed}
-                备注：
-                ${macro.desc}`
+                ${macro.speed != '' ? '加速：' + macro.speed : ''}
+                ${macro.desc != '' ? '备注：\n' + macro.desc : ''}`
             });
 
             result = `下面是 30 天内同步次数第 ${args.rank} 的、由 jx3box 用户 ${post.author} 提供的宏：${post.post_title}
