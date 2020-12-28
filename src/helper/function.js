@@ -102,4 +102,33 @@ async function getServerStatus() {
     return data;
 }
 
-module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider, getExamAnswer, getGoldPrice, getServerStatus}
+async function getAchievementSearch(keyword) {
+    let url = "https://helper.jx3box.com/api/achievement/search";
+    let response = await axios.get(url,{
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*'
+        },
+        params: {
+            limit: 3,
+            keyword: keyword
+        }
+    });
+    let data = response.data;
+    return data;
+}
+
+async function getAchievementPost(ID) {
+    let url = `https://helper.jx3box.com/api/achievement/${ID}/post`;
+    let response = await axios.get(url,{
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*'
+        }
+    });
+    let data = response.data;
+    return data;
+}
+
+
+module.exports = {version, commandParse, getJX3DayStart, getFlowerPriceFromSpider, getExamAnswer, getGoldPrice, getServerStatus, getAchievementSearch, getAchievementPost}

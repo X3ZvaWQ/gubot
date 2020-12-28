@@ -12,9 +12,10 @@ module.exports = class HelpHandler{
             2.科举查询 命令:/exam 关键字
             3.金价查询 命令:/goldPrice 服务器
             4.开服查询 命令:/serverStatus 服务器
+            5.成就查询 命令:/achievement 关键字
             所有的命令都可以使用简写以及群管理员自定义的别名
             如有更多需求请在该机器人的github仓库区提交issue。
-            本机器人所有功能皆开源在github社区，禁止用于商业盈利。
+            本机器人所有功能皆开源在github社区https://github.com/X3ZvaWQ/gubot。
         `.replace(/[ ]{2,}/g,"");
     }
 
