@@ -99,6 +99,37 @@ class Api{
         let data = response.data;
         return data;
     }
+
+    static async getMacroTops(kungfuid){
+        let url = `https://next.jx3box.com/api/macro/tops`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                kungfu: kungfuid,
+                size: 10
+            }
+        });
+        let data = response.data;
+        return data;
+    }
+
+    static async getMacroContent(pid){
+        let url = `https://server.jx3box.com/post/find`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                id: pid
+            }
+        });
+        let data = response.data;
+        return data;
+    }
 }
 
 module.exports = Api;
