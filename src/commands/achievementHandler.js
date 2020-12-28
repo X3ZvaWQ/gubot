@@ -28,25 +28,18 @@ module.exports = class AchievementHandler{
                     formatters: {
                         'imgFormatter': function (elem, walk, builder, formatOptions) {
                             const attribs = elem.attribs || {};
-                            const alt = (attribs.alt)
-                            ? attribs.alt
-                            : '';
                             const src = (!attribs.src)
                             ? ''
                             : (formatOptions.baseUrl && attribs.src.indexOf('/') === 0)
                                 ? formatOptions.baseUrl + attribs.src
                                 : attribs.src;
-                            const text = (!src)
-                            ? alt
-                            : (!alt)
-                                ? `[CQ:image,file=${src}]`
-                                : alt + ` [CQ:image,file=${src}]`;
+                            const text = `[CQ:image,file=${src}]`;
                         
                             builder.addInline(text);
                         },
                         'aFormatter': function (elem, walk, builder, formatOptions) {
                             walk(elem.children, builder)
-                            builder.addInline('[这里有一个链接,但是你得去网页上点]');
+                            builder.addInline('[这里有一个链接]');
                         }
                     },
                     tags: {
@@ -65,12 +58,12 @@ module.exports = class AchievementHandler{
             }
         }
         await redis.set(redis_key, result);
-        await redis.expire(redis_key, 600);
+        await redis.expire(redis_key, 3600);
 
         return `----成就攻略----
         ${result}
         ----------------
-        以上内容来源于jx3box，经过html转text可能有些失真。
+        以上内容来源于jx3box。
         需要查看原版可以前往jx3box查看。`.replace(/[ ]{2,}/g,"").replace(/\n[\s\n]+/g,"\n");
     }
 

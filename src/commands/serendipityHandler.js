@@ -13,9 +13,17 @@ module.exports = class SerendipityHandler{
         if(data != undefined && data != null) {
             data = JSON.parse(data);
         }else{
-            let serendipitys = allSerendipity
+            let serendipitys;
+            if(args.serendipity != '全部奇遇') {
+                serendipitys = allSerendipity
                 .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
                 .map(x => x.name).join(',');
+            }else{
+                serendipitys = allSerendipity
+                .filter(s => s.languages[0] == 'zhcn')
+                .map(x => x.name).join(',');
+            }
+            
             if(serendipitys == '') {
                 return 'ERROR: Serendipity Not Found.\n错误: 你写的这玩意......他真的存在吗?';
             }
@@ -38,7 +46,12 @@ module.exports = class SerendipityHandler{
         let text = [];
         if(data != null && data != 'null' && data.length > 0) {
             for(let i in data) {
-                text.push(`${allSerendipity.filter(x => x.name == data[i].serendipity)[0].type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime*1000).format('YYYY-MM-DD HH:mm:ss')}`);
+                let type = await redis.get('SerendipityTypeOf:' + data[i].serendipity);
+                if(type == null) {
+                    type = allSerendipity.filter(x => x.name == data[i].serendipity)[0].type;
+                    await redis.set('SerendipityTypeOf:' + data[i].serendipity, type);
+                }
+                text.push(`${type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime*1000).format('YYYY-MM-DD HH:mm:ss')}`);
             }
         }else{
             text.push('这位侠士这里光秃秃的，什么也没有。');
@@ -95,7 +108,7 @@ module.exports = class SerendipityHandler{
     static helpText() {
         return `奇遇查询命令，用于查询某个人的奇遇。可用命令有serendipity、奇遇、qy以及群管理员自定义的别名。可接受0~3个参数
             1.id (--player)，不可为空。
-            3.奇遇(--serendipity)，可为空，用“-”表示默认值，默认为绝世奇遇，可选值[具体奇遇名,绝世奇遇,世界奇遇,宠物奇遇,小宠奇遇,物品奇遇]。
+            3.奇遇(--serendipity)，可为空，用“-”表示默认值，默认为绝世奇遇，可选值[具体奇遇名,绝世奇遇,世界奇遇,宠物奇遇,小宠奇遇,物品奇遇,全部奇遇]。
             2.服务器(--server)，可为空，用“-”表示默认值，默认为唯我独尊。
         `.replace(/[ ]{2,}/g,"");
     } 
