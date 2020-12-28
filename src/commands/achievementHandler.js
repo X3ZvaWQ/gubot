@@ -42,12 +42,19 @@ module.exports = class AchievementHandler{
                                 : alt + ` [CQ:image,file=${src},type=show,id=40000]`;
                         
                             builder.addInline(text);
+                        },
+                        'aFormatter': function (elem, walk, builder, formatOptions) {
+                            walk(elem.children, builder)
+                            builder.addInline('[这里有一个链接,但是你得去网页上点]');
                         }
                     },
                     tags: {
                         //[CQ:image,file=http://baidu.com/1.jpg,type=show,id=40004]
                         'img': {
                         format: 'imgFormatter'
+                        },
+                        'a': {
+                            format: 'aFormatter'
                         }
                     }
                 });
