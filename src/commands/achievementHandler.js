@@ -38,8 +38,8 @@ module.exports = class AchievementHandler{
                             const text = (!src)
                             ? alt
                             : (!alt)
-                                ? `[CQ:image,file=${src},type=show,id=40000]`
-                                : alt + ` [CQ:image,file=${src},type=show,id=40000]`;
+                                ? `[CQ:image,file=${src}]`
+                                : alt + ` [CQ:image,file=${src}]`;
                         
                             builder.addInline(text);
                         },
