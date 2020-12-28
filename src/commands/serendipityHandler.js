@@ -36,7 +36,7 @@ module.exports = class SerendipityHandler{
         }
         //combine datas to string reply.
         let text = [];
-        if(data == 'null') {
+        if(data != 'null') {
             for(let i in data) {
                 text.push(`${allSerendipity.filter(x => x.name == data[i].serendipity)[0].type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime*1000).format('YYYY-MM-DD HH:mm:ss')}`);
             }
