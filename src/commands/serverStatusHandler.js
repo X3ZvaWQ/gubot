@@ -36,7 +36,6 @@ module.exports = class ServerStatusHandler{
         连接状态:${serverStatus.connectState ? '可连接' : '不可连接'}
         ----------------
         数据来源于jx3box仅供参考。
-        更多价格可以查看https://www.jx3box.com/app/price/
         `.replace(/[ ]{2,}/g,"");
         return text.replace(/[ ]{2,}/g,"");;
     }

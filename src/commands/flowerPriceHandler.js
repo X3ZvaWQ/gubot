@@ -27,7 +27,7 @@ module.exports = class FlowerPriceHandler{
             线路：${lines}
             日期：${moment().format('YYYY-MM-DD')}`);
         }
-        return (text.join('\n—————————\n')).replace(/[ ]{2,}/g,"");
+        return (text.join('\n—————————\n')+`数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g,"");
     }
 
     static argsList() {

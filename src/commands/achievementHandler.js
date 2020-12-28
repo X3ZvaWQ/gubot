@@ -63,7 +63,7 @@ module.exports = class AchievementHandler{
         ${result}
         ----------------
         以上内容来源于jx3box，经过html转text可能有些失真。
-        需要查看原版可以前往 https://www.jx3box.com/cj/#/home 查看。`.replace(/[ ]{2,}/g,"").replace('\n\n \n\n \n \n ', '').replace('\n\n', '\n').replace('\n\n', '\n').replace('\n\n', '\n');
+        需要查看原版可以前往jx3box查看。`.replace(/[ ]{2,}/g,"").replace('\n\n \n\n \n \n ', '').replace('\n\n', '\n').replace('\n\n', '\n').replace('\n\n', '\n');
     }
 
     static argsList() {

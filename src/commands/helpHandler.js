@@ -14,8 +14,7 @@ module.exports = class HelpHandler{
             4.开服查询 命令:/serverStatus 服务器
             5.成就查询 命令:/achievement 关键字
             所有的命令都可以使用简写以及群管理员自定义的别名
-            如有更多需求请在该机器人的github仓库区提交issue。
-            本机器人所有功能皆开源在github社区https://github.com/X3ZvaWQ/gubot。
+            如有更多需求请在该机器人的github仓库区提交issue,机器人所有功能皆开源在github社区。
         `.replace(/[ ]{2,}/g,"");
     }
 

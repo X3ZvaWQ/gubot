@@ -38,7 +38,6 @@ module.exports = class GoldPriceHandler{
         5173：${goldPrice['trend'][0]['5173']}
         ----------------
         NaN表示无数据，数据来源于jx3box仅供参考。
-        更多价格可以查看https://www.jx3box.com/app/price/
         `.replace(/[ ]{2,}/g,"");
     }
 
