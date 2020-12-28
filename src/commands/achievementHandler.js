@@ -42,12 +42,19 @@ module.exports = class AchievementHandler{
                                 : alt + ` [CQ:image,file=${src},type=show,id=40000]`;
                         
                             builder.addInline(text);
+                        },
+                        'aFormatter': function (elem, walk, builder, formatOptions) {
+                            walk(elem.children, builder)
+                            builder.addInline('[这里有一个链接,但是你得去网页上点]');
                         }
                     },
                     tags: {
                         //[CQ:image,file=http://baidu.com/1.jpg,type=show,id=40004]
                         'img': {
                         format: 'imgFormatter'
+                        },
+                        'a': {
+                            format: 'aFormatter'
                         }
                     }
                 });
@@ -63,7 +70,7 @@ module.exports = class AchievementHandler{
         ${result}
         ----------------
         以上内容来源于jx3box，经过html转text可能有些失真。
-        需要查看原版可以前往jx3box查看。`.replace(/[ ]{2,}/g,"").replace('\n\n \n\n \n \n ', '').replace('\n\n', '\n').replace('\n\n', '\n').replace('\n\n', '\n');
+        需要查看原版可以前往jx3box查看。`.replace(/[ ]{2,}/g,"").replace(/\n[\s\n]+/g,"\n");
     }
 
     static argsList() {
