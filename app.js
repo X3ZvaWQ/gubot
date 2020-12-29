@@ -1,4 +1,9 @@
-const app = require('./src/main');
+const gubot = require('./src/main');
 
-app.listen(8891);
-console.log('listening at port 8891 ...')
+const koaApp = gubot.koaApp;
+if(gubot.koaApp) {
+    console.log('INFO: Http Post Server Koa Init Success.');
+}
+if(gubot.websocketClient) {
+    console.log('INFO: Websocket Client Init Success.');
+}
