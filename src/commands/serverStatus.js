@@ -39,7 +39,6 @@ module.exports = class ServerStatusHandler{
         ----------------
         数据来源于jx3box仅供参考。
         `.replace(/[ ]{2,}/g,"");
-        return text.replace(/[ ]{2,}/g,"");;
     }
 
     static argsList() {

@@ -19,6 +19,7 @@
     "lodash": "^4.17.20",
     "monent": "^2.0.0",
     "mysql2": "^2.1.0",
+    "puppeteer": "^5.5.0",
     "redis": "^3.0.2",
     "sequelize": "^6.3.4",
     "shell-quote": "^1.7.2"
