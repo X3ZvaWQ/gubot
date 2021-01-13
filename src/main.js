@@ -41,9 +41,10 @@ const argsProcess = require('./middleware/argsProcess');
 
 if(ENV.enable_puppeteer){
     (async () => {
+        const Image = require('./service/image');
         const puppeteer = require('puppeteer');
         const browser = await puppeteer.launch();
-        global.puppeteer = browser;
+        Image.puppeteer = browser;
     })()
 }
 

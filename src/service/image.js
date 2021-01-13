@@ -3,6 +3,8 @@ const {v4} = require('uuid');
 const uuid = v4;
 
 class Image {
+    static puppeteer;
+
     static async generateFromHtml(html, options){
         if(!options) {
             options = {
@@ -12,7 +14,7 @@ class Image {
         let htmlname = `${process.cwd()}/storage/html/${uuid()}.html`;
         await fs.outputFile(htmlname, html);
         let url = `file://${htmlname}`;
-        const page = await puppeteer.newPage();
+        const page = await Image.puppeteer.newPage();
         await page.setViewport({
             width: configs['size'][0], 
             height: configs['size'][1]
@@ -31,7 +33,7 @@ class Image {
             size: options['size'] || [800,600],
             selector: options['selector'] || undefined
         }
-        const page = await puppeteer.newPage();
+        const page = await Image.puppeteer.newPage();
         if(!configs['selector']){
             await page.setViewport({
                 width: configs['size'][0], 
