@@ -1,10 +1,8 @@
 const puppeteer = require('puppeteer');
- 
+const Image = require('../src/service/image');
+
 (async () => {
-  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-  const page = await browser.newPage();
-  await page.goto('file:///d/workspace/gubot/storage/html/index.html');
-  await page.screenshot({path: '/c/Users/X3ZvaWQ/Desktop/asasa.png'});
- 
-  await browser.close();
+  global.puppeteer = await puppeteer.launch();
+  await Image.getFromUrl('https://jx3.xoyo.com/launcher/update/latest.html', {selector: 'body div:first-of-type'});
+  await global.puppeteer.close();
 })();

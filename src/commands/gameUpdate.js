@@ -1,4 +1,5 @@
 const Api = require('../service/api');
+const Image = require('../service/image');
 
 module.exports = class ServerStatusHandler{
     async handle(ctx) {
@@ -6,12 +7,18 @@ module.exports = class ServerStatusHandler{
         let args = ctx.state.args;
         let redis_key = 'GameUpdate';
         //get data from redis
-        let serverStatus = await redis.get(redis_key);
-        let servers = {};
+        let result = await redis.get(redis_key);
+
         //check data is empty?
-        
-        return `[CQ:image,file=file://${file}]
-        `.replace(/[ ]{2,}/g,"");
+        if(result == null) {
+            result = await Image.getFromUrl('https://jx3.xoyo.com/launcher/update/latest.html', {selector: 'body div:first-of-type'});
+            await redis.set('GameUpdate', result);
+            await redis.expire('GameUpdate', 600);
+        }
+
+        return `[CQ:image,file=file://${result}]
+        --------------
+        以上内容来自官方公告`.replace(/[ ]{2,}/g,"");
     }
 
     static argsList() {
@@ -33,9 +40,8 @@ module.exports = class ServerStatusHandler{
     }
 
     static helpText() {
-        return `服务器状态命令，可用命令有开服、ss以及群管理员自定义的别名。接受0~2个参数
-            1.服务器(--server)，可为空，默认为唯我独尊,
-            2.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
+        return `游戏更新内容命令，可用命令有更新，gu以及群管理员自定义的别名，接受0~1个参数
+        1.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
         `.replace(/[ ]{2,}/g,"");
     }
 }

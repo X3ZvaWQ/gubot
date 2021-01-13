@@ -6,6 +6,7 @@ const ServerStatusHandler = require('./commands/serverStatus');
 const AchievementHandler = require('./commands/achievement');
 const SerendipityHandler = require('./commands/serendipity');
 const MacroHandler = require('./commands/macro');
+const GameUpdate = require('./commands/gameUpdate');
 
 module.exports = {
     flowerPrice: FlowerPriceHandler,
@@ -15,5 +16,6 @@ module.exports = {
     serverStatus: ServerStatusHandler,
     achievement: AchievementHandler,
     serendipity: SerendipityHandler,
-    macro: MacroHandler
+    macro: MacroHandler,
+    gameUpdate: GameUpdate,
 }

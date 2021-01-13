@@ -11,6 +11,7 @@
     "@jx3box/jx3box-data": "^0.5.8",
     "async-redis": "^1.1.7",
     "axios": "^0.19.2",
+    "fs-extra": "^9.0.1",
     "html-to-text": "^6.0.0",
     "js-md5": "^0.7.3",
     "koa": "^2.13.0",
@@ -22,7 +23,8 @@
     "puppeteer": "^5.5.0",
     "redis": "^3.0.2",
     "sequelize": "^6.3.4",
-    "shell-quote": "^1.7.2"
+    "shell-quote": "^1.7.2",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "debug": "node app.js"

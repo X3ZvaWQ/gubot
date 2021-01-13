@@ -39,6 +39,14 @@ const Handler = require('./handler');
 const permission = require('./middleware/permissions');
 const argsProcess = require('./middleware/argsProcess');
 
+if(ENV.enable_puppeteer){
+    (async () => {
+        const puppeteer = require('puppeteer');
+        const browser = await puppeteer.launch();
+        global.puppeteer = browser;
+    })()
+}
+
 let koaApp;
 if(ENV.use_http_post) {
     //require and instance koa
@@ -50,6 +58,7 @@ if(ENV.use_http_post) {
     /* koaApp.use(permission); */
 
     koaApp.use(async ctx => {
+        
         if(ctx.method == 'POST') {
             const data = ctx.request.body;
             if(data.post_type == 'message'){
