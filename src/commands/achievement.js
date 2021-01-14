@@ -7,9 +7,8 @@ module.exports = class AchievementHandler{
     async handle(ctx) {
         let args = ctx.state.args;
         let redis_key = `Achievement:${args.achievement}`;
-        let context = await redis.get(redis_key);
-        let result;
-        if(context == null){
+        let result = await redis.get(redis_key);
+        if(result == null){
             let search = await Api.getAchievementSearch(args.achievement);
             let achievementID;
 
