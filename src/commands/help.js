@@ -1,3 +1,6 @@
+const Cq = require("../service/cqhttp");
+const Image = require("../service/image");
+
 module.exports = class HelpHandler{
     async handle(ctx) {
         let args = ctx.state.args;
@@ -5,15 +8,8 @@ module.exports = class HelpHandler{
         if(args['command'] != null && route[args['command']] != undefined) {
             return route[args['command']].helpText();
         }
-        return `欢迎使用“咕-bot”，以下是功能清单以及相关命令：
-            1.花价查询 命令:/flowerPrice 花 服务器 地图
-            2.科举查询 命令:/exam 关键字
-            3.金价查询 命令:/goldPrice 服务器
-            4.开服查询 命令:/serverStatus 服务器
-            5.成就查询 命令:/achievement 关键字
-            所有的命令都可以使用简写以及群管理员自定义的别名
-            如有更多需求请在该机器人的github仓库区提交issue,机器人所有功能皆开源在github社区。
-        `.replace(/[ ]{2,}/g,"");
+        let image = await Image.generateFromMarkdownFile('help');
+        return Cq.ImageQrCode(image);
     }
 
     static argsList() {

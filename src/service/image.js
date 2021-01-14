@@ -1,37 +1,60 @@
 const fs = require('fs-extra');
 const {v4} = require('uuid');
 const uuid = v4;
+const marked = require('marked');
+const md5 = require('js-md5');
+const template = require('art-template');
 
 class Image {
     static puppeteer;
-
     static async generateFromHtml(html, options){
-        if(!options) {
-            options = {
-                size : [800, 600]
-            }
+        options = options || {};
+        let configs = {
+            size: options['size'] || [800,600],
+            selector: options['selector'] || undefined
         }
-        let htmlname = `${process.cwd()}/storage/html/${uuid()}.html`;
+        let redis_key = `HtmlImage:${md5(html)}`;
+        let imagename = await redis.get(redis_key);
+        if(imagename != null && await fs.exists(imagename)) {
+            return imagename;
+        }
+        let htmlname = `${process.cwd()}/storage/htmls/${uuid()}.html`;
         await fs.outputFile(htmlname, html);
-        let url = `file://${htmlname}`;
-        const page = await Image.puppeteer.newPage();
-        await page.setViewport({
-            width: configs['size'][0], 
-            height: configs['size'][1]
-        });
-        await page.goto(url);
-        let imagename = `${process.cwd()}/storage/image/${uuid()}.png`;
-        await page.screenshot({path: imagename});
-        await page.close();
-        await fs.unlink(htmlname);
+        imagename = await Image.generateFromHtmlFile(htmlname, options);
+        await redis.set(redis_key, imagename);
         return imagename;
+    }
+
+    static async generateFromTemplateFile(template, data, options){
+        let filename = `${process.cwd()}/src/templates/${template}.html`;
+        let html_content = await fs.readFile(filename, {encoding: 'utf8'});
+        let render_content = template.render(`<div id="template">${html_content}</div>`, data);
+        if(options) {
+            options.selector = '#template'
+        }else{
+            options = {selector: '#template'}
+        }
+        return await Image.generateFromHtml(render_content, options);
+    }
+
+    static async generateFromMarkdownFile(template, options){
+        let filename = `${process.cwd()}/src/templates/${template}.markdown`;
+        let markdown = await fs.readFile(filename, {encoding: 'utf8'});
+        let marked_content = `<div id="template">${marked(markdown)}</div>`;
+        if(options) {
+            options.selector = '#template'
+        }else{
+            options = {selector: '#template'}
+        }
+        return await Image.generateFromHtml(marked_content, options);
     }
 
     static async getFromUrl(url, options){
         options = options || {};
         let configs = {
             size: options['size'] || [800,600],
-            selector: options['selector'] || undefined
+            selector: options['selector'] || undefined,
+            evaluate: options['evaluate'] || undefined
         }
         const page = await Image.puppeteer.newPage();
         if(!configs['selector']){
@@ -40,11 +63,35 @@ class Image {
                 height: configs['size'][1]
             });
         }
-        await page.goto(url);
+        await page.goto(url, {waitUntil: 'networkidle2'});
+        if(configs.evaluate) {
+            page.evaluate(configs['evaluate']);
+        }
         let element = configs['selector'] ? await page.$(configs['selector']): page;
-        let imagename = `${process.cwd()}/storage/image/${uuid()}.png`;
+        let imagename = `${process.cwd()}/storage/images/${uuid()}.png`;
         await element.screenshot({path: imagename});
         await page.close();
+        return imagename;
+    }
+
+    static async generateFromHtmlFile(htmlname, options){
+        options = options || {};
+        let configs = {
+            size: options['size'] || [800,600],
+            selector: options['selector'] || undefined
+        }
+        let url = `file://${htmlname}`;
+        const page = await Image.puppeteer.newPage();
+        await page.setViewport({
+            width: configs['size'][0], 
+            height: configs['size'][1]
+        });
+        await page.goto(url);
+        let imagename = `${process.cwd()}/storage/images/${uuid()}.png`;
+        let element = configs['selector'] ? await page.$(configs['selector']): page;
+        await element.screenshot({path: imagename});
+        await page.close();
+        await fs.unlink(htmlname);
         return imagename;
     }
 }

@@ -1,5 +1,8 @@
+const { fromString } = require('html-to-text');
 const Api = require('../service/api');
+const Cq = require('../service/cqhttp');
 const Image = require('../service/image');
+const fs = require('fs-extra')
 
 module.exports = class ServerStatusHandler{
     async handle(ctx) {
@@ -10,15 +13,13 @@ module.exports = class ServerStatusHandler{
         let result = await redis.get(redis_key);
 
         //check data is empty?
-        if(result == null) {
+        if(!result || !await fs.exists(result)){
             result = await Image.getFromUrl('https://jx3.xoyo.com/launcher/update/latest.html', {selector: 'body div:first-of-type'});
             await redis.set('GameUpdate', result);
             await redis.expire('GameUpdate', 600);
         }
 
-        return `[CQ:image,file=file://${result}]
-        --------------
-        以上内容来自官方公告`.replace(/[ ]{2,}/g,"");
+        return `${Cq.ImageQrCode(result)}`;
     }
 
     static argsList() {

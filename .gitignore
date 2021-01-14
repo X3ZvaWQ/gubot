@@ -1,4 +1,6 @@
 node_modules
 env.json
-storage/html/
-storage/image/
+storage/htmls/*
+storage/images/*
+!storage/htmls/index.html
+!storage/images/index.png

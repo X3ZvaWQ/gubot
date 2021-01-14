@@ -32,6 +32,8 @@ global.sequelize = sequelize;
 //add global helper function and route
 const route = require('./route')
 const helper = require('./helper/function');
+const CqHttp = require('./service/cqhttp');
+global.Cq = CqHttp;
 global.helper = helper;
 global.route = route;
 //require and use middleware
