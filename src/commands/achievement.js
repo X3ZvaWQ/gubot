@@ -20,7 +20,7 @@ module.exports = class AchievementHandler{
             let id = achievementID;
             let name = search.data.achievements[0].Name;
             let url = `https://www.jx3box.com/cj/#/view/${id}`;
-            result = `----${name}成就攻略----
+            result = `----${name} 成就攻略----
             ${Cq.ImageQrCode(await Image.getFromUrl(url, {selector: 'div.cj-module.m-cj-post', evaluate: 'document.querySelectorAll("#c-header,.c-breadcrumb,.u-publish,.w-qrcode,.remark,.comment").forEach((x) => x.remove());'}))}
             ----------------
             以上内容来源于jx3box。

@@ -1,6 +1,8 @@
 const Api = require('../service/api');
 const xfs = require('@jx3box/jx3box-data/data/xf/xf.json');
 const xfids = require('@jx3box/jx3box-data/data/xf/xfid.json')
+const Image = require('../service/image');
+const Cq = require('../service/cqhttp');
 
 module.exports = class MacroHandler{
     async handle(ctx) {
@@ -36,7 +38,6 @@ module.exports = class MacroHandler{
             }else{
                 qixue_xf = JSON.parse(qixue_xf);
             }
-
             let macros = post.post_meta.data.map((macro) => {
                 let qixues;
                 if(macro.talent != '' && macro.talent != null){
@@ -48,20 +49,27 @@ module.exports = class MacroHandler{
                 }else{
                     qixues = ['无奇穴方案'];
                 }
-                return `云端宏：${post.author}#${macro.name}
-                奇穴：${qixues.join(',')}
-                ${macro.speed != '' ? '加速：' + macro.speed : ''}
-                ${macro.desc != '' ? '备注：\n' + macro.desc : ''}`
+                return {
+                    name: `${post.author}#${macro.name}`,
+                    qixue: qixues.join(','),
+                    speed: macro.speed != '' ? macro.speed : null,
+                    remark: macro.desc != '' ? macro.desc : null,
+                    content: macro.macro
+                };
             });
-
-            result = `下面是 30 天内同步次数第 ${args.rank} 的、由 jx3box 用户 ${post.author} 提供的宏：${post.post_title}
-            版本：${post.meta_1}，适用心法:${xfids[post.meta_2]}
-            -------------
-            ${macros.join('\n-------------------\n')}
-            -------------
-            请在茗伊插件集打开云端宏按钮显示之后在宏界面同步云端宏
-            以上内容全部来自jx3box，机器人只是一个无情的搬运工
-            该文章请到此处查看：www[去掉我].jx3box[去掉我].com[去掉我]/macro/?pid=${rank.pid}`
+            let data = {
+                rank: args.rank,
+                author: post.author,
+                game_version: post.meta_1,
+                macro_name: post.post_title,
+                xf: xfids[post.meta_2],
+                macro: macros
+            }
+            let macro_sync = macros.map((x) => x.name);
+            result = `云端宏:
+            ${macro_sync.join('\n')}
+            详细内容:
+            ${Cq.ImageQrCode(await Image.generateFromTemplateFile('macro', data))}`;
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }

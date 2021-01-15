@@ -3,7 +3,7 @@ const {v4} = require('uuid');
 const uuid = v4;
 const marked = require('marked');
 const md5 = require('js-md5');
-const template = require('art-template');
+const artTemplate = require('art-template');
 
 class Image {
     static puppeteer;
@@ -28,7 +28,7 @@ class Image {
     static async generateFromTemplateFile(template, data, options){
         let filename = `${process.cwd()}/src/templates/${template}.html`;
         let html_content = await fs.readFile(filename, {encoding: 'utf8'});
-        let render_content = template.render(`<div id="template">${html_content}</div>`, data);
+        let render_content = artTemplate.render(`<div id="template">${html_content}</div>`, data);
         if(options) {
             options.selector = '#template'
         }else{

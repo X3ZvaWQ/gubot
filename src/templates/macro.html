@@ -1,0 +1,44 @@
+<h3 id="-xf--宏">{{ xf }} 宏</h3>
+<p>下面是 <strong>30</strong> 天内同步次数第 <strong>{{ rank }}</strong> 的、由 jx3box 用户 <strong>{{ author }}</strong> 提供的宏：
+    <strong>{{ macro_name }}</strong> </p>
+<p>版本： <strong>{{ game_version }}</strong> ，适用心法: <strong>{{ xf }}</strong> </p>
+<hr>
+<p>{{each macro}}</p>
+<ul>
+    <li>
+        <p>云端宏： <strong>{{ $value.name }}</strong> </p>
+    </li>
+    {{if $value.qixue}}
+    <li>
+        <p>奇穴： <strong>{{ $value.qixue }}</strong> </p>
+    </li>
+    {{/if}}
+    {{if $value.speed}}
+    <li>
+        <p>加速： <strong>{{ $value.speed }}</strong> </p>
+    </li>
+    {{/if}}
+    {{if $value.remark}}
+    <li>
+        <p>备注：</p>
+        <ul>
+            <li>{{ $value.remark }}</li>
+        </ul>
+    </li>
+    {{/if}}
+    <li>
+        <p>宏内容：</p>
+        <ul>
+            <li>
+                <pre><code>{{ $value.content }}</code></pre>
+            </li>
+        </ul>
+    </li>
+</ul>
+<hr>
+<p>{{/each}}</p>
+<ul>
+    <li>请在茗伊插件集打开云端宏按钮显示之后在宏界面同步云端宏</li>
+    <li>以上内容全部来自jx3box，机器人只是一个无情的搬运工</li>
+    <li>该文章请到此处查看：<a href="www.jx3box.com/macro/?pid=20123">www.jx3box.com/macro/?pid=20123</a></li>
+</ul>
