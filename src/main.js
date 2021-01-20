@@ -37,9 +37,9 @@ global.Cq = CqHttp;
 global.helper = helper;
 global.route = route;
 //require and use middleware
-const Handler = require('./handler');
-const permission = require('./middleware/permissions');
-const argsProcess = require('./middleware/argsProcess');
+/* const permission = require('./middleware/permissions'); */
+/* const argsProcess = require('./middleware/argsProcess'); */
+const Bot = require('./service/bot');
 
 if(ENV.enable_puppeteer){
     (async () => {
@@ -50,6 +50,8 @@ if(ENV.enable_puppeteer){
     })()
 }
 
+const bot = new Bot();
+
 let koaApp;
 if(ENV.use_http_post) {
     //require and instance koa
@@ -57,17 +59,15 @@ if(ENV.use_http_post) {
     const bodyParser = require('koa-bodyparser');
     koaApp = new Koa();
     koaApp.use(bodyParser());
-    koaApp.use(argsProcess);
+    /* koaApp.use(argsProcess); */
     /* koaApp.use(permission); */
 
     koaApp.use(async ctx => {
-        
         if(ctx.method == 'POST') {
             const data = ctx.request.body;
             if(data.post_type == 'message'){
                 if(data.message.split('')[0] == '/'){
-                    let handler = new Handler(ctx);
-                    let result = await handler.handle();
+                    let result = await bot.handleCommand(data);
                     if(result !== null) {
                         ctx.response.type = 'application/json',
                         ctx.response.body = JSON.stringify({
@@ -82,11 +82,51 @@ if(ENV.use_http_post) {
     console.log(`listening at port ${ENV.http_post_port || 8891} ...`)
 }
 
+let websocketClient;
 if(ENV.use_websocket) {
-    //todo...
+    const WebSocket = require('ws');
+    const wsApi = new WebSocket(`${ENV.websocket_url}/api/`);
+    const wsEvent = new WebSocket(`${ENV.websocket_url}/event/`);
+    wsApi.on('open', () => {
+        console.log('INFO: Api WebSocket Server connected.');
+    });
+    wsEvent.on('open', () => {
+        console.log('INFO: Event WebSocket Server connected.');
+    });
+    wsEvent.on('message',async (message) => {
+        const data = JSON.parse(message);
+        if(data.post_type == 'message'){
+            if(data.message.split('')[0] == '/'){
+                let result = await bot.handleCommand(data);
+                if(data.message_type == 'group') {
+                    let group_id = data.group_id;
+                    wsApi.send(JSON.stringify({
+                        action: "send_group_msg",
+                        params: {
+                            group_id: group_id,
+                            message: result
+                        }
+                    }));
+                }else if(data.message_type == 'private'){
+                    let user_id = 3303928580;
+                    wsApi.send(JSON.stringify({
+                        action: "send_private_msg",
+                        params: {
+                            user_id: user_id,
+                            message: result
+                        }
+                    }));
+                }
+            }
+        }
+    });
+    websocketClient = {
+        event: wsEvent,
+        api: wsApi
+    }
 }
 
 module.exports = {
     koaApp: koaApp,
-    websocketClient: null
+    websocketClient: websocketClient
 };

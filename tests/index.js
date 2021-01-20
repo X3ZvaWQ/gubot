@@ -1,31 +1,25 @@
-//require env config
-const ENV = require('../env.json');
+const WebSocket = require('ws');
 
-//make redis connection
-if(ENV.use_redis){
-    const redis = require('async-redis');
-    const client = redis.createClient({
-        host: ENV.redis_host || 'localhost',
-        port: ENV.redis_port || 6379
-    });
-    client.on("error", function (err) {
-        console.log("Redis Error: " + err);
-    });
-    global.redis = client;
-}else{
-    global.redis = {
-        get: async () => null,
-        set: async () => null,
-        expire: async () => null
+
+
+const ws = new WebSocket('ws://192.168.1.139:8890/');
+ws.on('open', function () {
+    console.log(`[CLIENT] open()`);
+    ws.send('Hello!');
+});
+// 给服务器发送一个字符串:
+ws.on('message', function (message) {
+    let o = JSON.parse(message);
+    if(o.meta_event_type != 'heartbeat'){
+        console.log(o)
+        ws.send(JSON.stringify(
+            {
+                action: "send_group_msg",
+                params: {
+                    group_id: o.group_id,
+                    message: "你好" + o.message
+                }
+            }
+        ));
     }
-}
-
-(async () => {
-  const Image = require('../src/service/image');
-  const puppeteer = require('puppeteer');
-  const browser = await puppeteer.launch();
-  Image.puppeteer = browser;
-  console.log(await Image.generateFromMarkdown('help'));
-  await browser.close();
-  process.exit();
-})();
+});
