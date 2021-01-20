@@ -41,11 +41,15 @@ module.exports = class MacroHandler{
             let macros = post.post_meta.data.map((macro) => {
                 let qixues;
                 if(macro.talent != '' && macro.talent != null){
-                    let macro_qixue = JSON.parse(macro.talent);
-                    qixues = macro_qixue.sq.split(',');
-                    for(let i in qixues) {
-                        qixues[i] = qixue_xf[`${parseInt(i)+1}`][qixues[i]]['name'];
-                    }
+		    try{
+	                let macro_qixue = JSON.parse(macro.talent);
+			qixues = macro_qixue.sq.split(',');
+			for(let i in qixues) {
+			    qixues[i] = qixue_xf[`${parseInt(i)+1}`][qixues[i]]['name'];
+			}
+	            }catch(e){
+		        qixues = ['作者上传的奇穴方案有误，无法解析'];
+		    }
                 }else{
                     qixues = ['无奇穴方案'];
                 }
