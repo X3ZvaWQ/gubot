@@ -73,7 +73,7 @@ module.exports = class MacroHandler{
             result = `云端宏:
             ${macro_sync.join('\n')}
             详细内容:
-            ${Cq.ImageQrCode(await Image.generateFromTemplateFile('macro', data))}`;
+            ${Cq.ImageQrCode('file:// '+ await Image.generateFromTemplateFile('macro', data))}`;
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }

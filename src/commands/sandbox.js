@@ -15,8 +15,7 @@ module.exports = class SandBoxHandler{
                 ${Cq.ImageQrCode(sandbox_image)}
                 --------------
                 服务器：${area}·${server}
-                上次更新时间：${updated_at}
-                数据来源：https://www.j3sp.com/`;
+                上次更新时间：${updated_at}`;
                 await redis.set(redis_key, result);
                 await redis.expire(redis_key, 21600);
             }catch(e) {

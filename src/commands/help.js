@@ -9,7 +9,7 @@ module.exports = class HelpHandler{
             return route[args['command']].helpText();
         }
         let image = await Image.generateFromMarkdownFile('help');
-        return Cq.ImageQrCode(image);
+        return Cq.ImageQrCode('file://' + image);
     }
 
     static argsList() {
