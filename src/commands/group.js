@@ -1,4 +1,6 @@
 const Group = require("../model/group");
+const moment = require('moment');
+
 
 module.exports = class GroupHandler{
     static demandPermission = true;
@@ -7,11 +9,11 @@ module.exports = class GroupHandler{
         let args = ctx.args;
         let action = args.action;
         if(action == 'info') {
-            return await this.list(ctx);
+            return await this.info(ctx);
         }else if(action == 'server') {
-            return await this.set(ctx);
+            return await this.server(ctx);
         }else if(action == 'nickname') {
-            return await this.set(ctx);
+            return await this.nickname(ctx);
         }
     }
 
@@ -26,10 +28,17 @@ module.exports = class GroupHandler{
                         group_id: group_id
                     }
                 });
+                if(group == null) {
+                    group = await Group.create({
+                        group_id: group_id,
+                        server: '唯我独尊',
+                        nickname: group_id
+                    });
+                }
                 result =  `------咕Bot·本群配置------
                 群称呼：${group.nickname}
                 群默认服务器：${group.server}
-                机器人入群时间：${group.created_at}
+                机器人入群时间：${moment(group.created_at).format('YYYY-MM-DD hh:mm:ss')}
                 `
                 await redis.set(redis_key, result);
             }
@@ -52,8 +61,16 @@ module.exports = class GroupHandler{
                         group_id: group_id
                     }
                 });
-                group.server = server;
-                group.save();
+                if(group == null) {
+                    group = await Group.create({
+                        group_id: group_id,
+                        server: server,
+                        nickname: group_id
+                    });
+                }else{
+                    group.server = server;
+                    group.save();
+                }
                 let redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
                 return '本群默认服务器已被修改为：'+server;
@@ -78,8 +95,16 @@ module.exports = class GroupHandler{
                         group_id: group_id
                     }
                 });
-                group.nickname = nickname;
-                group.save();
+                if(group == null) {
+                    group = await Group.create({
+                        group_id: group_id,
+                        server: server,
+                        nickname: group_id
+                    });
+                }else{
+                    group.nickname = nickname;
+                    group.save();
+                }
                 let redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
                 return '本群称呼已被修改为：'+nickname;
@@ -102,7 +127,7 @@ module.exports = class GroupHandler{
                 longArgs: 'action',
                 limit: ['server', 'info', 'nickname'],
                 nullable: true,
-                default: 'list'
+                default: 'info'
             },
             branch: {
                 info: [],
