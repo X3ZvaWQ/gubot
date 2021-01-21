@@ -60,28 +60,91 @@ module.exports = class AliasHandler{
     }
 
     static argsList() {
-    
+        return {
+            action: {
+                name: 'action',
+                alias: 'team_action',
+                type: 'string',
+                defaultIndex: 1,
+                shortArgs: null,
+                longArgs: 'action',
+                limit: ['create', 'delete', 'apply', 'list', 'view', 'cancel', 'set'],
+                nullable: true,
+                default: 'list'
+            },
+            branch: {
+                create: [
+                    {
+                        name: 'server',
+                        alias: 'server',
+                        type: 'string',
+                        defaultIndex: 2,
+                        shortArgs: null,
+                        longArgs: 'server',
+                        limit: null,
+                        nullable: true,
+                        default: '唯我独尊'
+                    },{
+                        name: 'map',
+                        alias: 'map',
+                        type: 'string',
+                        defaultIndex: 3,
+                        shortArgs: null,
+                        longArgs: 'map',
+                        limit: null,
+                        nullable: true,
+                        default: '广陵邑'
+                    },{
+                        name: 'update',
+                        alias: null,
+                        type: 'boolean',
+                        defaultIndex: 4,
+                        shortArgs: 'u',
+                        longArgs: 'update',
+                        limit: null,
+                        nullable: true,
+                        default: false
+                    }
+                ],
+                delete : [
+                    {
+                        name: '87578',
+                        alias: 'server',
+                        type: 'string',
+                        defaultIndex: 2,
+                        shortArgs: null,
+                        longArgs: 'server',
+                        limit: null,
+                        nullable: true,
+                        default: '唯我独尊'
+                    },{
+                        name: '782872',
+                        alias: 'map',
+                        type: 'string',
+                        defaultIndex: 3,
+                        shortArgs: null,
+                        longArgs: 'map',
+                        limit: null,
+                        nullable: true,
+                        default: '广陵邑'
+                    },{
+                        name: '782872',
+                        alias: null,
+                        type: 'boolean',
+                        defaultIndex: 4,
+                        shortArgs: 'u',
+                        longArgs: 'update',
+                        limit: null,
+                        nullable: true,
+                        default: false
+                    }
+                ]
+            }
+        };
     }
 
     static helpText() {
-        return `设置别名相关的东西，可以接受3-4个参数
-            1.行为，必填参数。可选项为{
-            add:[添加
-                2.有效区域/别名类型，必填参数。默认全部
-                3.真名，必填参数
-                4.别名，必填参数]
-            rm:[删除
-                2.有效区域/别名类型，同上
-                3.别名，必填参数
-            ]
-            list:[列出
-                2.有效区域/别名类型，可选参数。默认全部
-                3.别名，可选参数，默认全部
-                4.真名，可选参数，默认全部
-            ]}
-            参数留空请填："*"，如[/bm list server * 唯我独尊]可查询所有唯我独尊服务器的别名
-            举例：[/bm add flower 荧光菌 蘑菇]
-            即可使用[/hj 蘑菇]来查询荧光菌的价格
+        return `
         `.replace(/[ ]{2,}/g,"");
     }
 }

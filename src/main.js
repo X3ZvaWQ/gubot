@@ -95,29 +95,29 @@ if(ENV.use_websocket) {
     });
     wsEvent.on('message',async (message) => {
         const data = JSON.parse(message);
-        console.log(data);
-        return;
         if(data.post_type == 'message'){
             if(data.message.split('')[0] == '/'){
                 let result = await bot.handleCommand(data);
-                if(data.message_type == 'group') {
-                    let group_id = data.group_id;
-                    wsApi.send(JSON.stringify({
-                        action: "send_group_msg",
-                        params: {
-                            group_id: group_id,
-                            message: result
-                        }
-                    }));
-                }else if(data.message_type == 'private'){
-                    let user_id = 3303928580;
-                    wsApi.send(JSON.stringify({
-                        action: "send_private_msg",
-                        params: {
-                            user_id: user_id,
-                            message: result
-                        }
-                    }));
+                if(result != null && result != undefined){
+                    if(data.message_type == 'group') {
+                        let group_id = data.group_id;
+                        wsApi.send(JSON.stringify({
+                            action: "send_group_msg",
+                            params: {
+                                group_id: group_id,
+                                message: result
+                            }
+                        }));
+                    }else if(data.message_type == 'private'){
+                        let user_id = data.user_id;
+                        wsApi.send(JSON.stringify({
+                            action: "send_private_msg",
+                            params: {
+                                user_id: user_id,
+                                message: result
+                            }
+                        }));
+                    }
                 }
             }
         }

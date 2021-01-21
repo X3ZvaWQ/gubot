@@ -10,6 +10,7 @@ const GameUpdate = require('./commands/gameUpdate');
 const SandBoxHandler = require('./commands/sandbox');
 const PermissionHandler = require('./commands/permission');
 const TeamHandler = require('./commands/team');
+const GroupHandler = require('./commands/group');
 
 module.exports = {
     flowerPrice: FlowerPriceHandler,
@@ -23,5 +24,6 @@ module.exports = {
     gameUpdate: GameUpdate,
     sandbox: SandBoxHandler,
     permission: PermissionHandler,
-    team: TeamHandler
+    team: TeamHandler,
+    group: GroupHandler
 }

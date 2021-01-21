@@ -29,6 +29,10 @@ class Bot{
         return null;
     }
 
+    async handleRequest(data) {
+        
+    }
+
     async parseArgs(data) {
         if(data.post_type == 'message'){
             if(data.message.split('')[0] == '/'){
