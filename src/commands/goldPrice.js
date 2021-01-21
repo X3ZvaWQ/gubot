@@ -5,7 +5,7 @@ const Api = require('../service/api');
 module.exports = class GoldPriceHandler{
     async handle(ctx) {
         //get args from state
-        let args = ctx.state.args;
+        let args = ctx.args;
         let key = 'GoldPrice';
         //get data from redis
         let goldPrice = await redis.get(key);

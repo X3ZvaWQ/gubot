@@ -8,6 +8,8 @@ const SerendipityHandler = require('./commands/serendipity');
 const MacroHandler = require('./commands/macro');
 const GameUpdate = require('./commands/gameUpdate');
 const SandBoxHandler = require('./commands/sandbox');
+const PermissionHandler = require('./commands/permission');
+const TeamHandler = require('./commands/team');
 
 module.exports = {
     flowerPrice: FlowerPriceHandler,
@@ -19,5 +21,7 @@ module.exports = {
     serendipity: SerendipityHandler,
     macro: MacroHandler,
     gameUpdate: GameUpdate,
-    sandbox: SandBoxHandler
+    sandbox: SandBoxHandler,
+    permission: PermissionHandler,
+    team: TeamHandler
 }

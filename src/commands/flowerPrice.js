@@ -4,7 +4,7 @@ const moment = require('moment');
 module.exports = class FlowerPriceHandler{
     async handle(ctx) {
         //get args from state
-        let args = ctx.state.args;
+        let args = ctx.args;
         let key = JSON.stringify('FlowerPrice:'+args);
         //get data from redis
         let flowerPrice = await redis.get(key);

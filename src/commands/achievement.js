@@ -5,7 +5,7 @@ const Cq = require('../service/cqhttp');
 
 module.exports = class AchievementHandler{
     async handle(ctx) {
-        let args = ctx.state.args;
+        let args = ctx.args;
         let redis_key = `Achievement:${args.achievement}`;
         let result = await redis.get(redis_key);
         if(result == null){
@@ -21,7 +21,7 @@ module.exports = class AchievementHandler{
             let name = search.data.achievements[0].Name;
             let url = `https://www.jx3box.com/cj/#/view/${id}`;
             result = `----${name} 成就攻略----
-            ${Cq.ImageQrCode('file://'+ await Image.getFromUrl(url, {selector: 'div.cj-module.m-cj-post', evaluate: 'document.querySelectorAll("#c-header,.c-breadcrumb,.u-publish,.w-qrcode,.remark,.comment").forEach((x) => x.remove());'}))}
+            ${Cq.ImageCQCode('file://'+ await Image.getFromUrl(url, {selector: 'div.cj-module.m-cj-post', evaluate: 'document.querySelectorAll("#c-header,.c-breadcrumb,.u-publish,.w-qrcode,.remark,.comment").forEach((x) => x.remove());'}))}
             ----------------
             以上内容来源于jx3box。
             需要查看原版可以前往jx3box查看。`.replace(/[ ]{2,}/g,"").replace(/\n[\s\n]+/g,"\n");

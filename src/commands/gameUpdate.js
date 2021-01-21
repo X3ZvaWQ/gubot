@@ -7,7 +7,7 @@ const fs = require('fs-extra')
 module.exports = class ServerStatusHandler{
     async handle(ctx) {
         //get args from state
-        let args = ctx.state.args;
+        let args = ctx.args;
         let redis_key = 'GameUpdate';
         //get data from redis
         let result = await redis.get(redis_key);
@@ -19,7 +19,7 @@ module.exports = class ServerStatusHandler{
             await redis.expire('GameUpdate', 600);
         }
 
-        return `${Cq.ImageQrCode('file://' + result)}`;
+        return `${Cq.ImageCQCode('file://' + result)}`;
     }
 
     static argsList() {

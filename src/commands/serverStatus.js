@@ -3,7 +3,7 @@ const Api = require('../service/api');
 module.exports = class ServerStatusHandler{
     async handle(ctx) {
         //get args from state
-        let args = ctx.state.args;
+        let args = ctx.args;
         let redis_key = 'ServerStatus';
         //get data from redis
         let serverStatus = await redis.get(redis_key);

@@ -2,7 +2,7 @@ const Api = require('../service/api');
 
 module.exports = class ExamHandler{
     async handle(ctx) {
-        let args = ctx.state.args;
+        let args = ctx.args;
         let qa = await Api.getExamAnswer(args['key']);
         let text = '------------------\n';
         for(let i in qa) {

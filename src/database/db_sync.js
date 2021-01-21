@@ -13,7 +13,8 @@ const User = require('./src/model/user');
 */
 const models = {
   alias : require("../model/alias"),
-  user : require('../model/user')
+  user : require('../model/user'),
+  group : require('../model/group')
 }
 for(let i in models){
   models[i].sync({ alter: true });

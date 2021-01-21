@@ -6,7 +6,7 @@ const Cq = require('../service/cqhttp');
 
 module.exports = class MacroHandler{
     async handle(ctx) {
-        let args = ctx.state.args;
+        let args = ctx.args;
         let redis_key = `Macro:${JSON.stringify(args)}`;
         let result = await redis.get(redis_key);
         if(result == null) {
@@ -73,7 +73,7 @@ module.exports = class MacroHandler{
             result = `云端宏:
             ${macro_sync.join('\n')}
             详细内容:
-            ${Cq.ImageQrCode('file://'+ await Image.generateFromTemplateFile('macro', data))}`;
+            ${Cq.ImageCQCode('file://'+ await Image.generateFromTemplateFile('macro', data))}`;
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }
@@ -97,7 +97,10 @@ module.exports = class MacroHandler{
             defaultIndex: 2,
             shortArgs: null,
             longArgs: 'rank',
-            limit: [1,10],
+            limit: {
+                min: 1,
+                max: 10
+            },
             nullable: true,
             default: 1
         }];

@@ -95,6 +95,8 @@ if(ENV.use_websocket) {
     });
     wsEvent.on('message',async (message) => {
         const data = JSON.parse(message);
+        console.log(data);
+        return;
         if(data.post_type == 'message'){
             if(data.message.split('')[0] == '/'){
                 let result = await bot.handleCommand(data);

@@ -4,7 +4,7 @@ const Cq = require('../service/cqhttp');
 module.exports = class SandBoxHandler{
     async handle(ctx) {
         //get args from state
-        let args = ctx.state.args;
+        let args = ctx.args;
         let redis_key = `SandBox:${args.server}`;
         //get data from redis
         let result = await redis.get(redis_key);
@@ -12,7 +12,7 @@ module.exports = class SandBoxHandler{
             try{
                 let [area, server, updated_at, sandbox_image] = await Api.getSandBox(args.server);
                 result = `------沙盘查询------
-                ${Cq.ImageQrCode(sandbox_image)}
+                ${Cq.ImageCQCode(sandbox_image)}
                 --------------
                 服务器：${area}·${server}
                 上次更新时间：${updated_at}`;

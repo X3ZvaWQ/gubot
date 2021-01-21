@@ -5,7 +5,7 @@ const moment = require('moment');
 module.exports = class SerendipityHandler{
     async handle(ctx) {
         //get args from state
-        let args = ctx.state.args;
+        let args = ctx.args;
         let key = JSON.stringify('Serendipity:'+ JSON.stringify(args));
         //get data from redis
         let data = await redis.get(key);
