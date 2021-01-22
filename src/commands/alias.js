@@ -7,7 +7,7 @@ module.exports = class AliasHandler {
     async handle(ctx) {
         let action = ctx.args.action;
         if (action == 'list') {
-            return this.list(ctx);
+            return '性能原因，暂时禁止使用' //this.list(ctx);
         } else if (action == 'add') {
             return this.add(ctx);
         } else if (action == 'delete') {
