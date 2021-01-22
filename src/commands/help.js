@@ -1,11 +1,11 @@
 const Cq = require("../service/cqhttp");
 const Image = require("../service/image");
 
-module.exports = class HelpHandler{
+module.exports = class HelpHandler {
     async handle(ctx) {
         let args = ctx.args;
         console.log(args);
-        if(args['command'] != null && route[args['command']] != undefined) {
+        if (args['command'] != null && route[args['command']] != undefined) {
             return route[args['command']].helpText();
         }
         let image = await Image.generateFromMarkdownFile('help');
@@ -33,6 +33,6 @@ module.exports = class HelpHandler{
     static helpText() {
         return `帮助命令，可用命令有help、帮助以及群管理员自定义的别名。可接受0~1个参数
             1.具体命令，可为空。默认为显示命令清单，如提供该参数将会显示具体命令的详细说明
-        `.replace(/[ ]{2,}/g,"");
+        `.replace(/[ ]{2,}/g, "");
     }
 }

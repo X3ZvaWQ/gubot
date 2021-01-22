@@ -1,6 +1,6 @@
 const Api = require('../service/api');
 
-module.exports = class ServerStatusHandler{
+module.exports = class ServerStatusHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
@@ -9,16 +9,16 @@ module.exports = class ServerStatusHandler{
         let serverStatus = await redis.get(redis_key);
         let servers = {};
         //check data is empty?
-        if(serverStatus != undefined && serverStatus != null && !args['update']) {
+        if (serverStatus != undefined && serverStatus != null && !args['update']) {
             servers = JSON.parse(serverStatus);
-        }else{
+        } else {
             let data = await Api.getServerStatus();
-            if(data.code != 0) {
+            if (data.code != 0) {
                 return (`ERROR: ${data.msg}`);
-            }else{
+            } else {
                 serverStatus = data.data
             }
-            for(let i in serverStatus){
+            for (let i in serverStatus) {
                 servers[serverStatus[i]['serverName']] = serverStatus[i];
             }
             await redis.set(redis_key, JSON.stringify(servers));
@@ -26,7 +26,7 @@ module.exports = class ServerStatusHandler{
         }
 
         let server = args['server'];
-        if(servers[server] == undefined) {
+        if (servers[server] == undefined) {
             return (`ERROR: Unknown Server!\n错误：没找到这个服务器的数据。`);
         }
         serverStatus = servers[server];
@@ -38,7 +38,7 @@ module.exports = class ServerStatusHandler{
         连接状态:${serverStatus.connectState ? '可连接' : '不可连接'}
         ----------------
         数据来源于jx3box仅供参考。
-        `.replace(/[ ]{2,}/g,"");
+        `.replace(/[ ]{2,}/g, "");
     }
 
     static argsList() {
@@ -52,7 +52,7 @@ module.exports = class ServerStatusHandler{
             limit: null,
             nullable: true,
             default: '唯我独尊'
-        },{
+        }, {
             name: 'update',
             alias: null,
             type: 'boolean',
@@ -73,6 +73,6 @@ module.exports = class ServerStatusHandler{
         return `服务器状态命令，可用命令有开服、ss以及群管理员自定义的别名。接受0~2个参数
             1.服务器(--server)，可为空，默认为唯我独尊,
             2.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
-        `.replace(/[ ]{2,}/g,"");
+        `.replace(/[ ]{2,}/g, "");
     }
 }

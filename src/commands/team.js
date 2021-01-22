@@ -1,10 +1,10 @@
-module.exports = class TeamHandler{
+module.exports = class TeamHandler {
     static demandPermission = true;
 
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        
+
     }
 
     static argsList() {
@@ -32,7 +32,7 @@ module.exports = class TeamHandler{
                         limit: null,
                         nullable: true,
                         default: '唯我独尊'
-                    },{
+                    }, {
                         name: 'map',
                         alias: 'map',
                         type: 'string',
@@ -42,7 +42,7 @@ module.exports = class TeamHandler{
                         limit: null,
                         nullable: true,
                         default: '广陵邑'
-                    },{
+                    }, {
                         name: 'update',
                         alias: null,
                         type: 'boolean',
@@ -54,7 +54,7 @@ module.exports = class TeamHandler{
                         default: false
                     }
                 ],
-                delete : [
+                delete: [
                     {
                         name: '87578',
                         alias: 'server',
@@ -65,7 +65,7 @@ module.exports = class TeamHandler{
                         limit: null,
                         nullable: true,
                         default: '唯我独尊'
-                    },{
+                    }, {
                         name: '782872',
                         alias: 'map',
                         type: 'string',
@@ -75,7 +75,7 @@ module.exports = class TeamHandler{
                         limit: null,
                         nullable: true,
                         default: '广陵邑'
-                    },{
+                    }, {
                         name: '782872',
                         alias: null,
                         type: 'boolean',
@@ -94,7 +94,7 @@ module.exports = class TeamHandler{
     static argsMissingError() {
         return this.helpText();
     }
-    
+
     static helpText() {
         return `花价查询命令，可用命令有flower、花价、hj以及群管理员自定义的别名。可接受0~3个参数
             1.花的种类(--flower)，可为空，默认为绣球花
@@ -102,6 +102,6 @@ module.exports = class TeamHandler{
             3.地图(--map)，可为空，默认为广陵邑
             4.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
 
-        `.replace(/[ ]{2,}/g,"");
-    } 
+        `.replace(/[ ]{2,}/g, "");
+    }
 }

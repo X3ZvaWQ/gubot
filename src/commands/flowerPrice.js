@@ -1,19 +1,19 @@
 const Api = require('../service/api');
 
 const moment = require('moment');
-module.exports = class FlowerPriceHandler{
+module.exports = class FlowerPriceHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        let key = JSON.stringify('FlowerPrice:'+args);
+        let key = JSON.stringify('FlowerPrice:' + args);
         //get data from redis
         let flowerPrice = await redis.get(key);
         //check data is empty?
-        if(flowerPrice != undefined && flowerPrice != null && !args['update']) {
+        if (flowerPrice != undefined && flowerPrice != null && !args['update']) {
             flowerPrice = JSON.parse(flowerPrice);
-        }else{
+        } else {
             let response = await Api.getFlowerPriceFromSpider(args);
-            if(JSON.stringify(response.data) == '{}') {
+            if (JSON.stringify(response.data) == '{}') {
                 return 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }
             flowerPrice = response.data
@@ -23,13 +23,13 @@ module.exports = class FlowerPriceHandler{
         //combine datas to string reply.
         let text = [];
         let price = flowerPrice;
-        for(let i in price) {
-            let lines = price[i]['maxLine'].slice(0,3).join(',');
+        for (let i in price) {
+            let lines = price[i]['maxLine'].slice(0, 3).join(',');
             text.push(`${args.server}·${i}·${args.map}
             线路：${lines}
             日期：${moment().format('YYYY-MM-DD')}`);
         }
-        return (text.join('\n—————————\n')+`\n数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g,"");
+        return (text.join('\n—————————\n') + `\n数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");
     }
 
     static argsList() {
@@ -55,7 +55,7 @@ module.exports = class FlowerPriceHandler{
                 limit: null,
                 nullable: true,
                 default: '唯我独尊'
-            },{
+            }, {
                 name: 'map',
                 alias: 'map',
                 type: 'string',
@@ -65,7 +65,7 @@ module.exports = class FlowerPriceHandler{
                 limit: null,
                 nullable: true,
                 default: '广陵邑'
-            },{
+            }, {
                 name: 'update',
                 alias: null,
                 type: 'boolean',
@@ -82,7 +82,7 @@ module.exports = class FlowerPriceHandler{
     static argsMissingError() {
         return this.helpText();
     }
-    
+
     static helpText() {
         return `花价查询命令，可用命令有flower、花价、hj以及群管理员自定义的别名。可接受0~3个参数
             1.花的种类(--flower)，可为空，默认为绣球花
@@ -90,6 +90,6 @@ module.exports = class FlowerPriceHandler{
             3.地图(--map)，可为空，默认为广陵邑
             4.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
 
-        `.replace(/[ ]{2,}/g,"");
-    } 
+        `.replace(/[ ]{2,}/g, "");
+    }
 }

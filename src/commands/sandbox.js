@@ -1,15 +1,15 @@
 const Api = require('../service/api');
 const Cq = require('../service/cqhttp');
 
-module.exports = class SandBoxHandler{
+module.exports = class SandBoxHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
         let redis_key = `SandBox:${args.server}`;
         //get data from redis
         let result = await redis.get(redis_key);
-        if(result == null) {
-            try{
+        if (result == null) {
+            try {
                 let [area, server, updated_at, sandbox_image] = await Api.getSandBox(args.server);
                 result = `------沙盘查询------
                 ${Cq.ImageCQCode(sandbox_image)}
@@ -18,11 +18,11 @@ module.exports = class SandBoxHandler{
                 上次更新时间：${updated_at}`;
                 await redis.set(redis_key, result);
                 await redis.expire(redis_key, 21600);
-            }catch(e) {
+            } catch (e) {
                 result = `ERROR: Get Sandbox Image Error.\n 错误：无法获取数据.`
             }
         }
-        return result.replace(/[ ]{2,}/g,"");
+        return result.replace(/[ ]{2,}/g, "");
     }
 
     static argsList() {
@@ -36,7 +36,7 @@ module.exports = class SandBoxHandler{
             limit: null,
             nullable: true,
             default: '唯我独尊'
-        },{
+        }, {
             name: 'update',
             alias: null,
             type: 'boolean',
@@ -57,6 +57,6 @@ module.exports = class SandBoxHandler{
         return `沙盘查询命令，可用命令有sandbox、沙盘、sp以及群管理员自定义的别名。接受0~2个参数
             1.服务器(--server)，可为空，默认为唯我独尊,
             2.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
-        `.replace(/[ ]{2,}/g,"");
+        `.replace(/[ ]{2,}/g, "");
     }
 }

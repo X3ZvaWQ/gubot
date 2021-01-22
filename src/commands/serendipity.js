@@ -2,29 +2,29 @@ const Api = require('../service/api');
 const allSerendipity = require('@jx3box/jx3box-data/data/serendipity/serendipity.json')
 const moment = require('moment');
 
-module.exports = class SerendipityHandler{
+module.exports = class SerendipityHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        let key = JSON.stringify('Serendipity:'+ JSON.stringify(args));
+        let key = JSON.stringify('Serendipity:' + JSON.stringify(args));
         //get data from redis
         let data = await redis.get(key);
         //check data is empty?
-        if(data != undefined && data != null) {
+        if (data != undefined && data != null) {
             data = JSON.parse(data);
-        }else{
+        } else {
             let serendipitys;
-            if(args.serendipity != '全部奇遇') {
+            if (args.serendipity != '全部奇遇') {
                 serendipitys = allSerendipity
-                .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
-                .map(x => x.name).join(',');
-            }else{
+                    .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
+                    .map(x => x.name).join(',');
+            } else {
                 serendipitys = allSerendipity
-                .filter(s => s.languages[0] == 'zhcn')
-                .map(x => x.name).join(',');
+                    .filter(s => s.languages[0] == 'zhcn')
+                    .map(x => x.name).join(',');
             }
-            
-            if(serendipitys == '') {
+
+            if (serendipitys == '') {
                 return 'ERROR: Serendipity Not Found.\n错误: 你写的这玩意......他真的存在吗?';
             }
             data = await Api.getSerendipity({
@@ -34,9 +34,9 @@ module.exports = class SerendipityHandler{
                 pageSize: 50,
                 start: 0
             });
-            if(data.code == 0) {
+            if (data.code == 0) {
                 data = data.data.data;
-            }else{
+            } else {
                 return 'ERROR: Server Error.\n错误: 接口炸了，不关机器人的事儿';
             }
             await redis.set(key, JSON.stringify(data));
@@ -44,24 +44,24 @@ module.exports = class SerendipityHandler{
         }
         //combine datas to string reply.
         let text = [];
-        if(data != null && data != 'null' && data.length > 0) {
-            for(let i in data) {
+        if (data != null && data != 'null' && data.length > 0) {
+            for (let i in data) {
                 let type = await redis.get('SerendipityTypeOf:' + data[i].serendipity);
-                if(type == null) {
+                if (type == null) {
                     type = allSerendipity.filter(x => x.name == data[i].serendipity)[0].type;
                     await redis.set('SerendipityTypeOf:' + data[i].serendipity, type);
                 }
-                text.push(`${type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime*1000).format('YYYY-MM-DD HH:mm:ss')}`);
+                text.push(`${type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime * 1000).format('YYYY-MM-DD HH:mm:ss')}`);
             }
-        }else{
+        } else {
             text.push('这位侠士这里光秃秃的，什么也没有。');
         }
-        
+
         return (`--${args.player} 的奇遇记录--
             ${text.join('\n')}
             ----------------------
             服务器：${args.server}
-            数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g,"");
+            数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");
     }
 
     static argsList() {
@@ -87,7 +87,7 @@ module.exports = class SerendipityHandler{
                 limit: null,
                 nullable: true,
                 default: '绝世奇遇'
-            },{
+            }, {
                 name: 'server',
                 alias: 'server',
                 type: 'string',
@@ -104,12 +104,12 @@ module.exports = class SerendipityHandler{
     static argsMissingError() {
         return this.helpText();
     }
-    
+
     static helpText() {
         return `奇遇查询命令，用于查询某个人的奇遇。可用命令有serendipity、奇遇、qy以及群管理员自定义的别名。可接受0~3个参数
             1.id (--player)，不可为空。
             3.奇遇(--serendipity)，可为空，用“-”表示默认值，默认为绝世奇遇，可选值[具体奇遇名,绝世奇遇,世界奇遇,宠物奇遇,小宠奇遇,物品奇遇,全部奇遇]。
             2.服务器(--server)，可为空，用“-”表示默认值，默认为唯我独尊。
-        `.replace(/[ ]{2,}/g,"");
-    } 
+        `.replace(/[ ]{2,}/g, "");
+    }
 }

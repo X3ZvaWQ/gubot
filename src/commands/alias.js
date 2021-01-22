@@ -1,150 +1,222 @@
 const Alias = require('../model/alias');
+const { Op } = require("sequelize");
+const { result } = require('lodash');
 
-module.exports = class AliasHandler{
+module.exports = class AliasHandler {
     async handle(ctx) {
-        let params = {
-            action: args[0]            
+        let action = ctx.args.action;
+        if (action == 'list') {
+            return this.list(ctx);
+        } else if (action == 'add') {
+            return this.add(ctx);
+        } else if (action == 'delete') {
+            return this.delete(ctx)
         }
-        if(params.action == 'add') {
-            return this.add(args);
-        } else if (params.action == 'rm') {
-            return this.remove(args);
-        }
-
-        return text.replace(/[ ]{2,}/g,"");;
     }
 
-    async add(args) {
-        let params = {
-            action: args[0],
-            scope: args[1],
-            real: args[2],
-            alias: args[3],
+    async add(ctx) {
+        if(args.permission < 2) {
+            return '权限不足。需要admin及以上权限';
         }
-
+        let args = ctx.args;
+        let where = {
+            real: args.real,
+            alias: args.alias,
+            scope: args.scope,
+            group: '*'
+        };
+        if(ctx.data.message_type == 'group'){
+            let group_id = ctx.data.group_id;
+            where['group'] = group_id;
+        }
         let alias = await Alias.findOne({
-            where: {
-                real: params.real,
-                alias: params.alias,
-                scope: params.scope
-            }
+            where: where
         });
-        if(alias != null) {
+        if (alias != null) {
             return 'ERROR: Alias already exists.\n错误：该别名已存在！';
         }
-        alias = await Alias.create({
-            real: params.real,
-            alias: params.alias,
-            scope: params.scope
-        })
-        return `别名已成功创建`;
+        alias = await Alias.create(where)
+        delete where.real;
+        await redis.del('Alias:'+JSON.stringify(where));
+        return `别名已成功创建,现在 ${where.scpoe} 的 ${where.alias} 会被认为是 ${where.real}`;
     }
 
-    async remove(args) {
-        let params = {
-            action: args[0],
-            scope: args[1],
-            alias: args[2],
+    async delete(ctx) {
+        if(args.permission < 2) {
+            return '权限不足。需要admin及以上权限';
+        }
+        let args = ctx.args;
+        let where = {
+            real: args.real,
+            alias: args.alias,
+            scope: args.scope,
+            group: '*'
         };
-
+        if(ctx.data.message_type == 'group'){
+            let group_id = ctx.data.group_id;
+            where['group'] = group_id;
+        }
         let alias = await Alias.findOne({
-            where: {
-                alias: params.alias,
-                scope: params.scope
-            }
+            where: where
         });
-
         if (alias != null) {
             alias.destroy();
+            delete where.real;
+            await redis.del('Alias:'+JSON.stringify(where));
+            return `成功,${where.scpoe} 下 ${where.real} 的别名 ${where.alias} 已删除`;
+        }else{
+            return '该别名不存在';
         }
+    }
+
+    async list(ctx) {
+        let args = ctx.args;
+        let where = {
+            real: args.real,
+            alias: args.alias,
+            scope: args.scope,
+            group: '*'
+        };
+        if(ctx.data.message_type == 'group'){
+            let group_id = ctx.data.group_id;
+            where['group'] = {
+                [Op.or]: ['*', group_id]
+            };
+        }
+        for(let k in where){
+            if(where.k) delete where.k;
+        }
+        let redis_key = `AliasList:${JSON.stringify(where)}`;
+        let result = await redis.get(redis_key);
+        if(result == null) {
+            let alias_all = Alias.findAll(where);
+            let display = [];
+            for(let i in alias_all) {
+                let alias = alias_all[i];
+                display.push(`[${alias.scope}] ${alias.alias} → ${alias.real}`);
+            }
+            result = `------查询的别名列表------
+            ${display.join('\n')}
+            `;
+            await redis.set(redis_key, result);
+            await redis.set(redis_key, 86400);
+        }
+        return result;
     }
 
     static argsList() {
         return {
             action: {
                 name: 'action',
-                alias: 'team_action',
+                alias: 'alias_action',
                 type: 'string',
                 defaultIndex: 1,
                 shortArgs: null,
                 longArgs: 'action',
-                limit: ['create', 'delete', 'apply', 'list', 'view', 'cancel', 'set'],
+                limit: ['list', 'add', 'delete'],
                 nullable: true,
                 default: 'list'
             },
             branch: {
-                create: [
-                    {
-                        name: 'server',
-                        alias: 'server',
-                        type: 'string',
-                        defaultIndex: 2,
-                        shortArgs: null,
-                        longArgs: 'server',
-                        limit: null,
-                        nullable: true,
-                        default: '唯我独尊'
-                    },{
-                        name: 'map',
-                        alias: 'map',
-                        type: 'string',
-                        defaultIndex: 3,
-                        shortArgs: null,
-                        longArgs: 'map',
-                        limit: null,
-                        nullable: true,
-                        default: '广陵邑'
-                    },{
-                        name: 'update',
-                        alias: null,
-                        type: 'boolean',
-                        defaultIndex: 4,
-                        shortArgs: 'u',
-                        longArgs: 'update',
-                        limit: null,
-                        nullable: true,
-                        default: false
-                    }
-                ],
-                delete : [
-                    {
-                        name: '87578',
-                        alias: 'server',
-                        type: 'string',
-                        defaultIndex: 2,
-                        shortArgs: null,
-                        longArgs: 'server',
-                        limit: null,
-                        nullable: true,
-                        default: '唯我独尊'
-                    },{
-                        name: '782872',
-                        alias: 'map',
-                        type: 'string',
-                        defaultIndex: 3,
-                        shortArgs: null,
-                        longArgs: 'map',
-                        limit: null,
-                        nullable: true,
-                        default: '广陵邑'
-                    },{
-                        name: '782872',
-                        alias: null,
-                        type: 'boolean',
-                        defaultIndex: 4,
-                        shortArgs: 'u',
-                        longArgs: 'update',
-                        limit: null,
-                        nullable: true,
-                        default: false
-                    }
-                ]
+                list: [{
+                    name: 'real',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 2,
+                    shortArgs: null,
+                    longArgs: 'real',
+                    limit: null,
+                    nullable: true,
+                    default: '-'
+                }, {
+                    name: 'alias',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 3,
+                    shortArgs: null,
+                    longArgs: 'alias',
+                    limit: null,
+                    nullable: true,
+                    default: '-'
+                }, {
+                    name: 'scope',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 4,
+                    shortArgs: null,
+                    longArgs: 'scope',
+                    limit: null,
+                    nullable: true,
+                    default: '-'
+                }],
+                delete: [{
+                    name: 'real',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 2,
+                    shortArgs: null,
+                    longArgs: 'real',
+                    limit: null,
+                    nullable: false,
+                    default: null
+                }, {
+                    name: 'alias',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 3,
+                    shortArgs: null,
+                    longArgs: 'alias',
+                    limit: null,
+                    nullable: false,
+                    default: null
+                }, {
+                    name: 'scope',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 4,
+                    shortArgs: null,
+                    longArgs: 'scope',
+                    limit: null,
+                    nullable: false,
+                    default: null
+                }],
+                add: [{
+                    name: 'real',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 2,
+                    shortArgs: null,
+                    longArgs: 'real',
+                    limit: null,
+                    nullable: false,
+                    default: null
+                }, {
+                    name: 'alias',
+                    alias: null,
+                    type: 'boolean',
+                    defaultIndex: 3,
+                    shortArgs: null,
+                    longArgs: 'alias',
+                    limit: null,
+                    nullable: true,
+                    default: false
+                }, {
+                    name: 'scope',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 4,
+                    shortArgs: null,
+                    longArgs: 'scope',
+                    limit: null,
+                    nullable: false,
+                    default: null
+                }, ],
             }
         };
     }
 
     static helpText() {
         return `
-        `.replace(/[ ]{2,}/g,"");
+        `.replace(/[ ]{2,}/g, "");
     }
 }
