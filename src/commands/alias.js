@@ -1,5 +1,7 @@
 const Alias = require('../model/alias');
 const { Op } = require("sequelize");
+const Cq = require('../service/cqhttp');
+const Image = require('../service/image');
 
 module.exports = class AliasHandler {
     async handle(ctx) {
@@ -86,18 +88,19 @@ module.exports = class AliasHandler {
         for(let k in where){
             if(where[k] == null) delete where[k];
         }
-        console.log(where);
         let redis_key = `AliasList:${JSON.stringify(where)}`;
         let result = await redis.get(redis_key);
         if(result == null) {
             let alias_all = await Alias.findAll({where:where, logging: console.log});
-            let display = [];
+            let array = [
+                ['作用域', '别名', '指向']
+            ];
             for(let i in alias_all) {
                 let alias = alias_all[i];
-                display.push(`[${alias.scope}] ${alias.alias} → ${alias.real}`);
+                array.push([alias.scope, alias.alias, alias.real]);
             }
             result = `------查询的别名列表------
-            ${display.join('\n')}
+            ${Cq.ImageCQCode('file://' + await Image.generateFromArrayTable(array))}
             `.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);

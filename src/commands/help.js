@@ -4,7 +4,6 @@ const Image = require("../service/image");
 module.exports = class HelpHandler {
     async handle(ctx) {
         let args = ctx.args;
-        console.log(args);
         if (args['command'] != null && route[args['command']] != undefined) {
             return route[args['command']].helpText();
         }

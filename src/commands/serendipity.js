@@ -1,6 +1,9 @@
 const Api = require('../service/api');
 const allSerendipity = require('@jx3box/jx3box-data/data/serendipity/serendipity.json')
 const moment = require('moment');
+const Image = require('../service/image');
+const Cq = require('../service/cqhttp');
+const { generateFromArrayTable } = require('../service/image');
 
 module.exports = class SerendipityHandler {
     async handle(ctx) {
@@ -43,7 +46,9 @@ module.exports = class SerendipityHandler {
             await redis.expire(key, 300);
         }
         //combine datas to string reply.
-        let text = [];
+        let array = [
+            ['奇遇类型', '奇遇', '触发时间']
+        ];
         if (data != null && data != 'null' && data.length > 0) {
             for (let i in data) {
                 let type = await redis.get('SerendipityTypeOf:' + data[i].serendipity);
@@ -51,14 +56,12 @@ module.exports = class SerendipityHandler {
                     type = allSerendipity.filter(x => x.name == data[i].serendipity)[0].type;
                     await redis.set('SerendipityTypeOf:' + data[i].serendipity, type);
                 }
-                text.push(`${type}·${data[i].serendipity} 触发于:${moment(data[i].dwTime * 1000).format('YYYY-MM-DD HH:mm:ss')}`);
+                array.push([type, data[i].serendipity, moment(data[i].dwTime * 1000).format('YYYY-MM-DD HH:mm:ss')]);
             }
-        } else {
-            text.push('这位侠士这里光秃秃的，什么也没有。');
         }
 
         return (`--${args.player} 的奇遇记录--
-            ${text.join('\n')}
+            ${array.length > 1 ? Cq.ImageCQCode('file://' + await generateFromArrayTable(array)) : '这位侠士这里光秃秃的，什么也没有。'}
             ----------------------
             服务器：${args.server}
             数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");
