@@ -85,8 +85,8 @@ if(ENV.use_http_post) {
 let websocketClient;
 if(ENV.use_websocket) {
     const WebSocket = require('ws');
-    const wsApi = new WebSocket(`${ENV.websocket_url}/api/`);
-    const wsEvent = new WebSocket(`${ENV.websocket_url}/event/`);
+    const wsApi = new WebSocket(`${ENV.websocket_url}/api/${ENV.access_token ? ' ? '+ENV.access_token : ''}`);
+    const wsEvent = new WebSocket(`${ENV.websocket_url}/event/${ENV.access_token ? ' ? '+ENV.access_token : ''}`);
     wsApi.on('open', () => {
         console.log('INFO: Api WebSocket Server connected.');
     });
