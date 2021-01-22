@@ -8,6 +8,7 @@ class Bot{
         try{
             [args, command] = await this.parseArgs(data);
         }catch(e) {
+            console.log(e);
             return e;
         }
         let ctx = {
@@ -36,9 +37,10 @@ class Bot{
     async parseArgs(data) {
         if(data.post_type == 'message'){
             if(data.message.split('')[0] == '/'){
-                let [command, defaultArgs, shortArgs, longArgs] = helper.commandParse(data.message);
-                command = await Alias.get(command, 'command');
-                const getArg = async (arg, defaultArgs, shortArgs, longArgs) => {
+                let [_command, defaultArgs, shortArgs, longArgs] = helper.commandParse(data.message);
+                let command = await Alias.get(_command, 'command', data.group_id);
+                if(command == _command) command = await Alias.get(command, 'command');
+                const getArg = async (arg, defaultArgs, shortArgs, longArgs, data) => {
                     let value = undefined;
                     if(shortArgs != null && shortArgs[arg.shortArgs] != undefined) {
                         value = shortArgs[arg.shortArgs];
@@ -53,27 +55,25 @@ class Bot{
                         if(arg.nullable) {
                             value = arg.default;
                         }else{
-                            ctx.response.type = 'application/json',
-                            ctx.response.body = JSON.stringify({
-                                reply: route[command].argsMissingError()
-                            });
-                            return;
+                            throw `Error: ${arg.name} 参数缺失，请使用/help命令查看命令用法`;
                         }
                     }
 
                     if(arg.alias != null && value != null) {
-                        value = await Alias.get(value, arg.alias);
+                        let _value = value;
+                        value = await Alias.get(value, arg.alias, data.group_id);
+                        if(value == _value) value = await Alias.get(value, arg.alias, '*');
                     }
 
                     if(arg.limit instanceof Object && arg.type == 'integer'){
                         if(value < arg.limit.min || value > arg.limit.max){
-                            throw 'Invalid Args.';
+                            throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
                         }
                     }
 
                     if(arg.limit instanceof Array && arg.type == 'string'){
                         if(arg.limit.indexOf(value) == -1){
-                            throw 'Invalid Args.';
+                            throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
                         }
                     }
 
@@ -86,7 +86,7 @@ class Bot{
                     if(argsList instanceof Array) {
                         try{
                             for(let i in argsList) {
-                                let value = await getArg(argsList[i], defaultArgs, shortArgs, longArgs);
+                                let value = await getArg(argsList[i], defaultArgs, shortArgs, longArgs, data);
                                 args[argsList[i].name] = value;
                             }
                         }catch(e) {
@@ -94,11 +94,11 @@ class Bot{
                         }
                     }else if(argsList instanceof Object){
                         try{
-                            let action = await getArg(argsList.action, defaultArgs, shortArgs, longArgs);
+                            let action = await getArg(argsList.action, defaultArgs, shortArgs, longArgs, data);
                             args[argsList.action.name] = action;
                             let branchArgsList = argsList.branch[action];
                             for(let i in branchArgsList) {
-                                let value = await getArg(branchArgsList[i], defaultArgs, shortArgs, longArgs);
+                                let value = await getArg(branchArgsList[i], defaultArgs, shortArgs, longArgs, data);
                                 args[branchArgsList[i].name] = value;
                             }
                         }catch(e) {
@@ -107,7 +107,7 @@ class Bot{
                     }
                     return [args, command];
                 }else{
-                    return ;
+                    return null;
                 }
             }
         }

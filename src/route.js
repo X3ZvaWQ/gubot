@@ -11,6 +11,7 @@ const SandBoxHandler = require('./commands/sandbox');
 const PermissionHandler = require('./commands/permission');
 const TeamHandler = require('./commands/team');
 const GroupHandler = require('./commands/group');
+const AliasHandler = require('./commands/alias');
 
 module.exports = {
     flowerPrice: FlowerPriceHandler,
@@ -25,5 +26,6 @@ module.exports = {
     sandbox: SandBoxHandler,
     permission: PermissionHandler,
     team: TeamHandler,
-    group: GroupHandler
+    group: GroupHandler,
+    alias: AliasHandler
 }

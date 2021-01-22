@@ -1,6 +1,5 @@
 const Alias = require('../model/alias');
 const { Op } = require("sequelize");
-const { result } = require('lodash');
 
 module.exports = class AliasHandler {
     async handle(ctx) {
@@ -15,10 +14,13 @@ module.exports = class AliasHandler {
     }
 
     async add(ctx) {
+        let args = ctx.args;
         if(args.permission < 2) {
             return '权限不足。需要admin及以上权限';
         }
-        let args = ctx.args;
+        if(args.alias == args.real) {
+            return '错误：禁止套娃！'
+        }
         let where = {
             real: args.real,
             alias: args.alias,
@@ -36,16 +38,17 @@ module.exports = class AliasHandler {
             return 'ERROR: Alias already exists.\n错误：该别名已存在！';
         }
         alias = await Alias.create(where)
+        let result = `别名已成功创建,现在 ${where.scope} 的 ${where.alias} 会被认为是 ${where.real}`;
         delete where.real;
         await redis.del('Alias:'+JSON.stringify(where));
-        return `别名已成功创建,现在 ${where.scpoe} 的 ${where.alias} 会被认为是 ${where.real}`;
+        return result;
     }
 
     async delete(ctx) {
+        let args = ctx.args;
         if(args.permission < 2) {
             return '权限不足。需要admin及以上权限';
         }
-        let args = ctx.args;
         let where = {
             real: args.real,
             alias: args.alias,
@@ -61,9 +64,10 @@ module.exports = class AliasHandler {
         });
         if (alias != null) {
             alias.destroy();
+            let result = `成功,${where.scope} 下 ${where.real} 的别名 ${where.alias} 已删除`;
             delete where.real;
             await redis.del('Alias:'+JSON.stringify(where));
-            return `成功,${where.scpoe} 下 ${where.real} 的别名 ${where.alias} 已删除`;
+            return result;
         }else{
             return '该别名不存在';
         }
@@ -75,21 +79,18 @@ module.exports = class AliasHandler {
             real: args.real,
             alias: args.alias,
             scope: args.scope,
-            group: '*'
+            group: ctx.data.message_type == 'group' ? {
+                [Op.or]: ['*', ctx.data.group_id]
+            } : '*'
         };
-        if(ctx.data.message_type == 'group'){
-            let group_id = ctx.data.group_id;
-            where['group'] = {
-                [Op.or]: ['*', group_id]
-            };
-        }
         for(let k in where){
-            if(where.k) delete where.k;
+            if(where[k] == null) delete where[k];
         }
+        console.log(where);
         let redis_key = `AliasList:${JSON.stringify(where)}`;
         let result = await redis.get(redis_key);
         if(result == null) {
-            let alias_all = Alias.findAll(where);
+            let alias_all = await Alias.findAll({where:where, logging: console.log});
             let display = [];
             for(let i in alias_all) {
                 let alias = alias_all[i];
@@ -97,9 +98,9 @@ module.exports = class AliasHandler {
             }
             result = `------查询的别名列表------
             ${display.join('\n')}
-            `;
+            `.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
             await redis.set(redis_key, result);
-            await redis.set(redis_key, 86400);
+            await redis.expire(redis_key, 86400);
         }
         return result;
     }
@@ -127,7 +128,7 @@ module.exports = class AliasHandler {
                     longArgs: 'real',
                     limit: null,
                     nullable: true,
-                    default: '-'
+                    default: null
                 }, {
                     name: 'alias',
                     alias: null,
@@ -137,7 +138,7 @@ module.exports = class AliasHandler {
                     longArgs: 'alias',
                     limit: null,
                     nullable: true,
-                    default: '-'
+                    default: null
                 }, {
                     name: 'scope',
                     alias: null,
@@ -147,7 +148,7 @@ module.exports = class AliasHandler {
                     longArgs: 'scope',
                     limit: null,
                     nullable: true,
-                    default: '-'
+                    default: null
                 }],
                 delete: [{
                     name: 'real',
@@ -216,7 +217,7 @@ module.exports = class AliasHandler {
     }
 
     static helpText() {
-        return `
+        return `别名管理命令
         `.replace(/[ ]{2,}/g, "");
     }
 }

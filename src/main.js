@@ -98,7 +98,7 @@ if(ENV.use_websocket) {
         if(data.post_type == 'message'){
             if(data.message.split('')[0] == '/'){
                 let result = await bot.handleCommand(data);
-                if(result != null && result != undefined){
+                if(result != null && result != undefined && result != ''){
                     if(data.message_type == 'group') {
                         let group_id = data.group_id;
                         wsApi.send(JSON.stringify({
