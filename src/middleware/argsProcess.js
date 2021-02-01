@@ -7,8 +7,8 @@ module.exports = async (ctx, next) => {
         if(data.message.split('')[0] == '/'){
             let [command, defaultArgs, shortArgs, longArgs] = helper.commandParse(data.message);
             command = await Alias.get(command, 'command');
-            if(route[command] != undefined) {
-                let argsList = route[command].argsList();
+            if(route.commands[command] != undefined) {
+                let argsList = route.commands[command].argsList();
                 let args = {};
                 if(argsList != undefined && argsList != null){
                     for(let i in argsList) {
@@ -31,7 +31,7 @@ module.exports = async (ctx, next) => {
                             }else{
                                 ctx.response.type = 'application/json',
                                 ctx.response.body = JSON.stringify({
-                                    reply: route[command].argsMissingError()
+                                    reply: route.commands[command].argsMissingError()
                                 });
                                 return;
                             }
@@ -41,7 +41,7 @@ module.exports = async (ctx, next) => {
                             if(value < arg.limit[0] || value > arg.limit[1]){
                                 ctx.response.type = 'application/json',
                                 ctx.response.body = JSON.stringify({
-                                    reply: route[command].argsMissingError()
+                                    reply: route.commands[command].argsMissingError()
                                 });
                                 return;
                             }

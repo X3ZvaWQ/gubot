@@ -9,9 +9,9 @@ module.exports = class AliasHandler {
         if (action == 'list') {
             return '性能原因，暂时禁止使用' //this.list(ctx);
         } else if (action == 'add') {
-            return this.add(ctx);
+            return await this.add(ctx);
         } else if (action == 'delete') {
-            return this.delete(ctx)
+            return await this.delete(ctx)
         }
     }
 

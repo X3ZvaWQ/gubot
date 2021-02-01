@@ -14,18 +14,21 @@ const GroupHandler = require('./commands/group');
 const AliasHandler = require('./commands/alias');
 
 module.exports = {
-    flowerPrice: FlowerPriceHandler,
-    goldPrice: GoldPriceHandler,
-    help: HelpHandler,
-    exam: ExamHandler,
-    serverStatus: ServerStatusHandler,
-    achievement: AchievementHandler,
-    serendipity: SerendipityHandler,
-    macro: MacroHandler,
-    gameUpdate: GameUpdate,
-    sandbox: SandBoxHandler,
-    permission: PermissionHandler,
-    team: TeamHandler,
-    group: GroupHandler,
-    alias: AliasHandler
+    commands: {
+        flowerPrice: FlowerPriceHandler,
+        goldPrice: GoldPriceHandler,
+        help: HelpHandler,
+        exam: ExamHandler,
+        serverStatus: ServerStatusHandler,
+        achievement: AchievementHandler,
+        serendipity: SerendipityHandler,
+        macro: MacroHandler,
+        gameUpdate: GameUpdate,
+        sandbox: SandBoxHandler,
+        permission: PermissionHandler,
+        team: TeamHandler,
+        group: GroupHandler,
+        alias: AliasHandler
+    }
+    
 }

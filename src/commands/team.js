@@ -1,13 +1,199 @@
+const Team = require('../model/team');
+const Group = require('../model/group');
+const allxf = require('@jx3box/jx3box-data/data/xf');
+const allschool = require('@jx3box/jx3box-data/data/xf/school.json');
+
 module.exports = class TeamHandler {
     static demandPermission = true;
 
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-
+        let action = ctx.args.action;
+        if (action == 'list') {
+            return await this.list(ctx);
+        } else if (action == 'create') {
+            return await this.create(ctx);
+        } else if (action == 'delete') {
+            return await this.delete(ctx);
+        } else if (action == 'apply') {
+            return await this.apply(ctx);
+        } else if (action == 'cancel') {
+            return await this.cancel(ctx);
+        }
     }
 
-    static argsList() {
+    async create(ctx){
+        let args = ctx.args;
+        let permission = ctx.permission;
+        if(permission < 2) return '权限不足';
+        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        let team = await Team.findOne({
+            where: {
+                name : args.name
+            }
+        });
+        if(team != null) {
+            return '错误：存在名称相同的团队，请通过/team view id/name查看';
+        }
+        let emptyData;;
+        try{
+            emptyData = await Team.generateEmptyData(args.squad, ctx.data.group_id);
+        }catch(e) {
+            throw e;
+        }
+        team = await Team.create({
+            group_id: ctx.data.group_id,
+            name: args.name,
+            squad: ctx.squad,
+            data: JSON.stringify(emptyData),
+            time: args.time
+        })
+        return `成功：团队创建完毕,id为${team.id}，可以通过/team view id/name查看团队`;
+    }
+
+    async delete(ctx){
+        let args = ctx.args;
+        let permission = ctx.permission;
+        if(permission < 2) return '权限不足';
+        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        let team = await Team.findOne({
+            where: {
+                id: args.id,
+                group_id: ctx.data.group_id
+            }
+        });
+        if(team == null) {
+            return '错误：该团队不存在，请使用/team list查看本群团队';
+        }
+        let [id, name] = [team.id, team.name];
+        await team.destroy();
+        return `成功：id为${id},名称为${name}的团队已成功删除`;
+    }
+
+    async list(ctx){
+        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        let group_id = ctx.data.group_id;
+        let group = await Group.findOne({
+            where: {
+                group_id: group_id
+            }
+        })
+        let teams = await Team.findAll({
+            where: {
+                group_id: group_id
+            }
+        });
+        let texts = [];
+        for(let i in teams) {
+            let team = teams[i];
+            texts.push(`${team.id}: ${team.name} - ${team.time}`);
+        }
+        return `---${group.nickname}·团队列表---
+        ${texts.join('\n')}`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
+    }
+
+    async apply(ctx){
+        let args = ctx.args;
+        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        let group_id = ctx.data.group_id;
+        let team_id = args.team_id;
+        let xf = args.xf;
+        let team = await Team.findOne({
+            where: {
+                id: team_id,
+                group_id: group_id
+            }
+        });
+        if(team == null) {
+            return `错误：本群不存在id为${team_id}的团队。`;
+        }
+        let cells = JSON.parse(team.data);
+        let cells_valid = cells.filter((x) => (x.xf_optionnal.indexOf(allxf[xf]['id']) != -1 && !x.applied));
+        if(cells_valid.length < 1) {
+            return `错误：id为 ${team_id} 的团队没有 ${xf} 的坑位。`;
+        }
+        let success = false;
+        for(let i in cells_valid) {
+            let cell = cells_valid[i];
+            if(cell.uxid != false){
+                const checkUxid = (samexfidcells, xf) => {
+                    if(xf == 0) return false;
+                    for(let i in samexfidcells) {
+                        let cell = samexfidcells[i];
+                        if(cell.xf == xf && cell.applied) {
+                            return true;
+                        }
+                    }
+                }
+                let samexfidcells = cells.filter((x) => x.uxid == cell.uxid);
+                if(checkUxid(samexfidcells, xf)){
+                    continue;
+                }else{
+                    cell.xf = xf;
+                    cell.applied = true;
+                    cell.applicant = {
+                        qq: ctx.data.sender.user_id,
+                        id: args.game_id
+                    };
+                    cells[cell.id] = cell;
+                    success = true;
+                    break;
+                }
+            }else{
+                cell.xf = xf;
+                cell.applied = true;
+                cell.applicant = {
+                    qq: ctx.data.sender.user_id,
+                    id: args.game_id
+                }
+                cells[cell.id] = cell;
+                success = true;
+                break;
+            }
+        }
+        if(success) {
+            team.data = JSON.stringify(cells);
+            await team.save();
+            return `报名成功，可以使用/team view id/name 查看团队`;
+        }else{
+            return `报名失败，请检查团队对应坑位是否充足`;
+        }
+    }
+
+    async cancel(ctx){
+        let args = ctx.args;
+        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        let group_id = ctx.data.group_id;
+        let team_id = args.team_id;
+        let team = await Team.findOne({
+            where: {
+                id: team_id,
+                group_id: group_id
+            }
+        });
+        if(team == null) {
+            return `错误：本群不存在id为${team_id}的团队。`;
+        }
+        let cells = JSON.parse(team.data);
+        let cell = cells.filter((x) => (x.applied && x.applicant.qq == ctx.data.sender.user_id));
+        if(cells_valid.length < 1) {
+            return `错误：你没有报名id为 ${team_id} 的团队。`;
+        }
+        cell = cell[0];
+        cell.xf = null;
+        cell.applied = false,
+        cell.applicant = {
+            qq: null,
+            id: null
+        }
+        cells[cell.id] = cell;
+        team.data = JSON.stringify(cells);
+        await team.save();
+        return `取消报名成功，可以使用/team view id/name 查看团队`;
+    }
+
+    static argsList(ctx) {
         return {
             action: {
                 name: 'action',
@@ -16,47 +202,57 @@ module.exports = class TeamHandler {
                 defaultIndex: 1,
                 shortArgs: null,
                 longArgs: 'action',
-                limit: ['create', 'delete', 'apply', 'list', 'view', 'cancel', 'set'],
+                limit: ['create', 'delete', 'list', 'view', 'apply', 'cancel'/* , 'set', 'subscribe' */],
                 nullable: true,
                 default: 'list'
             },
             branch: {
                 create: [
                     {
-                        name: 'server',
-                        alias: 'server',
+                        name: 'name',
+                        alias: null,
                         type: 'string',
                         defaultIndex: 2,
                         shortArgs: null,
-                        longArgs: 'server',
+                        longArgs: 'name',
                         limit: null,
-                        nullable: true,
-                        default: '唯我独尊'
+                        nullable: false,
+                        default: null
                     }, {
-                        name: 'map',
-                        alias: 'map',
+                        name: 'time',
+                        alias: null,
                         type: 'string',
                         defaultIndex: 3,
                         shortArgs: null,
-                        longArgs: 'map',
+                        longArgs: 'time',
                         limit: null,
-                        nullable: true,
-                        default: '广陵邑'
+                        nullable: false,
+                        default: null
                     }, {
-                        name: 'update',
+                        name: 'squad',
                         alias: null,
-                        type: 'boolean',
+                        type: 'string',
                         defaultIndex: 4,
                         shortArgs: 'u',
-                        longArgs: 'update',
+                        longArgs: 'squad',
                         limit: null,
                         nullable: true,
+                        default: '2T4H!US9N9W1D'
+                    }, {
+                        name: 'remark',
+                        alias: null,
+                        type: 'string',
+                        defaultIndex: 5,
+                        shortArgs: 'u',
+                        longArgs: 'remark',
+                        limit: null,
+                        nullable: false,
                         default: false
                     }
                 ],
                 delete: [
                     {
-                        name: '87578',
+                        name: 'id',
                         alias: 'server',
                         type: 'string',
                         defaultIndex: 2,
@@ -65,26 +261,71 @@ module.exports = class TeamHandler {
                         limit: null,
                         nullable: true,
                         default: '唯我独尊'
-                    }, {
-                        name: '782872',
-                        alias: 'map',
+                    }
+                ],
+                list: [],
+                view: [
+                    {
+                        name: 'team_id',
+                        alias: null,
+                        type: 'integer',
+                        defaultIndex: 2,
+                        shortArgs: null,
+                        longArgs: 'team_id',
+                        limit: null,
+                        nullable: true,
+                        default: 1
+                    }
+                ],
+                apply: [
+                    {
+                        name: 'xf',
+                        alias: 'xf',
+                        type: 'string',
+                        defaultIndex: 2,
+                        shortArgs: null,
+                        longArgs: 'xf',
+                        limit: null,
+                        nullable: false,
+                        default: null
+                    },
+                    {
+                        name: 'game_id',
+                        alias: null,
                         type: 'string',
                         defaultIndex: 3,
                         shortArgs: null,
-                        longArgs: 'map',
-                        limit: null,
-                        nullable: true,
-                        default: '广陵邑'
-                    }, {
-                        name: '782872',
+                        longArgs: 'game_id',
+                        limit: {
+                            min: 2,
+                            max: 6
+                        },
+                        nullable: false,
+                        default: null
+                    },
+                    {
+                        name: 'team_id',
                         alias: null,
-                        type: 'boolean',
+                        type: 'integer',
                         defaultIndex: 4,
-                        shortArgs: 'u',
-                        longArgs: 'update',
+                        shortArgs: null,
+                        longArgs: 'team_id',
                         limit: null,
                         nullable: true,
-                        default: false
+                        default: 1
+                    }
+                ],
+                cancel: [
+                    {
+                        name: 'team_id',
+                        alias: null,
+                        type: 'integer',
+                        defaultIndex: 2,
+                        shortArgs: null,
+                        longArgs: 'team_id',
+                        limit: null,
+                        nullable: true,
+                        default: 1
                     }
                 ]
             }
@@ -96,12 +337,6 @@ module.exports = class TeamHandler {
     }
 
     static helpText() {
-        return `花价查询命令，可用命令有flower、花价、hj以及群管理员自定义的别名。可接受0~3个参数
-            1.花的种类(--flower)，可为空，默认为绣球花
-            2.服务器(--server)，可为空，默认为唯我独尊
-            3.地图(--map)，可为空，默认为广陵邑
-            4.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
-
-        `.replace(/[ ]{2,}/g, "");
+        return `团队命令，说明有空再写Orz`.replace(/[ ]{2,}/g, "");
     }
 }

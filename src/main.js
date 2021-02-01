@@ -13,11 +13,9 @@ if(ENV.use_redis){
     });
     global.redis = client;
 }else{
-    global.redis = {
-        get: async () => null,
-        set: async () => null,
-        expire: async () => null
-    }
+    global.redis = new Proxy({}, {
+        get: () => (async () => null),
+    });
 }
 
 //make mysql connection
@@ -96,30 +94,37 @@ if(ENV.use_websocket) {
     wsEvent.on('message',async (message) => {
         const data = JSON.parse(message);
         if(data.post_type == 'message'){
+            let result;
             if(data.message.split('')[0] == '/'){
-                let result = await bot.handleCommand(data);
-                if(result != null && result != undefined && result != ''){
-                    if(data.message_type == 'group') {
-                        let group_id = data.group_id;
-                        wsApi.send(JSON.stringify({
-                            action: "send_group_msg",
-                            params: {
-                                group_id: group_id,
-                                message: result
-                            }
-                        }));
-                    }else if(data.message_type == 'private'){
-                        let user_id = data.user_id;
-                        wsApi.send(JSON.stringify({
-                            action: "send_private_msg",
-                            params: {
-                                user_id: user_id,
-                                message: result
-                            }
-                        }));
-                    }
+                result = await bot.handleCommand(data);
+            }else{
+                result = await bot.handleMessage(data);
+            }
+            if(result != null && result != undefined && result != ''){
+                if(data.message_type == 'group') {
+                    let group_id = data.group_id;
+                    wsApi.send(JSON.stringify({
+                        action: "send_group_msg",
+                        params: {
+                            group_id: group_id,
+                            message: result
+                        }
+                    }));
+                }else if(data.message_type == 'private'){
+                    let user_id = data.user_id;
+                    wsApi.send(JSON.stringify({
+                        action: "send_private_msg",
+                        params: {
+                            user_id: user_id,
+                            message: result
+                        }
+                    }));
                 }
             }
+        }else if(data.post_type == 'request'){
+
+        }else if(data.post_type == 'notice'){
+
         }
     });
     websocketClient = {
