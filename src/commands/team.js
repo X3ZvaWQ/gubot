@@ -1,7 +1,6 @@
 const Team = require('../model/team');
 const Group = require('../model/group');
-const allxf = require('@jx3box/jx3box-data/data/xf');
-const allschool = require('@jx3box/jx3box-data/data/xf/school.json');
+const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
 
 module.exports = class TeamHandler {
     static demandPermission = true;
