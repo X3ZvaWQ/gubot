@@ -23,7 +23,9 @@ class Api{
         let hits = response.data['hits'];
         let qa = {}
         for (let i in hits) {
-            qa[hits[i]['_source']['title']] = hits[i]['_source']['options']
+            let options = JSON.parse(hits[i]['_source']['options']);
+            let answer = JSON.parse(hits[i]['_source']['answer']);
+            qa[hits[i]['_source']['title']] = answer.map(x => options[x]).join(',');
         }
         return qa;
     }
