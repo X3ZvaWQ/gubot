@@ -151,6 +151,9 @@ Team.init({
     data: {
         type: DataTypes.STRING,
     },
+    remarks: {
+        type: DataTypes.STRING,
+    },
     time: {
         type: DataTypes.STRING
     }

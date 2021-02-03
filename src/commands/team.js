@@ -1,6 +1,9 @@
 const Team = require('../model/team');
 const Group = require('../model/group');
 const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
+const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json');
+const Image = require('../service/image');
+const Cq = require('../service/cqhttp');
 
 module.exports = class TeamHandler {
     static demandPermission = true;
@@ -19,6 +22,8 @@ module.exports = class TeamHandler {
             return await this.apply(ctx);
         } else if (action == 'cancel') {
             return await this.cancel(ctx);
+        } else if (action == 'view') {
+            return await this.view(ctx);
         }
     }
 
@@ -27,15 +32,7 @@ module.exports = class TeamHandler {
         let permission = ctx.permission;
         if(permission < 2) return '权限不足';
         if(!ctx.data.group_id) return '该命令仅限群内使用';
-        let team = await Team.findOne({
-            where: {
-                name : args.name
-            }
-        });
-        if(team != null) {
-            return '错误：存在名称相同的团队，请通过/team view id/name查看';
-        }
-        let emptyData;;
+        let emptyData;
         try{
             emptyData = await Team.generateEmptyData(args.squad, ctx.data.group_id);
         }catch(e) {
@@ -190,6 +187,37 @@ module.exports = class TeamHandler {
         team.data = JSON.stringify(cells);
         await team.save();
         return `取消报名成功，可以使用/team view id/name 查看团队`;
+    }
+
+    async view(ctx) {
+        let args = ctx.args;
+        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        let team = await Team.findOne({
+            where: {
+                id: args.id,
+                group_id: ctx.data.group_id
+            }
+        });
+        if(team == null) {
+            return '错误：该团队不存在，请使用/team list查看本群团队';
+        }
+        let cells = JSON.parse(team.data);
+        for(let i in cells) {
+            if(cells[i].xf != null) {
+                let xf = cells[i].xf;
+                xf = allxfid[`${xf}`];
+                cells[i].color = allxf[xf]['color'];
+            }
+        }
+        let image = await Image.generateFromTemplateFile('team', {
+            team_id: team.id,
+            team_name: team.name,
+            create_time: team.created_at,
+            remarks: team.remarks,
+            cells: cells,
+            
+        });
+        return `${Cq.ImageCQCode(image)}`;
     }
 
     static argsList(ctx) {

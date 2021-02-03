@@ -1,0 +1,113 @@
+<style>
+    body{
+        padding: 0;
+        outline: 0;
+        font-family: consolas;
+    }
+    #table{
+        width: 800;
+        height: 600;
+        padding: 16px 24px;
+    }
+    #title{
+        height: 80px;
+        display: flex;
+    }
+    #title #left{
+        display: inline-block;
+        height: 100%;
+        width: 60%;
+    }
+    #title #left h2{
+        margin-top: 0;
+        margin-bottom: .75rem;
+    }
+    #title #left p{
+        text-align: right;
+        padding-right: 1.75rem;
+    }
+    #title #right{
+        vertical-align: top;
+        display: inline-block;
+        height: 100%;
+        width: 39%;
+    }
+    #team{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        height: 488px;
+        width: 752px;
+    }
+    .cell{
+        width: 150px;
+        height: 95px;
+        border: 1px solid gray;
+    }
+    .cell p:first-of-type{
+        padding-left: 0.75rem;
+        padding-top: 0.3rem;
+        margin: 0;
+    }
+    .cell p:first-of-type span:last-of-type{
+        padding-right: 0.75rem;
+        float: right;
+    }
+    .cell p:first-of-type span:last-of-type img{
+        width: 24px;
+        height: 24px;
+    }
+    .cell p:nth-of-type(2){
+        padding-left: 0.75rem;
+        padding-top: 0.3rem;
+        margin: 0;
+    }
+    .cell p:nth-of-type(3){
+        padding-left: 0.16rem;
+        padding-top: 0.26rem;
+        margin: 0;
+    }
+    .cell p:nth-of-type(3) img{
+        width: 18px;
+        height: 18px;
+    }
+</style>
+<div id="table">
+    <div id="title">
+        <div id="left">
+            <h2 id="name">({{ team_id }}){{ team_name }}<!-- 25人英雄范阳夜变 --></h2>
+            <p><span style="font-weight: bold;">{{ create_time }}<!-- 2021-02-01 10:56:42 --></span></p>
+        </div>
+        <div id="right">
+            {{ remarks }}<!-- 备注：这里写备注！！！ -->
+        </div>
+    </div>
+    <div id="team">
+        {{each cells}}
+            <div class="cell" style="background-color: {{ $value.color }}AA;">
+                <p>
+                    <span>{{$value.applicant.id}}<!-- 秀秀不咕 --></span>
+                    <span><img src="https://img.jx3box.com/image/xf/{{ $value.xf }}.png" alt="{{ $value.xf }}"></span>
+                </p>
+                <p>{{$value.applicant.qq}}<!-- 3303928580 --></p>
+                <p>
+                    {{include 'xfs' $value}}
+                </p>
+            </div>
+        {{/each}}
+        <script id="xfs" type="text/html">
+            {{each xf_optional}}
+                <img src="https://img.jx3box.com/image/xf/{{ $value }}.png" alt="{{ $value }}">
+            {{/each}}
+        </script>
+        <!-- <div class="cell" style="background-color: #FF7DADaa;">
+            <p>
+                <span>秀秀不咕</span>
+                <span><img src="https://img.jx3box.com/image/xf/10081.png" alt="冰心"></span>
+            </p>
+            <p>3303928580</p>
+            <p><img src="https://img.jx3box.com/image/xf/10081.png" alt="冰心"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"></p>
+        </div> -->
+    </div>
+</div>
