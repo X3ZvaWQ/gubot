@@ -77,7 +77,7 @@ class Bot{
                     }
                 }
                 if(arg.limit instanceof Object && arg.type == 'string'){
-                    if(value.length < arg.limit.min || value.length > arg.limit.max){
+                    if(typeof value == 'string' && (value.length < arg.limit.min || value.length > arg.limit.max)){
                         throw `Error: ${arg.name} 参数长度不符合规范，请使用/help命令查看命令用法`;
                     }
                 }
