@@ -37,10 +37,12 @@ class Team extends Model {
                 if(xf == 'us'){
                     limit.us = true;
                     limit.usid = i;
+                    continue;
                 }
                 if(xf == 'ux'){
                     limit.ux = true;
                     limit.uxid = i;
+                    continue;
                 }
                 if(xf == 'boss'){
                     limit.boss = true;
