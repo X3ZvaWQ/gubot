@@ -76,9 +76,10 @@ class Bot{
                         throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
                     }
                 }
-                if(arg.limit instanceof Object && arg.type == 'string'){
-                    if(typeof value == 'string' && (value.length < arg.limit.min || value.length > arg.limit.max)){
-                        throw `Error: ${arg.name} 参数长度不符合规范，请使用/help命令查看命令用法`;
+                if(arg.limit && arg.limit.min != undefined && arg.limit.max != undefined && arg.type == 'string'){
+                    console.log(arg.limit, value, value.length);
+                    if(typeof value != 'string' || value.length < arg.limit.min || value.length > arg.limit.max){
+                        throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
                     }
                 }
                 return value;

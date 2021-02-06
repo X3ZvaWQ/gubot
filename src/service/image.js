@@ -115,7 +115,10 @@ class Image {
         if(configs.evaluate) {
             page.evaluate(configs['evaluate']);
         }
-        let element = configs['selector'] ? await page.$(configs['selector']): page;
+        let element = configs['selector'] ? await page.$(configs['selector']) : page;
+        if(element == null) {
+            throw '错误：该成就暂时没有攻略'
+        }
         let imagename = `${process.cwd()}/storage/images/${uuid()}.png`;
         await element.screenshot({path: imagename});
         await page.close();
