@@ -4,14 +4,7 @@ const User = require('../model/user');
 class Bot{
     async handleCommand(data) {
         try{
-            let args;
-            let command;
-            try{
-                [args, command] = await this.parseArgs(data);
-            }catch(e) {
-                console.log(e);
-                return e;
-            }
+            let [args, command] = await this.parseArgs(data);
             let ctx = {
                 command: command,
                 args: args,
@@ -22,11 +15,15 @@ class Bot{
                     ctx['permission'] = this.permissionJudge(data);
                 }
                 let handler = new route.commands[command]();
-                return handler.handle(ctx);
+                return await handler.handle(ctx);
             }
         }catch(e) {
-            console.log(e.message);
-            return '机器人内部错误';
+            console.log(e);
+            if(typeof(e) == 'string') {
+                return e;
+            }else{
+                return '机器人内部错误';
+            }
         }
         
     }
@@ -69,25 +66,21 @@ class Bot{
                     value = await Alias.get(value, arg.alias, data.group_id);
                     if(value == _value) value = await Alias.get(value, arg.alias, '*');
                 }
-
                 if(arg.limit instanceof Object && arg.type == 'integer'){
                     if(value < arg.limit.min || value > arg.limit.max){
                         throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
                     }
                 }
-
                 if(arg.limit instanceof Array && arg.type == 'string'){
                     if(arg.limit.indexOf(value) == -1){
                         throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
                     }
                 }
-
                 if(arg.limit instanceof Object && arg.type == 'string'){
                     if(value.length < arg.limit.min || value.length > arg.limit.max){
                         throw `Error: ${arg.name} 参数长度不符合规范，请使用/help命令查看命令用法`;
                     }
                 }
-
                 return value;
             }
             if(route.commands[command] != undefined) {

@@ -1,12 +1,9 @@
 <style>
     body{
-        padding: 0;
-        outline: 0;
-        font-family: consolas;
+        width: 812px;
     }
     #table{
-        width: 800;
-        height: 600;
+        height: 560px;
         padding: 16px 24px;
     }
     #title{
@@ -49,9 +46,10 @@
         padding-left: 0.75rem;
         padding-top: 0.3rem;
         margin: 0;
+        font-size: 14px;
     }
     .cell p:first-of-type span:last-of-type{
-        padding-right: 0.75rem;
+        padding-right: 0.45rem;
         float: right;
     }
     .cell p:first-of-type span:last-of-type img{
@@ -62,6 +60,7 @@
         padding-left: 0.75rem;
         padding-top: 0.3rem;
         margin: 0;
+        font-size: 14px;
     }
     .cell p:nth-of-type(3){
         padding-left: 0.16rem;
@@ -69,38 +68,35 @@
         margin: 0;
     }
     .cell p:nth-of-type(3) img{
-        width: 18px;
-        height: 18px;
+        width: 10px;
+        height: 10px;
     }
 </style>
 <div id="table">
     <div id="title">
         <div id="left">
             <h2 id="name">({{ team_id }}){{ team_name }}<!-- 25人英雄范阳夜变 --></h2>
-            <p><span style="font-weight: bold;">{{ create_time }}<!-- 2021-02-01 10:56:42 --></span></p>
+            <p><span style="font-weight: bold;">{{ time }}<!-- 2021-02-01 10:56:42 --></span></p>
         </div>
         <div id="right">
             {{ remarks }}<!-- 备注：这里写备注！！！ -->
-        </div>
+        </div>  
     </div>
     <div id="team">
-        {{each cells}}
-            <div class="cell" style="background-color: {{ $value.color }}AA;">
+        <% for (var i = 0; i<cells.length; i++) { %>
+            <div class="cell" {{if cells[i].color}} style="background-color: {{ cells[i].color }};" {{/if}}>
                 <p>
-                    <span>{{$value.applicant.id}}<!-- 秀秀不咕 --></span>
-                    <span><img src="https://img.jx3box.com/image/xf/{{ $value.xf }}.png" alt="{{ $value.xf }}"></span>
+                    <span>({{cells[i].id}}){{if cells[i].applicant.id}}{{cells[i].applicant.id}}{{else}}&nbsp;{{/if}}<!-- 秀秀不咕 --></span>
+                    <span>{{if cells[i].xf}}<img src="https://img.jx3box.com/image/xf/{{ cells[i].xf }}.png" alt="{{ cells[i].xf }}">{{/if}}</span>
                 </p>
-                <p>{{$value.applicant.qq}}<!-- 3303928580 --></p>
+                <p>{{if cells[i].applicant.qq}}{{cells[i].applicant.qq}}{{else}}-{{/if}}<!-- 3303928580 --></p>
                 <p>
-                    {{include 'xfs' $value}}
+                    <% for(var j = 0; j < cells[i].xf_optional.length; j ++) { %>
+                        <img src="https://img.jx3box.com/image/xf/{{ cells[i].xf_optional[j] }}.png" alt="{{ cells[i].xf_optional[j] }}">
+                    <% } %>
                 </p>
             </div>
-        {{/each}}
-        <script id="xfs" type="text/html">
-            {{each xf_optional}}
-                <img src="https://img.jx3box.com/image/xf/{{ $value }}.png" alt="{{ $value }}">
-            {{/each}}
-        </script>
+        <% } %>
         <!-- <div class="cell" style="background-color: #FF7DADaa;">
             <p>
                 <span>秀秀不咕</span>

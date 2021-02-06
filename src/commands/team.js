@@ -38,12 +38,13 @@ module.exports = class TeamHandler {
         }catch(e) {
             throw e;
         }
-        team = await Team.create({
+        let team = await Team.create({
             group_id: ctx.data.group_id,
             name: args.name,
             squad: ctx.squad,
             data: JSON.stringify(emptyData),
-            time: args.time
+            time: args.time,
+            remarks: args.remark
         })
         return `成功：团队创建完毕,id为${team.id}，可以通过/team view id/name查看团队`;
     }
@@ -53,12 +54,25 @@ module.exports = class TeamHandler {
         let permission = ctx.permission;
         if(permission < 2) return '权限不足';
         if(!ctx.data.group_id) return '该命令仅限群内使用';
-        let team = await Team.findOne({
-            where: {
-                id: args.id,
-                group_id: ctx.data.group_id
+        let team;
+        if(args.team_id == '-') {
+            team = await Team.findAll({
+                where: {
+                    group_id: ctx.data.group_id
+                }
+            });
+            if(team.length > 1) {
+                return '错误：本群存在多个团队，请指定团队id'
             }
-        });
+            team = team[0];
+        }else{
+            team = await Team.findOne({
+                where: {
+                    id: args.team_id,
+                    group_id: ctx.data.group_id
+                }
+            });
+        }
         if(team == null) {
             return '错误：该团队不存在，请使用/team list查看本群团队';
         }
@@ -95,30 +109,47 @@ module.exports = class TeamHandler {
         let group_id = ctx.data.group_id;
         let team_id = args.team_id;
         let xf = args.xf;
-        let team = await Team.findOne({
-            where: {
-                id: team_id,
-                group_id: group_id
+        xf = allxf[xf].id;
+        if(xf == undefined){
+            return 'unknown xf!';
+        }
+        let team;
+        if(args.team_id == '-') {
+            team = await Team.findAll({
+                where: {
+                    group_id: group_id
+                }
+            });
+            if(team.length > 1) {
+                return '错误：本群存在多个团队，请指定团队id'
             }
-        });
+            team = team[0];
+        }else{
+            team = await Team.findOne({
+                where: {
+                    id: args.team_id,
+                    group_id: group_id
+                }
+            });
+        }
         if(team == null) {
             return `错误：本群不存在id为${team_id}的团队。`;
         }
         let cells = JSON.parse(team.data);
-        let cells_valid = cells.filter((x) => (x.xf_optionnal.indexOf(allxf[xf]['id']) != -1 && !x.applied));
+        let cells_valid = cells.filter((x) => (x.xf_optional.indexOf(xf) != -1 && !x.applied));
         if(cells_valid.length < 1) {
             return `错误：id为 ${team_id} 的团队没有 ${xf} 的坑位。`;
         }
         let success = false;
         for(let i in cells_valid) {
             let cell = cells_valid[i];
-            if(cell.uxid != false){
+            if(cell.uxid != -1){
                 const checkUxid = (samexfidcells, xf) => {
                     if(xf == 0) return false;
                     for(let i in samexfidcells) {
                         let cell = samexfidcells[i];
                         if(cell.xf == xf && cell.applied) {
-                            return true;
+                            return true;    
                         }
                     }
                 }
@@ -132,7 +163,6 @@ module.exports = class TeamHandler {
                         qq: ctx.data.sender.user_id,
                         id: args.game_id
                     };
-                    cells[cell.id] = cell;
                     success = true;
                     break;
                 }
@@ -143,7 +173,6 @@ module.exports = class TeamHandler {
                     qq: ctx.data.sender.user_id,
                     id: args.game_id
                 }
-                cells[cell.id] = cell;
                 success = true;
                 break;
             }
@@ -162,12 +191,25 @@ module.exports = class TeamHandler {
         if(!ctx.data.group_id) return '该命令仅限群内使用';
         let group_id = ctx.data.group_id;
         let team_id = args.team_id;
-        let team = await Team.findOne({
-            where: {
-                id: team_id,
-                group_id: group_id
+        let team;
+        if(args.team_id == '-') {
+            team = await Team.findAll({
+                where: {
+                    group_id: group_id
+                }
+            });
+            if(team.length > 1) {
+                return '错误：本群存在多个团队，请指定团队id'
             }
-        });
+            team = team[0];
+        }else{
+            team = await Team.findOne({
+                where: {
+                    id: args.team_id,
+                    group_id: group_id
+                }
+            });
+        }
         if(team == null) {
             return `错误：本群不存在id为${team_id}的团队。`;
         }
@@ -192,12 +234,27 @@ module.exports = class TeamHandler {
     async view(ctx) {
         let args = ctx.args;
         if(!ctx.data.group_id) return '该命令仅限群内使用';
-        let team = await Team.findOne({
-            where: {
-                id: args.id,
-                group_id: ctx.data.group_id
+        let group_id = ctx.data.group_id;
+        let team;
+        if(args.team_id == '-') {
+            team = await Team.findAll({
+                where: {
+
+                    group_id: group_id
+                }
+            });
+            if(team.length > 1) {
+                return '错误：本群存在多个团队，请指定团队id'
             }
-        });
+            team = team[0];
+        }else{
+            team = await Team.findOne({
+                where: {
+                    id: args.team_id,
+                    group_id: group_id
+                }
+            });
+        }
         if(team == null) {
             return '错误：该团队不存在，请使用/team list查看本群团队';
         }
@@ -212,12 +269,11 @@ module.exports = class TeamHandler {
         let image = await Image.generateFromTemplateFile('team', {
             team_id: team.id,
             team_name: team.name,
-            create_time: team.created_at,
+            time: team.time,
             remarks: team.remarks,
             cells: cells,
-            
         });
-        return `${Cq.ImageCQCode(image)}`;
+        return `${Cq.ImageCQCode('file://'+image)}`;
     }
 
     static argsList(ctx) {
@@ -279,15 +335,15 @@ module.exports = class TeamHandler {
                 ],
                 delete: [
                     {
-                        name: 'id',
+                        name: 'team_id',
                         alias: 'server',
-                        type: 'string',
+                        type: 'integer',
                         defaultIndex: 2,
                         shortArgs: null,
                         longArgs: 'server',
                         limit: null,
                         nullable: true,
-                        default: '唯我独尊'
+                        default: '-'
                     }
                 ],
                 list: [],
@@ -301,7 +357,7 @@ module.exports = class TeamHandler {
                         longArgs: 'team_id',
                         limit: null,
                         nullable: true,
-                        default: 1
+                        default: '-'
                     }
                 ],
                 apply: [
@@ -339,7 +395,7 @@ module.exports = class TeamHandler {
                         longArgs: 'team_id',
                         limit: null,
                         nullable: true,
-                        default: 1
+                        default: '-'
                     }
                 ],
                 cancel: [
@@ -352,7 +408,7 @@ module.exports = class TeamHandler {
                         longArgs: 'team_id',
                         limit: null,
                         nullable: true,
-                        default: 1
+                        default: '-'
                     }
                 ]
             }

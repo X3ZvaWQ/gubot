@@ -131,8 +131,8 @@ class Team extends Model {
             }
         }
         result.sort((a,b) => a.xf_optional.length - b.xf_optional.length)
-        for(let i = 1; i < result.length; i++) {
-            result[i].id = i;
+        for(let i = 0; i < result.length; i++) {
+            result[i].id = i+1;
         }
         return result;
     }
@@ -149,7 +149,7 @@ Team.init({
         type: DataTypes.STRING,
     },
     data: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
     },
     remarks: {
         type: DataTypes.STRING,
