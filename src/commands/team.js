@@ -320,7 +320,7 @@ module.exports = class TeamHandler {
                         longArgs: 'squad',
                         limit: null,
                         nullable: true,
-                        default: '2T4H!US9N9W1D'
+                        default: '2T4H19D'
                     }, {
                         name: 'remark',
                         alias: null,
