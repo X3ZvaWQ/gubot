@@ -1,5 +1,6 @@
 const Alias = require("../model/alias");
 const User = require('../model/user');
+const yargs_parser = require('yargs-parser');
 
 class Bot{
     async handleCommand(data) {
@@ -39,16 +40,18 @@ class Bot{
 
     async parseArgs(data) {
         if(data.post_type == 'message' && data.message.split('')[0] == '/'){
-            let [_command, defaultArgs, shortArgs, longArgs] = helper.commandParse(data.message);
+            let allArgs = yargs_parser(data.message);
+            let defaultArgs = allArgs['_'];
+            let _command = defaultArgs.shift();
             let command = await Alias.get(_command, 'command', data.group_id);
             if(command == _command) command = await Alias.get(command, 'command');
-            const getArg = async (arg, defaultArgs, shortArgs, longArgs, data) => {
+            const getArg = async (arg, defaultArgs, allArgs, data) => {
                 let value = undefined;
-                if(shortArgs != null && shortArgs[arg.shortArgs] != undefined) {
-                    value = shortArgs[arg.shortArgs];
+                if(shortArgs != null && allArgs[arg.shortArgs] != undefined) {
+                    value = allArgs[arg.shortArgs];
                 }
-                if(longArgs != null && longArgs[arg.longArgs] != undefined) {
-                    value = longArgs[arg.longArgs];
+                if(longArgs != null && allArgs[arg.longArgs] != undefined) {
+                    value = allArgs[arg.longArgs];
                 }
                 if(value == undefined) {
                     value = defaultArgs[arg.defaultIndex - 1];
@@ -91,7 +94,7 @@ class Bot{
                 if(argsList instanceof Array) {
                     try{
                         for(let i in argsList) {
-                            let value = await getArg(argsList[i], defaultArgs, shortArgs, longArgs, data);
+                            let value = await getArg(argsList[i], defaultArgs, allArgs, data);
                             args[argsList[i].name] = value;
                         }
                     }catch(e) {
@@ -99,11 +102,11 @@ class Bot{
                     }
                 }else if(argsList instanceof Object){
                     try{
-                        let action = await getArg(argsList.action, defaultArgs, shortArgs, longArgs, data);
+                        let action = await getArg(argsList.action, defaultArgs, allArgs, data);
                         args[argsList.action.name] = action;
                         let branchArgsList = argsList.branch[action];
                         for(let i in branchArgsList) {
-                            let value = await getArg(branchArgsList[i], defaultArgs, shortArgs, longArgs, data);
+                            let value = await getArg(branchArgsList[i], defaultArgs, allArgs, data);
                             args[branchArgsList[i].name] = value;
                         }
                     }catch(e) {
@@ -112,7 +115,7 @@ class Bot{
                 }
                 return [args, command];
             }else{
-                return null;
+                return [null, null];
             }
         }
     }
