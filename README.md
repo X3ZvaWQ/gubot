@@ -1,6 +1,7 @@
 # Gubot
 咕！ bot，一个开源免费的用于提供剑网三相关功能的一个QQ群机器人。
 A qq group robot is used to provide some jx3-related functional support
+## 注意，机器人通过响应来自go-cqhttp的请求来实现自动回复消息等，该仓库可以通过github搜索找到（
 
 # Quick Start  
 首先，你需要安装依赖，本项目使用纯node实现，同时使用了mysql，只需要保证运行的机器有node环境与mysql即可。  
