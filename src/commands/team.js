@@ -110,7 +110,7 @@ module.exports = class TeamHandler {
         let group_id = ctx.data.group_id;
         let team_id = args.team_id;
         let _xf = args.xf;
-        xf = allxf[_xf];
+        let xf = allxf[_xf];
         if(xf == undefined){
             return `错误：未知的心法 ${_xf} !`;
         }
