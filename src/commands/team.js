@@ -109,10 +109,10 @@ module.exports = class TeamHandler {
         if(!ctx.data.group_id) return '该命令仅限群内使用';
         let group_id = ctx.data.group_id;
         let team_id = args.team_id;
-        let xf = args.xf;
-        xf = allxf[xf];
+        let _xf = args.xf;
+        xf = allxf[_xf];
         if(xf == undefined){
-            return 'unknown xf!';
+            return `错误：未知的心法 ${_xf} !`;
         }
         xf = xf.id;
         let team;
@@ -220,14 +220,31 @@ module.exports = class TeamHandler {
         if(cell.length < 1) {
             return `错误：你没有报名id为 ${team_id} 的团队。`;
         }
-        cell = cell[0];
-        cell.xf = null;
-        cell.applied = false,
-        cell.applicant = {
-            qq: null,
-            id: null
+        if(args.game_id == '-') {
+            for(let i in cell) {
+                cell[i].xf = null;
+                cell[i].applied = false,
+                cell[i].applicant = {
+                    qq: null,
+                    id: null
+                }
+                cells[cell[i].id] = cell[i];
+            }
+        }else{
+            cell = cell.filter((c) => {return c.applicant.id == args.game_id});
+            if(cell.length > 0) {
+                cell = cell[0];
+                cell.xf = null;
+                cell.applied = false,
+                cell.applicant = {
+                    qq: null,
+                    id: null
+                }
+                cells[cell.id] = cell;
+            }else{
+                return `错误：你并没有报名游戏id为 ${args.game_id} 的角色`;
+            }
         }
-        cells[cell.id] = cell;
         team.data = JSON.stringify(cells);
         await team.save();
         return `取消报名成功，可以使用/team view id/name 查看团队`;
@@ -397,6 +414,16 @@ module.exports = class TeamHandler {
                         type: 'integer',
                         defaultIndex: 2,
                         longArgs: 'team_id',
+                        limit: null,
+                        nullable: true,
+                        default: '-'
+                    },
+                    {
+                        name: 'game_id',
+                        alias: null,
+                        type: 'string',
+                        defaultIndex: 3,
+                        longArgs: 'game_id',
                         limit: null,
                         nullable: true,
                         default: '-'
