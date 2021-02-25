@@ -410,21 +410,21 @@ module.exports = class TeamHandler {
                 ],
                 cancel: [
                     {
-                        name: 'team_id',
+                        name: 'game_id',
                         alias: null,
-                        type: 'integer',
+                        type: 'string',
                         defaultIndex: 2,
-                        longArgs: 'team_id',
+                        longArgs: 'game_id',
                         limit: null,
                         nullable: true,
                         default: '-'
                     },
                     {
-                        name: 'game_id',
+                        name: 'team_id',
                         alias: null,
-                        type: 'string',
+                        type: 'integer',
                         defaultIndex: 3,
-                        longArgs: 'game_id',
+                        longArgs: 'team_id',
                         limit: null,
                         nullable: true,
                         default: '-'
