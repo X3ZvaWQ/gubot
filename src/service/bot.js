@@ -5,7 +5,7 @@ const yargs_parser = require('yargs-parser');
 class Bot{
     async handleCommand(data) {
         try{
-            let [args, command] = await this.parseArgs(data);
+            let [args, command] = await this.parseArgs(data) ?? [];
             let ctx = {
                 command: command,
                 args: args,
@@ -30,8 +30,35 @@ class Bot{
     }
 
     async handleMessage(data) {
-        let group = data.group_id ? [data.group_id, '*'] : ['*'];
-        
+        let alias = {
+            花价: '/flowerPrice',
+            科举: '/exam',
+            金价: '/goldPrice',
+            开服: '/serverStatus',
+            攻略: '/achievement',
+            更新: '/gameUpdate',
+            宏: '/macro',
+            奇遇: '/serendipity',
+            沙盘: '/sandbox',
+            创建团队: '/team create',
+            删除团队: '/team delete',
+            团队列表: '/team list',
+            查看团队: '/team view',
+            取消报名: '/team cancel',
+            团队报名: '/team apply',
+            群昵称: '/group nickname',
+            群服务器: '/group server',
+            添加别名: '/alias add',
+            删除别名: '/alias delete',
+            帮助: '/help'
+        };
+        let message = data.message;
+        for(let i in alias) {
+            if(message.indexOf(i) === 0) {
+                data.message = message.replace(i, alias[i]);
+                return await this.handleCommand(data);
+            }
+        }
         return null;
     }
 
@@ -108,8 +135,6 @@ class Bot{
                     }
                 }
                 return [args, command];
-            }else{
-                return [null, null];
             }
         }
     }
