@@ -83,6 +83,19 @@ if(ENV.use_http_post) {
                     }
                 }else if(data.request_type == 'group' && data.sub_type == 'invite') {
                     if(ENV.agree_group_invite) {
+                        const Group = require('./model/group');
+                        let group = await Group.findOne({
+                            where: {
+                                group_id: data.group_id
+                            }
+                        });
+                        if(group != null) {
+                            group = await Group.create({
+                                group_id: data.group_id,
+                                nickname: data.group_id,
+                                server: '唯我独尊'
+                            });
+                        }
                         ctx.response.type = 'application/json',
                         ctx.response.body = JSON.stringify({
                             approve: true
@@ -150,11 +163,24 @@ if(ENV.use_websocket) {
                 }
             }else if(data.request_type == 'group' && data.sub_type == 'invite') {
                 if(ENV.agree_group_invite) {
+                    const Group = require('./model/group');
+                    let group = await Group.findOne({
+                        where: {
+                            group_id: data.group_id
+                        }
+                    });
+                    if(group != null) {
+                        group = await Group.create({
+                            group_id: data.group_id,
+                            nickname: data.group_id,
+                            server: '唯我独尊'
+                        });
+                    }
                     wsApi.send(JSON.stringify({
                         action: "set_group_add_request",
                         params: {
                             flag: data.flag,
-                            sub_type: invite,
+                            sub_type: 'invite',
                             approve: true
                         }
                     }));

@@ -33,11 +33,7 @@ class Bot{
         //TODO
         return null;
     }
-
-    async handleRequest(data) {
-        
-    }
-
+    
     async parseArgs(data) {
         if(data.post_type == 'message' && data.message.split('')[0] == '/'){
             let allArgs = yargs_parser(data.message);
