@@ -2,6 +2,7 @@ const Team = require('../model/team');
 const Group = require('../model/group');
 const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
 const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json');
+const allschool = require('@jx3box/jx3box-data/data/xf//school.json')
 const Image = require('../service/image');
 const Cq = require('../service/cqhttp');
 
@@ -109,10 +110,11 @@ module.exports = class TeamHandler {
         let group_id = ctx.data.group_id;
         let team_id = args.team_id;
         let xf = args.xf;
-        xf = allxf[xf].id;
+        xf = allxf[xf];
         if(xf == undefined){
             return 'unknown xf!';
         }
+        xf = xf.id;
         let team;
         if(args.team_id == '-') {
             team = await Team.findAll({
@@ -263,7 +265,7 @@ module.exports = class TeamHandler {
             if(cells[i].xf != null) {
                 let xf = cells[i].xf;
                 xf = allxfid[`${xf}`];
-                cells[i].color = allxf[xf]['color'];
+                cells[i].color = allschool.color[allxf[xf]['school']];
             }
         }
         let image = await Image.generateFromTemplateFile('team', {
@@ -324,7 +326,7 @@ module.exports = class TeamHandler {
                         defaultIndex: 5,
                         longArgs: 'remark',
                         limit: null,
-                        nullable: false,
+                        nullable: true,
                         default: false
                     }
                 ],

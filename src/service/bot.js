@@ -30,12 +30,9 @@ class Bot{
     }
 
     async handleMessage(data) {
-        //TODO
-        return null;
-    }
-
-    async handleRequest(data) {
+        let group = data.group_id ? [data.group_id, '*'] : ['*'];
         
+        return null;
     }
 
     async parseArgs(data) {
