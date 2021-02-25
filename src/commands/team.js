@@ -233,14 +233,15 @@ module.exports = class TeamHandler {
         }else{
             cell = cell.filter((c) => {return c.applicant.id == args.game_id});
             if(cell.length > 0) {
-                cell = cell[0];
-                cell.xf = null;
-                cell.applied = false,
-                cell.applicant = {
-                    qq: null,
-                    id: null
+                for(let i in cell) {
+                    cell[i].xf = null;
+                    cell[i].applied = false,
+                    cell[i].applicant = {
+                        qq: null,
+                        id: null
+                    }
+                    cells[cell[i].id] = cell[i];
                 }
-                cells[cell.id] = cell;
             }else{
                 return `错误：你并没有报名游戏id为 ${args.game_id} 的角色`;
             }
