@@ -44,9 +44,9 @@
     }
     .cell p:first-of-type{
         padding-left: 0.75rem;
-        padding-top: 0.3rem;
+        padding-top: 0.45rem;
         margin: 0;
-        font-size: 14px;
+        font-size: 16px;
     }
     .cell p:first-of-type span:last-of-type{
         padding-right: 0.45rem;
@@ -58,18 +58,18 @@
     }
     .cell p:nth-of-type(2){
         padding-left: 0.75rem;
-        padding-top: 0.3rem;
+        padding-top: 0.45rem;
         margin: 0;
-        font-size: 14px;
+        font-size: 16px;
     }
     .cell p:nth-of-type(3){
-        padding-left: 0.16rem;
-        padding-top: 0.26rem;
-        margin: 0;
+        padding-left: 0.32rem;
+        padding-top: 0.2rem;
+        margin:0;
     }
     .cell p:nth-of-type(3) img{
-        width: 10px;
-        height: 10px;
+        width: 16px;
+        height: 16px;
     }
 </style>
 <div id="table">
@@ -92,7 +92,9 @@
                 <p>{{if cells[i].applicant.qq}}{{cells[i].applicant.qq}}{{else}}-{{/if}}<!-- 3303928580 --></p>
                 <p>
                     <% for(var j = 0; j < cells[i].xf_optional.length; j ++) { %>
+                        {{if j < 14}}
                         <img src="https://img.jx3box.com/image/xf/{{ cells[i].xf_optional[j] }}.png" alt="{{ cells[i].xf_optional[j] }}">
+                        {{/if}}
                     <% } %>
                 </p>
             </div>

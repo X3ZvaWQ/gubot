@@ -42,15 +42,12 @@ class Bot{
         if(data.post_type == 'message' && data.message.split('')[0] == '/'){
             let allArgs = yargs_parser(data.message);
             let defaultArgs = allArgs['_'];
-            let _command = defaultArgs.shift();
+            let _command = defaultArgs.shift().substr(1);
             let command = await Alias.get(_command, 'command', data.group_id);
             if(command == _command) command = await Alias.get(command, 'command');
             const getArg = async (arg, defaultArgs, allArgs, data) => {
                 let value = undefined;
-                if(shortArgs != null && allArgs[arg.shortArgs] != undefined) {
-                    value = allArgs[arg.shortArgs];
-                }
-                if(longArgs != null && allArgs[arg.longArgs] != undefined) {
+                if(allArgs != null && allArgs[arg.longArgs] != undefined) {
                     value = allArgs[arg.longArgs];
                 }
                 if(value == undefined) {

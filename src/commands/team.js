@@ -215,7 +215,7 @@ module.exports = class TeamHandler {
         }
         let cells = JSON.parse(team.data);
         let cell = cells.filter((x) => (x.applied && x.applicant.qq == ctx.data.sender.user_id));
-        if(cells_valid.length < 1) {
+        if(cell.length < 1) {
             return `错误：你没有报名id为 ${team_id} 的团队。`;
         }
         cell = cell[0];
@@ -283,7 +283,6 @@ module.exports = class TeamHandler {
                 alias: 'team_action',
                 type: 'string',
                 defaultIndex: 1,
-                shortArgs: null,
                 longArgs: 'action',
                 limit: ['create', 'delete', 'list', 'view', 'apply', 'cancel'/* , 'set', 'subscribe' */],
                 nullable: true,
@@ -296,7 +295,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'string',
                         defaultIndex: 2,
-                        shortArgs: null,
                         longArgs: 'name',
                         limit: null,
                         nullable: false,
@@ -306,7 +304,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'string',
                         defaultIndex: 3,
-                        shortArgs: null,
                         longArgs: 'time',
                         limit: null,
                         nullable: false,
@@ -316,7 +313,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'string',
                         defaultIndex: 4,
-                        shortArgs: 'u',
                         longArgs: 'squad',
                         limit: null,
                         nullable: true,
@@ -326,7 +322,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'string',
                         defaultIndex: 5,
-                        shortArgs: 'u',
                         longArgs: 'remark',
                         limit: null,
                         nullable: false,
@@ -339,7 +334,6 @@ module.exports = class TeamHandler {
                         alias: 'server',
                         type: 'integer',
                         defaultIndex: 2,
-                        shortArgs: null,
                         longArgs: 'server',
                         limit: null,
                         nullable: true,
@@ -353,7 +347,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'integer',
                         defaultIndex: 2,
-                        shortArgs: null,
                         longArgs: 'team_id',
                         limit: null,
                         nullable: true,
@@ -366,7 +359,6 @@ module.exports = class TeamHandler {
                         alias: 'xf',
                         type: 'string',
                         defaultIndex: 2,
-                        shortArgs: null,
                         longArgs: 'xf',
                         limit: null,
                         nullable: false,
@@ -377,7 +369,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'string',
                         defaultIndex: 3,
-                        shortArgs: null,
                         longArgs: 'game_id',
                         limit: {
                             min: 2,
@@ -391,7 +382,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'integer',
                         defaultIndex: 4,
-                        shortArgs: null,
                         longArgs: 'team_id',
                         limit: null,
                         nullable: true,
@@ -404,7 +394,6 @@ module.exports = class TeamHandler {
                         alias: null,
                         type: 'integer',
                         defaultIndex: 2,
-                        shortArgs: null,
                         longArgs: 'team_id',
                         limit: null,
                         nullable: true,
