@@ -73,6 +73,22 @@ if(ENV.use_http_post) {
                         });
                     }
                 }
+            }else if(data.post_type == 'request') {
+                if(data.request_type == 'friend') {
+                    if(ENV.agree_friend_invite) {
+                        ctx.response.type = 'application/json',
+                        ctx.response.body = JSON.stringify({
+                            approve: true
+                        });
+                    }
+                }else if(data.request_type == 'group' && data.sub_type == 'invite') {
+                    if(ENV.agree_group_invite) {
+                        ctx.response.type = 'application/json',
+                        ctx.response.body = JSON.stringify({
+                            approve: true
+                        });
+                    }
+                }
             }
         }
     });
@@ -122,9 +138,28 @@ if(ENV.use_websocket) {
                 }
             }
         }else if(data.post_type == 'request'){
-
-        }else if(data.post_type == 'notice'){
-
+            if(data.request_type == 'friend') {
+                if(ENV.agree_friend_invite) {
+                    wsApi.send(JSON.stringify({
+                        action: "set_friend_add_request",
+                        params: {
+                            flag: data.flag,
+                            approve: true
+                        }
+                    }));
+                }
+            }else if(data.request_type == 'group' && data.sub_type == 'invite') {
+                if(ENV.agree_group_invite) {
+                    wsApi.send(JSON.stringify({
+                        action: "set_group_add_request",
+                        params: {
+                            flag: data.flag,
+                            sub_type: invite,
+                            approve: true
+                        }
+                    }));
+                }
+            }
         }
     });
     websocketClient = {
