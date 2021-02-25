@@ -345,7 +345,7 @@ module.exports = class TeamHandler {
                         longArgs: 'remark',
                         limit: null,
                         nullable: true,
-                        default: false
+                        default: ''
                     }
                 ],
                 delete: [
