@@ -439,6 +439,6 @@ module.exports = class TeamHandler {
     }
 
     static helpText() {
-        return `团队命令，说明有空再写Orz`.replace(/[ ]{2,}/g, "");
+        return `团队命令，说明有空再写Orz, 需要可以看/help`.replace(/[ ]{2,}/g, "");
     }
 }
