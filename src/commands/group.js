@@ -134,7 +134,7 @@ module.exports = class GroupHandler {
                 server: [{
                     name: 'server',
                     alias: 'server',
-                    type: 'string',
+                    type: 'server',
                     defaultIndex: 2,
                     shortArgs: null,
                     longArgs: 'server',

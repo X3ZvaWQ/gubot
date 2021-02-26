@@ -93,13 +93,13 @@ module.exports = class SerendipityHandler {
             }, {
                 name: 'server',
                 alias: 'server',
-                type: 'string',
+                type: 'server',
                 defaultIndex: 3,
                 shortArgs: null,
                 longArgs: 'map',
                 limit: null,
                 nullable: true,
-                default: '唯我独尊'
+                default: '-'
             }
         ];
     }

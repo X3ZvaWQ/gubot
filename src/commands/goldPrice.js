@@ -47,13 +47,13 @@ module.exports = class GoldPriceHandler {
             {
                 name: 'server',
                 alias: 'server',
-                type: 'string',
+                type: 'server',
                 defaultIndex: 1,
                 shortArgs: null,
                 longArgs: 'server',
                 limit: null,
                 nullable: true,
-                default: '唯我独尊'
+                default: '-'
             }, {
                 name: 'update',
                 alias: null,

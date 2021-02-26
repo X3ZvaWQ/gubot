@@ -1,5 +1,6 @@
 const Alias = require("../model/alias");
 const User = require('../model/user');
+const Group = require('../model/group');
 const yargs_parser = require('yargs-parser');
 
 class Bot{
@@ -84,7 +85,20 @@ class Bot{
                         throw `Error: ${arg.name} 参数缺失，请使用/help命令查看命令用法`;
                     }
                 }
-
+                if(arg.type = 'server' && value == '-'){
+                    if(data.group_id) {
+                        let group = await Group.findOne({
+                            where: {
+                                group_id: data.group_id
+                            }
+                        });
+                        if(group != null) {
+                            value = group.server;
+                        }else{
+                            return '唯我独尊'
+                        }
+                    }
+                }
                 if(arg.alias != null && value != null) {
                     let _value = value;
                     value = await Alias.get(value, arg.alias, data.group_id);
