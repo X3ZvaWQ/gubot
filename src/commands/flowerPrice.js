@@ -1,6 +1,5 @@
 const Api = require('../service/api');
 
-const moment = require('moment');
 module.exports = class FlowerPriceHandler {
     async handle(ctx) {
         //get args from state
@@ -8,9 +7,9 @@ module.exports = class FlowerPriceHandler {
         let parms = {
             server: args.server,
             map: args.map,
-            type: args.type
+            type: args.flower
         }
-        let key = JSON.stringify('FlowerPrice:' + parms);
+        let key = JSON.stringify('FlowerPrice:' + JSON.stringify(parms));
         //get data from redis
         let flowerPrice = await redis.get(key);
         //check data is empty?
@@ -30,7 +29,7 @@ module.exports = class FlowerPriceHandler {
         let price = flowerPrice;
         for (let i in price) {
             let lines = price[i].branch.map((x) => x.number);
-            text.push(`${price[i].server}·${price[i].species}·${price[i].map}
+            text.push(`${price[i].server}·${price[i].name}·${price[i].map}
             线路：${lines.join(',')}
             日期：${price[i].date}`);
         }

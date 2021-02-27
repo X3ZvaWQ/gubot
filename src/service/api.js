@@ -7,6 +7,7 @@ class Api{
         let result = await axios.get('https://spider.jx3box.com/flower',{
             params: params
         });
+        console.log(params);
         return result.data;
     }
     
