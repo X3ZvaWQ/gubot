@@ -4,10 +4,10 @@ const {JSDOM} = require("jsdom");
 
 class Api{
     static async getFlowerPriceFromSpider(params) {
-        let result = await axios.get('https://next.jx3box.com/api/flower/price/rank',{
+        let result = await axios.get('https://spider.jx3box.com/flower',{
             params: params
         });
-        return result;
+        return result.data;
     }
     
     static async getExamAnswer(key) {

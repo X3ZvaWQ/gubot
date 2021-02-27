@@ -5,14 +5,19 @@ module.exports = class FlowerPriceHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        let key = JSON.stringify('FlowerPrice:' + args);
+        let parms = {
+            server: args.server,
+            map: args.map,
+            type: args.type
+        }
+        let key = JSON.stringify('FlowerPrice:' + parms);
         //get data from redis
         let flowerPrice = await redis.get(key);
         //check data is empty?
         if (flowerPrice != undefined && flowerPrice != null && !args['update']) {
             flowerPrice = JSON.parse(flowerPrice);
         } else {
-            let response = await Api.getFlowerPriceFromSpider(args);
+            let response = await Api.getFlowerPriceFromSpider(parms);
             if (JSON.stringify(response.data) == '{}') {
                 return 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }
@@ -24,10 +29,10 @@ module.exports = class FlowerPriceHandler {
         let text = [];
         let price = flowerPrice;
         for (let i in price) {
-            let lines = price[i]['maxLine'].slice(0, 3).join(',');
-            text.push(`${args.server}·${i}·${args.map}
-            线路：${lines}
-            日期：${moment().format('YYYY-MM-DD')}`);
+            let lines = price[i].branch.map((x) => x.number);
+            text.push(`${price[i].server}·${price[i].species}·${price[i].map}
+            线路：${lines.join(',')}
+            日期：${price[i].date}`);
         }
         return (text.join('\n—————————\n') + `\n数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");
     }

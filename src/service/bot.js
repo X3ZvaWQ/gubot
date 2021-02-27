@@ -95,10 +95,13 @@ class Bot{
                         if(group != null) {
                             value = group.server;
                         }else{
-                            return '唯我独尊'
+                            value = '唯我独尊'
                         }
+                    }else{
+                        value = '唯我独尊'
                     }
                 }
+                
                 if(arg.alias != null && value != null) {
                     let _value = value;
                     value = await Alias.get(value, arg.alias, data.group_id);
@@ -106,18 +109,18 @@ class Bot{
                 }
                 if(arg.limit instanceof Object && arg.type == 'integer'){
                     if(value < arg.limit.min || value > arg.limit.max){
-                        throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
+                        throw `Error: ${arg.name} 参数不符合规范，请使用/help 命令查看命令用法`;
                     }
                 }
                 if(arg.limit instanceof Array && arg.type == 'string'){
                     if(arg.limit.indexOf(value) == -1){
-                        throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
+                        throw `Error: ${arg.name} 参数不符合规范，请使用/help 命令查看命令用法`;
                     }
                 }
                 if(arg.limit && arg.limit.min != undefined && arg.limit.max != undefined && arg.type == 'string'){
                     console.log(arg.limit, value, value.length);
                     if(typeof value != 'string' || value.length < arg.limit.min || value.length > arg.limit.max){
-                        throw `Error: ${arg.name} 参数不符合规范，请使用/help命令查看命令用法`;
+                        throw `Error: ${arg.name} 参数不符合规范，请使用/help 命令查看命令用法`;
                     }
                 }
                 return value;
