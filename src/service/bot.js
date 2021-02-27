@@ -34,7 +34,19 @@ class Bot{
         if(data.group_id) {
             let redis_key = `GroupConvenient:${data.group_id}`;
             let boolean = await redis.get(redis_key);
-            if(boolean !== null & !boolean) {
+            if(boolean == null){
+                let group = await Group.findOne({
+                    where: {
+                        group_id: data.group_id
+                    }
+                });
+                if(group != null) {
+                    boolean = `${group.convenient}`
+                    await redis.set(redis_key, boolean);
+                }
+            };
+            console.log(boolean);
+            if(boolean == 'false') {
                 return null
             }
         }
@@ -56,6 +68,7 @@ class Bot{
             团队报名: '/team apply',
             群昵称: '/group nickname',
             群服务器: '/group server',
+            简便命令: '/group convenient',
             添加别名: '/alias add',
             删除别名: '/alias delete',
             帮助: '/help'
