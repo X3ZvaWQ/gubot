@@ -31,6 +31,13 @@ class Bot{
     }
 
     async handleMessage(data) {
+        if(data.group_id) {
+            let redis_key = `GroupConvenient:${data.group_id}`;
+            let boolean = await redis.get(redis_key);
+            if(boolean !== null & !boolean) {
+                return null
+            }
+        }
         let alias = {
             花价: '/flowerPrice',
             科举: '/exam',
@@ -101,7 +108,7 @@ class Bot{
                         value = '唯我独尊'
                     }
                 }
-                
+
                 if(arg.alias != null && value != null) {
                     let _value = value;
                     value = await Alias.get(value, arg.alias, data.group_id);

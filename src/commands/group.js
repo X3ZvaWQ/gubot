@@ -14,6 +14,8 @@ module.exports = class GroupHandler {
             return await this.server(ctx);
         } else if (action == 'nickname') {
             return await this.nickname(ctx);
+        } else if(action == 'convenient') {
+            return await this.convenient(ctx);
         }
     }
 
@@ -38,6 +40,7 @@ module.exports = class GroupHandler {
                 result = `------咕Bot·本群配置------
                 群称呼：${group.nickname}
                 群默认服务器：${group.server}
+                便捷命令开关：${group.convenient}
                 机器人入群时间：${moment(group.created_at).format('YYYY-MM-DD hh:mm:ss')}
                 `
                 await redis.set(redis_key, result);
@@ -98,8 +101,8 @@ module.exports = class GroupHandler {
                 if (group == null) {
                     group = await Group.create({
                         group_id: group_id,
-                        server: server,
-                        nickname: group_id
+                        server: '唯我独尊',
+                        nickname: nickname,
                     });
                 } else {
                     group.nickname = nickname;
@@ -108,6 +111,44 @@ module.exports = class GroupHandler {
                 let redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
                 return '本群称呼已被修改为：' + nickname;
+            } else {
+                return this.info(ctx);
+            }
+        } else if (ctx.data.message_type == 'private') {
+            return '本命令仅限群内使用';
+        }
+    }
+
+    async convenient(ctx) {
+        let swi = ctx.args.swi;
+        if (ctx.data.message_type == 'group') {
+            if (swi != null && swi != undefined) {
+                if (ctx.permissions < 4) {
+                    return '权限不足。'
+                }
+                let group_id = ctx.data.group_id;
+                let group = await Group.findOne({
+                    where: {
+                        group_id: group_id
+                    }
+                });
+                if (group == null) {
+                    group = await Group.create({
+                        group_id: group_id,
+                        server: '唯我独尊',
+                        nickname: group_id,
+                        convenient: swi=='true' ? true : false 
+                    });
+                } else {
+                    group.convenient = swi=='true' ? true : false;
+                    group.save();
+                }
+                let redis_key = `GroupConvenient:${group_id}`;
+                await redis.set(redis_key, 'true' ? true : false);
+                group.save();
+                let redis_key = `GroupInfo:${group_id}`;
+                await redis.del(redis_key);
+                return '本群简便命令开关已被修改为：' + swi;
             } else {
                 return this.info(ctx);
             }
@@ -125,7 +166,7 @@ module.exports = class GroupHandler {
                 defaultIndex: 1,
                 shortArgs: null,
                 longArgs: 'action',
-                limit: ['server', 'info', 'nickname'],
+                limit: ['server', 'info', 'nickname', 'convenient'],
                 nullable: true,
                 default: 'info'
             },
@@ -152,7 +193,18 @@ module.exports = class GroupHandler {
                     limit: null,
                     nullable: true,
                     default: null
-                }]
+                }],
+                convenient: [{
+                    name: 'switch',
+                    alias: null,
+                    type: 'boolean',
+                    defaultIndex: 2,
+                    shortArgs: null,
+                    longArgs: 'switch',
+                    limit: null,
+                    nullable: true,
+                    default: null
+                }],
             }
         };
     }

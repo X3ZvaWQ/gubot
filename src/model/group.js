@@ -16,8 +16,13 @@ Group.init({
         type: DataTypes.STRING,
     },
     server: {
-        type: DataTypes.STRING
-    }
+        type: DataTypes.STRING,
+        defaultValue: '唯我独尊'
+    },
+    convenient:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
 }, {
     sequelize,
     modelName: 'Group',
