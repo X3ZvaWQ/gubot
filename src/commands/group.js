@@ -196,7 +196,7 @@ module.exports = class GroupHandler {
                 }],
                 convenient: [{
                     name: 'switch',
-                    alias: null,
+                    alias: 'boolean',
                     type: 'boolean',
                     defaultIndex: 2,
                     shortArgs: null,
