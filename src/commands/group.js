@@ -14,7 +14,7 @@ module.exports = class GroupHandler {
             return await this.server(ctx);
         } else if (action == 'nickname') {
             return await this.nickname(ctx);
-        } else if(action == 'convenient') {
+        } else if (action == 'convenient') {
             return await this.convenient(ctx);
         }
     }
@@ -120,7 +120,7 @@ module.exports = class GroupHandler {
     }
 
     async convenient(ctx) {
-        let swi = ctx.args.swi;
+        let swi = ctx.args.switch;
         if (ctx.data.message_type == 'group') {
             if (swi != null && swi != undefined) {
                 if (ctx.permissions < 4) {
@@ -144,9 +144,8 @@ module.exports = class GroupHandler {
                     group.save();
                 }
                 let redis_key = `GroupConvenient:${group_id}`;
-                await redis.set(redis_key, 'true' ? true : false);
-                group.save();
-                let redis_key = `GroupInfo:${group_id}`;
+                await redis.set(redis_key, swi=='true'? true : false);
+                redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
                 return '本群简便命令开关已被修改为：' + swi;
             } else {
