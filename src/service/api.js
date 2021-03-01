@@ -220,6 +220,22 @@ class Api{
         let data = response.data;
         return data;
     }
+    
+    static async getEyeFromJx3Api(xf){
+        let url = `https://jx3api.com/api/eye`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                name: xf || "冰心诀",
+                token: jx3api_token
+            }   
+        });
+        let data = response.data;
+        return data;
+    }
 }
 
 module.exports = Api;
