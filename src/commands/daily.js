@@ -21,7 +21,7 @@ module.exports = class ServerStatusHandler {
             }
             result = await Image.generateFromArrayTable(table, {
                 title: '咕Bot - 日常查询',
-                tail: `数据有效日期：${result.时间} 周${result.星期}  \n数据来源:[jx3api.com](https://jx3api.com/)`
+                tail: `数据有效日期：${result.时间} 周${result.星期}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/\)`
             });
             await redis.set('Daily', result);
             await redis.expire('Daily', 600);

@@ -2,6 +2,8 @@ const moment = require('moment');
 const _ = require('lodash');
 const Api = require('../service/api');
 const Image = require('../service/image');
+const Cq = require('../service/cqhttp');
+const fs = require('fs-extra')
 
 module.exports = class GoldPriceHandler {
     async handle(ctx) {
@@ -14,18 +16,18 @@ module.exports = class GoldPriceHandler {
         if (result == null || !await fs.exists(result) || args['update']) {
             let table = [];
 
-            let ark_data = await Api.getGoldPriceFromArkwish();
-            if (ark_data[server] == undefined) {
+            let ark_data = (await Api.getGoldPriceFromArkwish()).data;
+            if (ark_data[args.server] == undefined) {
                 return (`ERROR: Unknown Server!\n错误：没找到这个服务器的数据。`);
-            }
-            let tieba_gold = _.mean(ark_data['today']['post']).toFixed(2);
+            }   
+            let tieba_gold = _.mean(ark_data[args.server]['today']['post']).toFixed(2);
             table.push(['贴吧', tieba_gold]);
 
             let data = await Api.getGoldPriceFromJx3Api(args.server);
             let _data = data.data;
             for(let i in _data){
                 if(i != 'server') {
-                    map = {
+                    let map = {
                         5173: '5173',
                         7881: '7881',
                         dd373: 'dd373',
@@ -41,8 +43,7 @@ module.exports = class GoldPriceHandler {
             table = [['渠道', '价格'], ...table];
             result = await Image.generateFromArrayTable(table, {
                 title: '咕Bot - 金价查询',
-                tail: `数据获取时间：${moment(data.time).format('YYYY-MM-DD HH:II:SS')}
-                数据来源:[jx3api.com](https://jx3api.com/api/gold/) 仅供参考`
+                tail: `数据获取时间：${moment(data.time).locale('zh-cn').tz('Asia/Shanghai').format('YYYY-MM-DD LTS')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/gold/\) 仅供参考`
             })
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 600);

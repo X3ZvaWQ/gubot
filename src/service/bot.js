@@ -50,7 +50,6 @@ class Bot{
                     await redis.set(redis_key, boolean);
                 }
             };
-            console.log(boolean);
             if(boolean == 'false') {
                 return null
             }
@@ -63,6 +62,7 @@ class Bot{
             攻略: '/achievement',
             更新: '/gameUpdate',
             宏: '/macro',
+            日常: '/daily',
             奇遇: '/serendipity',
             沙盘: '/sandbox',
             创建团队: '/team create',
