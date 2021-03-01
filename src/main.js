@@ -27,13 +27,11 @@ const sequelize = new Sequelize(ENV.db_database, ENV.db_username, ENV.db_passwor
 });
 global.sequelize = sequelize;
 
-//add global helper function and route
-const route = require('./route')
+//add global helper function 
 const helper = require('./helper/function');
 const CqHttp = require('./service/cqhttp');
 global.Cq = CqHttp;
 global.helper = helper;
-global.route = route;
 //require and use middleware
 /* const permission = require('./middleware/permissions'); */
 /* const argsProcess = require('./middleware/argsProcess'); */

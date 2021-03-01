@@ -2,8 +2,13 @@ const Alias = require("../model/alias");
 const User = require('../model/user');
 const Group = require('../model/group');
 const yargs_parser = require('yargs-parser');
+const commandsRoute = require('../commands');
 
 class Bot{
+    constructor() {
+        this.route = commandsRoute;
+    }
+
     async handleCommand(data) {
         try{
             let [args, command] = await this.parseArgs(data) ?? [];
@@ -12,11 +17,11 @@ class Bot{
                 args: args,
                 data: data
             }
-            if(route.commands[command] != undefined) {
-                if(route.commands[command].demandPermission){
+            if(this.route[command] != undefined) {
+                if(this.route[command].demandPermission){
                     ctx['permission'] = this.permissionJudge(data);
                 }
-                let handler = new route.commands[command]();
+                let handler = new this.route[command]();
                 return await handler.handle(ctx);
             }
         }catch(e) {
@@ -145,8 +150,8 @@ class Bot{
                 }
                 return value;
             }
-            if(route.commands[command] != undefined) {
-                let argsList = route.commands[command].argsList();
+            if(this.route[command] != undefined) {
+                let argsList = this.route[command].argsList();
                 let args = {};
                 
                 if(argsList instanceof Array) {
