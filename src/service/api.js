@@ -215,7 +215,7 @@ class Api{
             params: {
                 name: xf || "冰心诀",
                 token: jx3api_token
-            }
+            }   
         });
         let data = response.data;
         return data;

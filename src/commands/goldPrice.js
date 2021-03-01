@@ -1,9 +1,9 @@
-const moment = require('moment');
 const _ = require('lodash');
 const Api = require('../service/api');
 const Image = require('../service/image');
 const Cq = require('../service/cqhttp');
 const fs = require('fs-extra')
+const moment = require('moment');
 
 module.exports = class GoldPriceHandler {
     async handle(ctx) {

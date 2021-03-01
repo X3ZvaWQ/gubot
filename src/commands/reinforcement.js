@@ -1,6 +1,8 @@
 const Api = require('../service/api');
 const Image = require('../service/image');
 const Cq = require('../service/cqhttp');
+const fs = require('fs-extra')
+const moment = require('moment');
 
 module.exports = class ReinforcementHandler {
     async handle(ctx) {
@@ -8,10 +10,11 @@ module.exports = class ReinforcementHandler {
         let redis_key = `Reinforcement:${args.xf}`;
         let result = await redis.get(redis_key);
         if (!result || !await fs.exists(result)) {
-            let data = Api.getReinforcementFromJx3Api(args.xf);
+            let data = await Api.getReinforcementFromJx3Api(args.xf);
+            console.log(data);
             let table = [];
             for(let i in data) {
-                table.push(i, data[i]);
+                table.push([i, data[i]]);
             }
             result = await Image.generateFromArrayTable(table, {
                 title: '咕Bot - 小药查询',
