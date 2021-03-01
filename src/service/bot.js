@@ -112,7 +112,7 @@ class Bot{
                         throw `Error: ${arg.name} 参数缺失，请使用/help命令查看命令用法`;
                     }
                 }
-                if(arg.type = 'server' && value == '-'){
+                if(arg.type == 'server' && value == '-'){
                     if(data.group_id) {
                         let group = await Group.findOne({
                             where: {
