@@ -32,7 +32,23 @@ class Api{
         return qa;
     }
     
-    static async getGoldPrice() {
+    static async getGoldPriceFromJx3Api(server) {
+        let priceUrl = "https://jx3api.com/api/gold";
+        let response = await axios.get(priceUrl,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                server: server,
+                token: jx3api_token
+            }
+        });
+        let data = response.data;
+        return data;
+    }
+
+    static async getGoldPriceFromArkwish() {
         let priceUrl = "https://box.arkwish.com/api/gold";
         // 准备参数
         let ts = Math.round(new Date().getTime() / 1000);
