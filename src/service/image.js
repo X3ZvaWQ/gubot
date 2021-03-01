@@ -20,12 +20,17 @@ class Image {
             width: configs['size'][0], 
             height: configs['size'][1]
         });
-        await page.goto(url);
+        await page.setDefaultNavigationTimeout(0)
+        await page.goto(url, {
+            timeout: 0,
+            waitUntil: [
+                'networkidle2'
+            ]
+         });
         let imagename = `${process.cwd()}/storage/images/${uuid()}.png`;
         let element = configs['selector'] ? await page.$(configs['selector']): page;
         await element.screenshot({path: imagename});
         await page.close();
-        await fs.unlink(htmlname);
         return imagename;
     }
 
@@ -118,7 +123,12 @@ class Image {
                 height: configs['size'][1]
             });
         }
-        await page.goto(url, {waitUntil: 'networkidle2'});
+        await page.goto(url, {
+            timeout: 0,
+            waitUntil: [
+                'networkidle2'
+            ]
+        });
         if(configs.evaluate) {
             page.evaluate(configs['evaluate']);
         }
