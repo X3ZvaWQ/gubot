@@ -63,6 +63,7 @@ class Bot{
             更新: '/gameUpdate',
             宏: '/macro',
             日常: '/daily',
+            小药: '/reinforcement',
             奇遇: '/serendipity',
             沙盘: '/sandbox',
             创建团队: '/team create',

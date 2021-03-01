@@ -50,24 +50,6 @@ module.exports = class GoldPriceHandler {
         } 
         
         return `${Cq.ImageCQCode('file://' + result)}`;
-
-        //combine datas to string reply.
-        /* let server = args.server;
-        if (goldPrice[server] == undefined) {
-            return (`ERROR: Unknown Server!\n错误：没找到这个服务器的数据。`);
-        }
-        goldPrice = goldPrice[server];
-        return `---今日价格---
-        贴吧：${_.mean(goldPrice['today']['post']).toFixed(2)}
-        万宝楼：${_.mean(goldPrice['today']['official']).toFixed(2)}
-        5173：${_.mean(goldPrice['today']['5173']).toFixed(2)}
-        ---昨日价格---
-        贴吧：${goldPrice['trend'][0]['post']}
-        万宝楼：${goldPrice['trend'][0]['official']}
-        5173：${goldPrice['trend'][0]['5173']}
-        ----------------
-        NaN表示无数据，数据来源于jx3box仅供参考。
-        `.replace(/[ ]{2,}/g, ""); */
     }
 
     static argsList() {

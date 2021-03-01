@@ -13,5 +13,6 @@ module.exports = {
     macro: require('./macro'),
     gameUpdate: require('./gameUpdate'),
     sandbox: require('./sandbox'),
-    daily: require('./daily')
+    daily: require('./daily'),
+    reinforcement: require('./reinforcement');
 }
