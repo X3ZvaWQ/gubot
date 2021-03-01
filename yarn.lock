@@ -1258,13 +1258,8 @@ moment-timezone@^0.5.31:
 
 moment@^2.29.1:
   version "2.29.1"
-  resolved "https://registry.npm.taobao.org/moment/download/moment-2.29.1.tgz?cache=0&sync_timestamp=1601983320283&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmoment%2Fdownload%2Fmoment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  resolved "https://registry.npm.taobao.org/moment/download/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
-
-monent@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npm.taobao.org/monent/download/monent-2.0.0.tgz#f721bef321b21de18ca194e5770adde5837bb712"
-  integrity sha1-9yG+8yGyHeGMoZTldwrd5YN7txI=
 
 ms@2.0.0:
   version "2.0.0"
