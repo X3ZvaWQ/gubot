@@ -42,7 +42,7 @@ module.exports = class GoldPriceHandler {
             table.sort((a, b) => a[1]- b[1]);
             table = [['渠道', '价格'], ...table];
             result = await Image.generateFromArrayTable(table, {
-                title: '咕Bot - 金价查询',
+                title: `咕Bot - 金价查询 - ${_data.server}`,
                 tail: `数据获取时间：${moment(data.time).locale('zh-cn').tz('Asia/Shanghai').format('YYYY-MM-DD LTS')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/gold/\) 仅供参考`
             })
             await redis.set(redis_key, result);
