@@ -64,6 +64,7 @@ class Bot{
             宏: '/macro',
             日常: '/daily',
             小药: '/reinforcement',
+            阵眼: '/eye',
             奇遇: '/serendipity',
             沙盘: '/sandbox',
             创建团队: '/team create',

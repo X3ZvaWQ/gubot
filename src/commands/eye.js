@@ -7,18 +7,18 @@ const moment = require('moment');
 module.exports = class ReinforcementHandler {
     async handle(ctx) {
         let args = ctx.args;
-        let redis_key = `Reinforcement:${args.xf}`;
+        let redis_key = `Eye:${args.xf}`;
         let result = await redis.get(redis_key);
         if (!result || !await fs.exists(result)) {
-            let data = await Api.getReinforcementFromJx3Api(args.xf);
-            let table = [];
-            for(let i in data) {
-                table.push([i, data[i]]);
+            let data = await Api.getEyeFromJx3Api(args.xf);
+            let table = [['重数', '效果']];
+            for(let i in data.data) {
+                table.push(data.data[i]['level'], data.data[i]['result']);
             }
             result = await Image.generateFromArrayTable(table, {
-                title: '咕Bot - 小药查询',
-                tail: `数据获取时间：${moment().locale('zh-cn').tz('Asia/Shanghai').format('YYYY-MM-DD LTS')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/reinforcement\) 仅供参考  \n**注意：接口给出的都是紫色小药，很贵。建议小地图右下方小扳手->枫影插件集->材料药品查询 找蓝色的小吃小药**  `
-            });
+                title: `咕Bot - 阵眼查询 - ${data.name}`,
+                tail: `数据获取时间：${moment(data.time).locale('zh-cn').tz('Asia/Shanghai').format('YYYY-MM-DD LTS')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/eye\) 仅供参考`
+            })
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 600);
         }

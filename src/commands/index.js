@@ -14,5 +14,6 @@ module.exports = {
     gameUpdate: require('./gameUpdate'),
     sandbox: require('./sandbox'),
     daily: require('./daily'),
-    reinforcement: require('./reinforcement')
+    reinforcement: require('./reinforcement'),
+    eye: require('./eye')
 }
