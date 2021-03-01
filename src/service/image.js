@@ -79,10 +79,11 @@ class Image {
     }
 
     static async generateFromArrayTable(array, options){
-        let markdown = `| ${array[0].join(' | ')} |\n|${array[0].map(() => '---').join(' | ')} |`;
+        let markdown = '';
+        markdown = `| ${array[0].join(' | ')} |\n|${array[0].map(() => '---').join(' | ')} |`;
         array.shift();
-        if(options.head) {
-            markdown = `### ${options.head} \n` + markdown;
+        if(options.title) {
+            markdown = `## ${options.title} \n` + markdown;
         }
         for(let i in array) {
             markdown += `\n| ${array[i].map(x => String(x).replaceAll('|', '\\|')).join(' | ')} |`;

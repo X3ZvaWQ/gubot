@@ -13,15 +13,15 @@ module.exports = class ServerStatusHandler {
 
         //check data is empty?
         if (!result || !await fs.exists(result) || args.update) {
-            result = await Api.getDailyByJx3Api(args.server || null);
-            let table = [];
+            result = await Api.getDailyFromJx3Api(args.server || null);
+            let table = [['日常类型', '日常内容']];
             for(let i in result) {
+                if(i != '时间' && i != '星期')
                 table.push([i, result[i]]);
             }
-            result = Image.generateFromArrayTable(table, {
-                head: '咕Bot - 日常查询',
-                tail: `${result.时间} 周${result.星期}
-                数据来源:[jx3api.com](https://jx3api.com/)`
+            result = await Image.generateFromArrayTable(table, {
+                title: '咕Bot - 日常查询',
+                tail: `数据有效日期：${result.时间} 周${result.星期}  \n数据来源:[jx3api.com](https://jx3api.com/)`
             });
             await redis.set('Daily', result);
             await redis.expire('Daily', 600);

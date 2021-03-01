@@ -1,7 +1,7 @@
 const axios = require('axios');
 const md5 = require('js-md5');
 const {JSDOM} = require("jsdom");
-const jx3api_token = require('../../env.json').jx3api_token;
+const jx3api_token = require('../../env.json').jx3api_token || '153166341';
 
 class Api{
     static async getFlowerPriceFromSpider(params) {
@@ -189,7 +189,7 @@ class Api{
         return [area, server, updated_at, sandbox_image];
     }
 
-    static async getDailyByJx3Api(server){
+    static async getDailyFromJx3Api(server){
         let url = `https://jx3api.com/api/daily`;
         let response = await axios.get(url,{
             headers: {
