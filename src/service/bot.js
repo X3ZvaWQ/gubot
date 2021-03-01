@@ -49,7 +49,7 @@ class Bot{
                     boolean = `${group.convenient}`
                     await redis.set(redis_key, boolean);
                 }else{
-                    await redis.set(redis_key, 'false');
+                    await redis.set(redis_key, 'true');
                 }
             };
             if(boolean == 'false') {
