@@ -21,7 +21,7 @@ module.exports = class AchievementHandler {
             let name = search.data.achievements[0].Name;
             let url = `https://www.jx3box.com/cj/#/view/${id}`;
             result = `----${name} 成就攻略----
-            ${Cq.ImageCQCode('file://' + await Image.getFromUrl(url, { selector: 'div.cj-module.m-cj-post', evaluate: 'document.querySelectorAll("#c-header,.c-breadcrumb,.u-publish,.w-qrcode,.remark,.comment").forEach((x) => x.remove());' }))}
+            ${Cq.ImageCQCode('file://' + await Image.getFromUrl(url, { selector: 'div.c-wiki-panel.m-detail-scene', evaluate: 'document.querySelectorAll("#c-header, .c-breadcrumb, .m-panel-actions").forEach((x) => x.remove());' }))}
             ----------------
             以上内容来源于jx3box。
             需要查看原版可以前往jx3box查看。`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
