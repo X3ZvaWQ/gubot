@@ -48,6 +48,8 @@ class Bot{
                 if(group != null) {
                     boolean = `${group.convenient}`
                     await redis.set(redis_key, boolean);
+                }else{
+                    await redis.set(redis_key, 'false');
                 }
             };
             if(boolean == 'false') {
