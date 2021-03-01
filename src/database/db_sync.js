@@ -6,11 +6,7 @@ const sequelize = new Sequelize(ENV.db_database, ENV.db_username, ENV.db_passwor
   port: ENV.db_port
 });
 global.sequelize = sequelize;
-/* 
-const Alias = require("./src/model/alias");
-const FlowerPrice = require("./src/model/flowerPrice");
-const User = require('./src/model/user'); 
-*/
+
 const models = {
   alias : require("../model/alias"),
   user : require('../model/user'),
