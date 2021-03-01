@@ -87,17 +87,17 @@ class Image {
         let markdown = '';
         markdown = `| ${array[0].join(' | ')} |\n|${array[0].map(() => '---').join(' | ')} |`;
         array.shift();
-        if(options.title) {
-            markdown = `## ${options.title} \n` + markdown;
-        }
         for(let i in array) {
             markdown += `\n| ${array[i].map(x => String(x).replaceAll('|', '\\|')).join(' | ')} |`;
         }
-        if(options.tail) {
-            markdown += `\n---\n${options.tail}`
-        }
         let extraCss = 'th{padding:8px;line-height:1.42857143;text-align:left;vertical-align:bottom;border-bottom:2px solid #ddd;border-top:0;display:table-cell;font-weight:bold}table{border-spacing:0;border-collapse:collapse;display:table;width:100%;max-width:100%}tr{display:table-row;vertical-align:inherit;border-color:inherit}td{padding:8px;line-height:1.42857143;vertical-align:top;border-top:1px solid #ddd;display:table-cell}';
         if(options) {
+            if(options.title) {
+                markdown = `## ${options.title} \n` + markdown;
+            }
+            if(options.tail) {
+                markdown += `\n---\n${options.tail}`
+            }
             if(options.extraCss){
                 options.extraCss += extraCss;
             }else{
