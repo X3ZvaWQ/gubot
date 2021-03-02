@@ -38,8 +38,4 @@ module.exports = class ReinforcementHandler {
             default: '冰心诀'
         }];
     }
-
-    static helpText() {
-        return ``.replace(/[ ]{2,}/g, "");
-    }
 }

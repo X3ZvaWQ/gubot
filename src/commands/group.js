@@ -207,13 +207,4 @@ module.exports = class GroupHandler {
             }
         };
     }
-
-    static helpText() {
-        return `群管理命令，可用命令有group、g、群以及群管理员自定义的别名，可接受0~3个参数。
-            操作类型，可选(info，server, nickname)，默认为info。
-            info(i)：查看机器人在这个群的配置 用法实例：/g list
-            server(s)：修改机器人在本群的默认服务器 用法：/g server 唯满侠
-            nickname(nn): 修改机器人对本群的称呼 用法：/g nickname 咕咕群
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

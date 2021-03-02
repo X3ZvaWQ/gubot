@@ -103,12 +103,4 @@ module.exports = class SerendipityHandler {
             }
         ];
     }
-    
-    static helpText() {
-        return `奇遇查询命令，用于查询某个人的奇遇。可用命令有serendipity、奇遇、qy以及群管理员自定义的别名。可接受0~3个参数
-            1.id (--player)，不可为空。
-            3.奇遇(--serendipity)，可为空，用“-”表示默认值，默认为绝世奇遇，可选值[具体奇遇名,绝世奇遇,世界奇遇,宠物奇遇,小宠奇遇,物品奇遇,全部奇遇]。
-            2.服务器(--server)，可为空，用“-”表示默认值，默认为唯我独尊。
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

@@ -1,0 +1,25 @@
+### 欢迎使用“咕-bot”，以下是功能清单以及相关命令
+- 如果需要查看某个命令的详细用法可以用帮助命令，比如需要查看排表系统的文档：帮助 team
+---
+- **花价**查询: /flowerPrice
+- **科举**查询: /exam
+- **金价**查询: /goldPrice 
+- **开服**查询: /serverStatus
+- **成就**查询: /achievement
+- **阵眼**查询：/eye
+- **小药**查询：/reinforcement
+- **日常**查询：/daily
+- **游戏更新内容**查询: /gameUpdate
+- **宏**查询: /macro
+- **奇遇**查询: /serendipidy
+- **沙盘**查询: /sandbox
+- **团队**排表：/team
+- **群**设置：/group
+- **别名**管理：/alias
+- **权限**管理：/permission
+---
+- 不以“/”开头的都是简便命令。默认开启。但是为了防止与其他机器人产生冲突该功能可以用过/group convenient false关闭
+- **所有的命令**都可以使用**简写**以及**群管理员自定义的别名**
+- 如有更多需求请在该机器人的github仓库区提交issue,**机器人所有功能皆开源在github社区**。
+github仓库地址为：[https://github.com/X3ZvaWQ/gubot](https://github.com/X3ZvaWQ/gubot)
+

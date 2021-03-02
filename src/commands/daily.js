@@ -53,8 +53,4 @@ module.exports = class ServerStatusHandler {
             default: false
         }];
     }
-
-    static helpText() {
-        return ``.replace(/[ ]{2,}/g, "");
-    }
 }

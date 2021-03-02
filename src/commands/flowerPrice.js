@@ -82,14 +82,4 @@ module.exports = class FlowerPriceHandler {
             }
         ];
     }
-
-    static helpText() {
-        return `花价查询命令，可用命令有flower、花价、hj以及群管理员自定义的别名。可接受0~3个参数
-            1.花的种类(--flower)，可为空，默认为绣球花
-            2.服务器(--server)，可为空，默认为群服务器
-            3.地图(--map)，可为空，默认为广陵邑
-            4.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
-
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

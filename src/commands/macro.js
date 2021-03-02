@@ -70,8 +70,10 @@ module.exports = class MacroHandler {
                 macro: macros
             }
             let macro_sync = macros.map((x) => x.name);
-            result = `云端宏:
+            result = `咕Bot - 云端宏查询 - ${args.xf} - rank.${args.rank}
+            云端宏:
             ${macro_sync.join('\n')}
+            食用教程：https://www.jx3box.com/tool/14671#/
             详细内容:
             ${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}`;
             await redis.set(redis_key, result);
@@ -104,12 +106,5 @@ module.exports = class MacroHandler {
             nullable: true,
             default: 1
         }];
-    }
-
-    static helpText() {
-        return `宏查询命令，可用命令有macro、宏、h 以及群管理员自定义的别名。接受1个参数
-            1.心法，不可为空。可以使用标准心法或者管理员自定义的别名。
-            2.排名，整数（1~10）选择排名第几的宏。可以为空，默认使用排行榜第一的宏。
-        `.replace(/[ ]{2,}/g, "");
     }
 }

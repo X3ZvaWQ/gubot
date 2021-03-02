@@ -218,9 +218,4 @@ module.exports = class AliasHandler {
             }
         };
     }
-
-    static helpText() {
-        return `别名管理命令
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

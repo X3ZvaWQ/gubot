@@ -46,10 +46,4 @@ module.exports = class AchievementHandler {
             nullable: false
         }];
     }
-
-    static helpText() {
-        return `成就查询命令，可用命令有成就、cj以及群管理员自定义的别名。接受1个参数
-            1.关键字，成就名。
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

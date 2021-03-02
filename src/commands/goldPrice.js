@@ -77,11 +77,4 @@ module.exports = class GoldPriceHandler {
             }
         ];
     }
-    
-    static helpText() {
-        return `金价查询命令，可用命令有gold、金价、jj以及群管理员自定义的别名。可接受0~2个参数
-            1.服务器(--server)，可为空，默认为唯我独尊,
-            2.更新(-u,--update)，可为空，默认不更新(10分钟刷新一次数据)
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

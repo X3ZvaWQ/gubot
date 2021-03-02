@@ -176,12 +176,4 @@ module.exports = class PermissionHandler {
             }
         };
     }
-
-    static helpText() {
-        return `权限管理命令，可用命令有permission、p、权限以及群管理员自定义的别名，可接受0~3个参数。
-            操作类型，可选(list，set)，默认为list。
-            list：列出本群的权限列表，用法实例：/p list
-            set：设置某个人的机器人使用权限，用法实例：/p set @不咕 admin
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

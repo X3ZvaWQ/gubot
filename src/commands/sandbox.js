@@ -48,11 +48,4 @@ module.exports = class SandBoxHandler {
             default: false
         }];
     }
-
-    static helpText() {
-        return `沙盘查询命令，可用命令有sandbox、沙盘、sp以及群管理员自定义的别名。接受0~2个参数
-            1.服务器(--server)，可为空，默认为唯我独尊,
-            2.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
-        `.replace(/[ ]{2,}/g, "");
-    }
 }

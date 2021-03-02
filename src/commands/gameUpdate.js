@@ -35,10 +35,4 @@ module.exports = class ServerStatusHandler {
             default: false
         }];
     }
-
-    static helpText() {
-        return `游戏更新内容命令，可用命令有更新，gu以及群管理员自定义的别名，接受0~1个参数
-        1.更新(-u,--update)，可为空，默认不更新(5分钟刷新一次数据)
-        `.replace(/[ ]{2,}/g, "");
-    }
 }
