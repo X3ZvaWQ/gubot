@@ -71,6 +71,11 @@ class Image {
         return await Image.generateFromHtml(render_content, options);
     }
 
+    static async MarkdownFileExist(template) {
+        let filename = `${process.cwd()}/src/templates/${template}.markdown`;
+        return await fs.exists(filename);
+    }
+
     static async generateFromMarkdownFile(template, options){
         let filename = `${process.cwd()}/src/templates/${template}.markdown`;
         let markdown = await fs.readFile(filename, {encoding: 'utf8'});
