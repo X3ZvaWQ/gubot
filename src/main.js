@@ -79,7 +79,7 @@ if(ENV.use_http_post) {
                                 group_id: data.group_id
                             }
                         });
-                        if(group != null) {
+                        if(group == null) {
                             group = await Group.create({
                                 group_id: data.group_id,
                                 nickname: data.group_id,
