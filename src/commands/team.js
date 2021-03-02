@@ -100,7 +100,7 @@ module.exports = class TeamHandler {
             let team = teams[i];
             texts.push(`${team.id}: ${team.name} - ${team.time}`);
         }
-        return `---${group.nickname}·团队列表---
+        return `---${group ? group.nickname : group_id}·团队列表---
         ${texts.join('\n')}`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
     }
 
