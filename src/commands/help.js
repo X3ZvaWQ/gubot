@@ -4,11 +4,11 @@ const Image = require("../service/image");
 module.exports = class HelpHandler {
     async handle(ctx) {
         let args = ctx.args;
-        if (args['command'] != null && route.commands[args['command']] != undefined) {
+        if (args['command'] != null && await Image.MarkdownFileExist(`help/${args['command']}`)) {
             let image = await Image.generateFromMarkdownFile(`help/${args['command']}`);
             return Cq.ImageCQCode('file://' + image);
         }
-        let image = await Image.generateFromMarkdownFile('help');
+        let image = await Image.generateFromMarkdownFile('help/help');
         return Cq.ImageCQCode('file://' + image);
     }
 

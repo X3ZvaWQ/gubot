@@ -20,6 +20,7 @@
 ---
 - 不以“/”开头的都是简便命令。默认开启。但是为了防止与其他机器人产生冲突该功能可以用过/group convenient false关闭
 - **所有的命令**都可以使用**简写**以及**群管理员自定义的别名**
-- 如有更多需求请在该机器人的github仓库区提交issue,**机器人所有功能皆开源在github社区**。
-github仓库地址为：[https://github.com/X3ZvaWQ/gubot](https://github.com/X3ZvaWQ/gubot)
+- 如有更多需求请在该机器人的github仓库区提交issue或者在魔盒的发布页面下方留言。
+- **机器人所有功能皆开源在github社区**。
+- github仓库地址为：[https://github.com/X3ZvaWQ/gubot](https://github.com/X3ZvaWQ/gubot)
 
