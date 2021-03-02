@@ -208,10 +208,6 @@ module.exports = class GroupHandler {
         };
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `群管理命令，可用命令有group、g、群以及群管理员自定义的别名，可接受0~3个参数。
             操作类型，可选(info，server, nickname)，默认为info。

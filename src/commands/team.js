@@ -434,10 +434,6 @@ module.exports = class TeamHandler {
         };
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `团队命令，说明有空再写Orz, 需要可以看/help`.replace(/[ ]{2,}/g, "");
     }

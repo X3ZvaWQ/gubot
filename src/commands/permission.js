@@ -177,10 +177,6 @@ module.exports = class PermissionHandler {
         };
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `权限管理命令，可用命令有permission、p、权限以及群管理员自定义的别名，可接受0~3个参数。
             操作类型，可选(list，set)，默认为list。

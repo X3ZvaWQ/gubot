@@ -49,10 +49,6 @@ module.exports = class SandBoxHandler {
         }];
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `沙盘查询命令，可用命令有sandbox、沙盘、sp以及群管理员自定义的别名。接受0~2个参数
             1.服务器(--server)，可为空，默认为唯我独尊,

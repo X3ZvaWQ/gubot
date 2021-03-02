@@ -19,11 +19,14 @@ module.exports = class AchievementHandler {
             }
             let id = achievementID;
             let name = search.data.achievements[0].Name;
-            let url = `https://www.jx3box.com/cj/#/view/${id}`;
-            result = `----${name} 成就攻略----
-            ${Cq.ImageCQCode('file://' + await Image.getFromUrl(url, { selector: 'div.c-wiki-panel.m-detail-scene', evaluate: 'document.querySelectorAll("#c-header, .c-breadcrumb, .m-panel-actions").forEach((x) => x.remove());' }))}
-            ----------------
-            以上内容来源于jx3box。
+            let post = (await Api.getAchievementPost(id)).data.post;
+            let html = post.content;
+            let updated_at = moment(post.updated * 1000).tz('Asis/Shanghai').locale('zh-cn').format('YYYY-MM-DD LTS');
+            let image = await Image.generateFromHtml(html);
+            result = `咕Bot - 成就攻略 - ${name}
+            ${Cq.ImageCQCode('file://' + image)}
+            以上内容来源于jx3box用户${post.user_nickname}。
+            上次更新时间：${updated_at}
             需要查看原版可以前往jx3box查看。`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 3600);
@@ -42,10 +45,6 @@ module.exports = class AchievementHandler {
             limit: null,
             nullable: false
         }];
-    }
-
-    static argsMissingError() {
-        return this.helpText();
     }
 
     static helpText() {

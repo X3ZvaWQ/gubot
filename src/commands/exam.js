@@ -27,10 +27,6 @@ module.exports = class ExamHandler {
         }];
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `科举查询命令，可用命令有科举、kj以及群管理员自定义的别名。接受1个参数
             1.关键字，输入你看到的题目中的连续几个字即可

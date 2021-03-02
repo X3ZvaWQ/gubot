@@ -106,10 +106,6 @@ module.exports = class MacroHandler {
         }];
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `宏查询命令，可用命令有macro、宏、h 以及群管理员自定义的别名。接受1个参数
             1.心法，不可为空。可以使用标准心法或者管理员自定义的别名。

@@ -39,10 +39,6 @@ module.exports = class ReinforcementHandler {
         }];
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return ``.replace(/[ ]{2,}/g, "");
     }

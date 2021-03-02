@@ -103,11 +103,7 @@ module.exports = class SerendipityHandler {
             }
         ];
     }
-
-    static argsMissingError() {
-        return this.helpText();
-    }
-
+    
     static helpText() {
         return `奇遇查询命令，用于查询某个人的奇遇。可用命令有serendipity、奇遇、qy以及群管理员自定义的别名。可接受0~3个参数
             1.id (--player)，不可为空。

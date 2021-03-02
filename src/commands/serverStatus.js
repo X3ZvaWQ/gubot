@@ -65,10 +65,6 @@ module.exports = class ServerStatusHandler {
         }];
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `服务器状态命令，可用命令有开服、ss以及群管理员自定义的别名。接受0~2个参数
             1.服务器(--server)，可为空，默认为唯我独尊,

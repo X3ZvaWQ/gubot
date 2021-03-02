@@ -25,10 +25,6 @@ module.exports = class HelpHandler {
         }];
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return `帮助命令，可用命令有help、帮助以及群管理员自定义的别名。可接受0~1个参数
             1.具体命令，可为空。默认为显示命令清单，如提供该参数将会显示具体命令的详细说明

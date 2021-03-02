@@ -54,10 +54,6 @@ module.exports = class ServerStatusHandler {
         }];
     }
 
-    static argsMissingError() {
-        return this.helpText();
-    }
-
     static helpText() {
         return ``.replace(/[ ]{2,}/g, "");
     }
