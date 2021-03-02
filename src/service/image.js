@@ -24,12 +24,16 @@ class Image {
         await page.goto(url, {
             timeout: 0,
             waitUntil: [
-                'networkidle2'
+                'load'
             ]
          });
         let imagename = `${process.cwd()}/storage/images/${uuid()}.png`;
         let element = configs['selector'] ? await page.$(configs['selector']): page;
-        await element.screenshot({path: imagename});
+        if(configs.selector) {
+            await element.screenshot({path: imagename});
+        }else{
+            await element.screenshot({path: imagename, fullPage: true});
+        }
         await page.close();
         return imagename;
     }
@@ -126,7 +130,7 @@ class Image {
         await page.goto(url, {
             timeout: 0,
             waitUntil: [
-                'networkidle2'
+                'domcontentloaded'
             ]
         });
         if(configs.evaluate) {
