@@ -12,34 +12,38 @@ module.exports = class TravelHandler {
         //get data from redis
         let result = await redis.get(redis_key);
         //check data is empty?
-        const getResult = (map) => {
+        const getResult = async (map) => {
             let data = await Api.getTravelFromJx3Api(map);
             let furnitures = data.data;
             let images = [];
             for(let i in furnitures){
                 images.push(await Image.generateFromTemplateFile('furniture', furnitures[i]));
             }
-            return result;
+            return images;
         }
-        if (result == null || args['update']) {
-            result = getResult(args.map);
+        if (result == null || args['update'] || result == 'null') {
+            result = await getResult(args.map);
             await redis.set(redis_key, JSON.stringify(result));
             await redis.expire(redis_key, 86400);
-        } 
-        let cache_valid = true;
-        for(let i in result) {
-            if(!await fs.exists(result[i])){
+        }else{
+            let cache_valid = true;
+            result = JSON.parse(result);
+            if(result instanceof Array) {
+                for(let i in result) {
+                    if(!await fs.exists(result[i])){
+                        cache_valid = false;
+                    }
+                }
+            }else{
                 cache_valid = false;
             }
+            if(!cache_valid) {
+                result = await getResult(args.map);
+                await redis.set(redis_key, JSON.stringify(result));
+                await redis.expire(redis_key, 86400);
+            }
         }
-        if(cache_valid) {
-            return result.map(x => Cq.ImageCQCode(`file://${result}`)).join();
-        }else{
-            result = getResult(args.map);
-            await redis.set(redis_key, JSON.stringify(result));
-            await redis.expire(redis_key, 86400);
-        }
-        return result.map(x => Cq.ImageCQCode(`file://${result}`)).join();
+        return result.map(x => Cq.ImageCQCode(`file://${x}`)).join('\n');
     }
 
     static argsList() {

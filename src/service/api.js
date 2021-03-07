@@ -317,6 +317,7 @@ class Api{
                     tip: cur.tip
                 });
             }
+            return result;
         }else{
             throw `调用jx3api.getTravel返回值错误，请检查参数是否正确。`;
         }
