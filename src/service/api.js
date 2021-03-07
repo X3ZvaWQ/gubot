@@ -319,7 +319,7 @@ class Api{
             }
             return result;
         }else{
-            throw `调用jx3api.getTravel返回值错误，请检查参数是否正确。`;
+            throw `调用jx3api.getTravel返回值错误，请检查参数是否正确。比如输入的地图是否存在`;
         }
     }
 
@@ -336,6 +336,9 @@ class Api{
         });
         try{
             let data = response.data.data;
+            if(data.length < 1) {
+                throw 'j3pz.furniture接口返回为空，请检查输入的家具是否存在。';
+            }
             let result =  {
                 time: response.data.time * 1000,
                 data: []
