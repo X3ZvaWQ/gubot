@@ -15,5 +15,6 @@ module.exports = {
     sandbox: require('./sandbox'),
     daily: require('./daily'),
     reinforcement: require('./reinforcement'),
-    eye: require('./eye')
+    eye: require('./eye'),
+    travel: require('./travel')
 }

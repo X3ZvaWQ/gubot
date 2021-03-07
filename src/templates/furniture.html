@@ -1,0 +1,44 @@
+<div id="template">
+    <table>
+        <tr>
+            <td>
+                <img height="160" width="160" src="{{image_url}}" />
+            </td>
+            <td>
+                <p>{{name}}</p> 
+                <ul>
+                    <li>观赏：{{view}}</li>
+                    <li>实用：{{practical}}</li>
+                    <li>坚固：{{hard}}</li>
+                    <li>风水：{{geomantic}}</li>
+                    <li>趣味：{{interesting}}</li>
+                    <li>品质等级：{{quality}}</li>
+                    <li>获取来源: {{source}}</li>
+                    <li>需求家园等级: {{levelLimit}}</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <p>{{tip}}</p>
+</div>
+<style>
+    #template {
+        margin-left: auto; 
+        margin-right: auto;
+    }
+    #template>p{
+        text-indent: 2rem;
+    }
+    td p {
+        font-size: 18px; 
+        font-weight: 900; 
+        text-align: center;
+    }
+    body{
+        background-color:cornsilk;
+        color:cornflowerblue;
+    }
+    ul>li:last-of-type{
+        font-weight: bold;
+    }
+</style>

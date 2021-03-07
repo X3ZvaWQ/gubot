@@ -1,6 +1,7 @@
 const axios = require('axios');
 const md5 = require('js-md5');
 const {JSDOM} = require("jsdom");
+const jx3api_baseurl = require('../../env.json').jx3api_baseurl;
 
 class Api{
     static async getFlowerPriceFromSpider(params) {
@@ -32,7 +33,7 @@ class Api{
     }
     
     static async getGoldPriceFromJx3Api(server) {
-        let priceUrl = "https://nico.nicemoe.cn/app/getGold";
+        let priceUrl = `${jx3api_baseurl}app/getGold`;
         let response = await axios.get(priceUrl,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -56,7 +57,7 @@ class Api{
             }
         }else{
             console.log(response);
-            throw `调用jx3api.getGold返回值错误`;
+            throw `调用jx3api.getGold返回值错误，请检查参数是否正确。`;
         }
     }
 
@@ -202,7 +203,7 @@ class Api{
     }
 
     static async getDailyFromJx3Api(server){
-        let url = `https://nico.nicemoe.cn/app/getDaily`;
+        let url = `${jx3api_baseurl}app/getDaily`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -230,7 +231,7 @@ class Api{
     }
 
     static async getReinforcementFromJx3Api(xf){
-        let url = `https://nico.nicemoe.cn/app/getHeighten`;
+        let url = `${jx3api_baseurl}app/getHeighten`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -249,12 +250,12 @@ class Api{
                 辅助小吃: data.AuxiliaryFood
             }
         }else{
-            throw `调用jx3api.getHeighten返回值错误`;
+            throw `调用jx3api.getHeighten返回值错误，请检查参数是否正确。`;
         }
     }
     
     static async getEyeFromJx3Api(xf){
-        let url = `https://nico.nicemoe.cn/app/getFormation`;
+        let url = `${jx3api_baseurl}app/getFormation`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -279,7 +280,45 @@ class Api{
                 七重归一: '空'
             }
         }else{
-            throw `调用jx3api.getHeighten返回值错误`;
+            throw `调用jx3api.getHeighten返回值错误，请检查参数是否正确。`;
+        }
+    }
+
+    static async getTravelFromJx3Api(map){
+        let url = `${jx3api_baseurl}app/getTravel`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                map: map || "七秀"
+            }   
+        });
+        if(response.data.code == 200) {
+            let data = response.data.data;
+            let result =  {
+                time: response.data.time * 1000,
+                data: []
+            }
+            for(let i in data){
+                let cur = data[i];
+                result.data.push({
+                    name: cur.name,
+                    geomantic: cur.geomanticScore,
+                    hard: cur.hardScore,
+                    view: cur.viewScore,
+                    practical: cur.practicalScore,
+                    interesting: cur.interestingScore,
+                    source: cur.source,
+                    quality: cur.qualityLevel,
+                    levelLimit: cur.levelLimit,
+                    image_url: cur.imagePath,
+                    tip: cur.tip
+                });
+            }
+        }else{
+            throw `调用jx3api.getTravel返回值错误，请检查参数是否正确。`;
         }
     }
 

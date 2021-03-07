@@ -57,30 +57,31 @@ class Bot{
             }
         }
         let alias = {
+            宏: '/macro',
+            帮助: '/help',
             花价: '/flowerPrice',
             科举: '/exam',
             金价: '/goldPrice',
             开服: '/serverStatus',
             攻略: '/achievement',
             更新: '/gameUpdate',
-            宏: '/macro',
             日常: '/daily',
             小药: '/reinforcement',
             阵眼: '/eye',
             奇遇: '/serendipity',
             沙盘: '/sandbox',
+            器物谱: '/travel',
+            群昵称: '/group nickname',
             创建团队: '/team create',
             删除团队: '/team delete',
             团队列表: '/team list',
             查看团队: '/team view',
             取消报名: '/team cancel',
             团队报名: '/team apply',
-            群昵称: '/group nickname',
             群服务器: '/group server',
             简便命令: '/group convenient',
             添加别名: '/alias add',
             删除别名: '/alias delete',
-            帮助: '/help'
         };
         let message = data.message;
         for(let i in alias) {
