@@ -1,7 +1,6 @@
 const axios = require('axios');
 const md5 = require('js-md5');
 const {JSDOM} = require("jsdom");
-const jx3api_token = require('../../env.json').jx3api_token || '153166341';
 
 class Api{
     static async getFlowerPriceFromSpider(params) {
@@ -190,7 +189,7 @@ class Api{
     }
 
     static async getDailyFromJx3Api(server){
-        let url = `https://jx3api.com/api/daily`;
+        let url = `https://nico.nicemoe.cn/app/getDaily`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -198,43 +197,118 @@ class Api{
             },
             params: {
                 server: server || "唯我独尊",
-                token: jx3api_token
             }
         });
-        let data = response.data;
-        return data;
+        if(response.code == 200) {
+            let data = response.data.data;
+            return {
+                时间: data.Date,
+                星期: data.Week,
+                秘境日常: data.DayWar,
+                驰援任务: data.DayCommon,
+                战场首胜: data.DayBattle,
+                周常五人本: data.WeekFive,
+                周常十人本: data.WeekTeam,
+                周公共日常: data.WeekCommon
+            }
+        }else{
+            throw `调用jx3api.getDaily返回值错误`;
+        }
     }
 
     static async getReinforcementFromJx3Api(xf){
-        let url = `https://jx3api.com/api/reinforcement`;
+        let url = `https://nico.nicemoe.cn/app/getHeighten`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
                 'Accept': 'application/json, text/plain, */*'
             },
             params: {
-                name: xf || "冰心诀",
-                token: jx3api_token
+                name: xf || "冰心诀"
             }   
         });
-        let data = response.data;
-        return data;
+        if(response.code == 200) {
+            let data = response.data.data;
+            return {
+                增强小药: data.HeightenDrug,
+                增强小吃: data.HeightenFood,
+                辅助小药: data.AuxiliaryDrug,
+                辅助小吃: data.AuxiliaryFood
+            }
+        }else{
+            throw `调用jx3api.getHeighten返回值错误`;
+        }
     }
     
     static async getEyeFromJx3Api(xf){
-        let url = `https://jx3api.com/api/eye`;
+        let url = `https://nico.nicemoe.cn/app/getFormation`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
                 'Accept': 'application/json, text/plain, */*'
             },
             params: {
-                name: xf || "冰心诀",
-                token: jx3api_token
+                name: xf || "冰心诀"
             }   
         });
-        let data = response.data;
-        return data;
+        if(response.code == 200) {
+            let data = response.data;
+            return {
+                name: data.name,
+                time: data.time * 1000,
+                一重粗识: data.one,
+                二重略懂: data.two,
+                三重巧熟: data.three,
+                四重精妙: data.four,
+                五重游刃: data.five, 
+                六重忘我: data.six,
+                七重归一: '空'
+            }
+        }else{
+            throw `调用jx3api.getHeighten返回值错误`;
+        }
+    }
+
+    static async getJx3BoxMenuGroup(){
+        let url = `https://helper.jx3box.com/api/menu_groups`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                id: [
+                    'guide-pve',
+                    'guide-pvx',
+                    'guide-pvp',
+                    'guide-bps-kungfu',
+                    'guide-bps-weapon',
+                    'guide-other',
+                ],
+            }   
+        });
+        if(data.code == 200){
+            let data = response.data.data;
+            return data;
+        }
+    }
+
+    static async getJx3BoxBpsPost(id){
+        let url = `https://server.jx3box.com/post/find`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                id: id || "19902",
+            }   
+        });
+        if(data.code == 10064){
+            let data = response.data.data;
+            return data;
+        }
+        throw '错误：无法在剑三魔盒上找到该文章'
     }
 }
 
