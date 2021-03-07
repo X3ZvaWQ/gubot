@@ -39,12 +39,23 @@ class Api{
                 'Accept': 'application/json, text/plain, */*'
             },
             params: {
-                server: server,
-                token: jx3api_token
+                server: server
             }
         });
-        let data = response.data;
-        return data;
+        if(response.code == 200) {
+            let data = response.data;
+            return {
+                server: data.data.server,
+                5173: data.data['5173'],
+                7881: data.data['7881'],
+                dd373: data.data['dd373'],
+                uu898: data.data['uu898'],
+                万宝楼: data.data['wanbaolou'],
+                游募: data.data['youmu']
+            }
+        }else{
+            throw `调用jx3api.getDaily返回值错误`;
+        }
     }
 
     static async getGoldPriceFromArkwish() {

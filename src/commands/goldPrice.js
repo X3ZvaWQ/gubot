@@ -24,18 +24,9 @@ module.exports = class GoldPriceHandler {
             table.push(['贴吧', tieba_gold]);
 
             let data = await Api.getGoldPriceFromJx3Api(args.server);
-            let _data = data.data;
-            for(let i in _data){
+            for(let i in data){
                 if(i != 'server') {
-                    let map = {
-                        5173: '5173',
-                        7881: '7881',
-                        dd373: 'dd373',
-                        uu898: 'uu898',
-                        wanbaolou: '万宝楼',
-                        youmu: '游募'
-                    }
-                    table.push([map[i], _data[i]]);
+                    table.push([i, data[i]]);
                 }
             }
 
