@@ -58,6 +58,7 @@ class Bot{
         }
         let alias = {
             宏: '/macro',
+            骚话: '/saohua',
             帮助: '/help',
             花价: '/flowerPrice',
             科举: '/exam',

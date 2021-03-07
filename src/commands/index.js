@@ -17,5 +17,6 @@ module.exports = {
     reinforcement: require('./reinforcement'),
     eye: require('./eye'),
     travel: require('./travel'),
-    furniture: require('./furniture')
+    furniture: require('./furniture'),
+    saohua: require('./saohua')
 }

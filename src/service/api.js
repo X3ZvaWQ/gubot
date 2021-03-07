@@ -407,6 +407,22 @@ class Api{
         }
         throw '错误：无法在剑三魔盒上找到该文章'
     }
+
+    static async getSaoHuaFromJx3Api() {
+        let url = `${jx3api_baseurl}app/getRandom`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            }
+        });
+        if(response.data.code == 200) {
+            let result = response.data.data.text;
+            return result;
+        }else{
+            throw '你看，你也缺情缘，我也缺情缘，你密我，我们就都不缺情缘了';
+        }
+    }
 }
 
 module.exports = Api;
