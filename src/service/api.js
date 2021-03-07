@@ -324,7 +324,7 @@ class Api{
     }
 
     static async getFurnitureFromJx3box(name){
-        let url = "https://www.j3pz.com/api/furniture?limit=3&size=15&page=1"
+        let url = "https://www.j3pz.com/api/furniture?size=3&page=1"
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -356,6 +356,7 @@ class Api{
                     tip: cur.desc
                 });
             }
+            return result;
         }catch(e){
             console.log(e);
             throw '调用j3pz.furniture返回值错误，请检查参数是否正确。';
