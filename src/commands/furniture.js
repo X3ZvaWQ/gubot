@@ -7,7 +7,7 @@ const fs = require('fs-extra')
 module.exports = class FurnitureHandler {
     async handle(ctx) {
         //get args from state
-        let args = ctx.args;
+        let args = ctx.args;    
         let redis_key = `Furniture:${args.name}`;
         //get data from redis
         let result = await redis.get(redis_key);
