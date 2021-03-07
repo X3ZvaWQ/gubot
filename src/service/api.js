@@ -322,6 +322,45 @@ class Api{
         }
     }
 
+    static async getFurnitureFromJx3box(name){
+        let url = "https://www.j3pz.com/api/furniture?limit=3&size=15&page=1"
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                name: name
+            }
+        });
+        try{
+            let data = response.data.data;
+            let result =  {
+                time: response.data.time * 1000,
+                data: []
+            }
+            for(let i in data){
+                let cur = data[i]['attributes'];
+                result.data.push({
+                    name: cur.name,
+                    geomantic: cur.environment,
+                    hard: cur.robustness,
+                    view: cur.beauty,
+                    practical: cur.practicality,
+                    interesting: cur.fun,
+                    source: cur.source,
+                    quality: cur.level,
+                    levelLimit: cur.limit,
+                    image_url: `https://dl.pvp.xoyo.com/prod/icons/ui/image/homeland/data/source/${cur.img}`,
+                    tip: cur.desc
+                });
+            }
+        }catch(e){
+            console.log(e);
+            throw '调用j3pz.furniture返回值错误，请检查参数是否正确。';
+        }
+    }
+
     static async getJx3BoxMenuGroup(){
         let url = `https://helper.jx3box.com/api/menu_groups`;
         let response = await axios.get(url,{

@@ -16,5 +16,6 @@ module.exports = {
     daily: require('./daily'),
     reinforcement: require('./reinforcement'),
     eye: require('./eye'),
-    travel: require('./travel')
+    travel: require('./travel'),
+    furniture: require('./furniture')
 }

@@ -70,6 +70,7 @@ class Bot{
             阵眼: '/eye',
             奇遇: '/serendipity',
             沙盘: '/sandbox',
+            家具: '/furniture',
             器物谱: '/travel',
             群昵称: '/group nickname',
             创建团队: '/team create',

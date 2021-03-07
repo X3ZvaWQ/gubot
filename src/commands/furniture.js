@@ -4,16 +4,16 @@ const Image = require('../service/image');
 const Cq = require('../service/cqhttp');
 const fs = require('fs-extra')
 
-module.exports = class TravelHandler {
+module.exports = class FurnitureHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        let redis_key = `Travel:${args.map}`;
+        let redis_key = `Furniture:${args.map}`;
         //get data from redis
         let result = await redis.get(redis_key);
         //check data is empty?
-        const getResult = (map) => {
-            let data = await Api.getTravelFromJx3Api(map);
+        const getResult = (name) => {
+            let data = await Api.getFurnitureFromJx3box(name);
             let furnitures = data.data;
             let images = [];
             for(let i in furnitures){
@@ -45,15 +45,15 @@ module.exports = class TravelHandler {
     static argsList() {
         return [
             {
-                name: 'map',
-                alias: 'map',
-                type: 'map',
+                name: 'name',
+                alias: 'furniture',
+                type: 'furniture',
                 defaultIndex: 1,
                 shortArgs: null,
                 longArgs: 'map',
                 limit: null,
                 nullable: true,
-                default: '七秀'
+                default: '阿修罗像'
             }
         ];
     }
