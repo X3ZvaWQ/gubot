@@ -13,10 +13,11 @@ module.exports = class ReinforcementHandler {
             let data = await Api.getEyeFromJx3Api(args.xf);
             let table = [['重数', '效果']];
             for(let i in data) {
+                if(i!='time' && i!='name' && i!= 'eye')
                 table.push([i, data[i]]);
             }
             result = await Image.generateFromArrayTable(table, {
-                title: `咕Bot - 阵眼查询 - ${args.xf} - ${data.name}`,
+                title: `咕Bot - 阵眼查询 - ${args.xf} - ${data.eye}`,
                 tail: `数据获取时间：${moment(data.time).locale('zh-cn').tz('Asia/Shanghai').format('YYYY-MM-DD LTS')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/eye\) 仅供参考`
             })
             await redis.set(redis_key, result);

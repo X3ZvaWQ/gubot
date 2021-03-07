@@ -32,7 +32,7 @@ class Api{
     }
     
     static async getGoldPriceFromJx3Api(server) {
-        let priceUrl = "https://jx3api.com/api/gold";
+        let priceUrl = "https://nico.nicemoe.cn/app/getGold";
         let response = await axios.get(priceUrl,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -42,9 +42,10 @@ class Api{
                 server: server
             }
         });
-        if(response.code == 200) {
+        if(response.data.code == 200) {
             let data = response.data;
             return {
+                time: data.time * 1000,
                 server: data.data.server,
                 5173: data.data['5173'],
                 7881: data.data['7881'],
@@ -54,7 +55,8 @@ class Api{
                 游募: data.data['youmu']
             }
         }else{
-            throw `调用jx3api.getDaily返回值错误`;
+            console.log(response);
+            throw `调用jx3api.getGold返回值错误`;
         }
     }
 
@@ -210,7 +212,7 @@ class Api{
                 server: server || "唯我独尊",
             }
         });
-        if(response.code == 200) {
+        if(response.data.code == 200) {
             let data = response.data.data;
             return {
                 时间: data.Date,
@@ -238,7 +240,7 @@ class Api{
                 name: xf || "冰心诀"
             }   
         });
-        if(response.code == 200) {
+        if(response.data.code == 200) {
             let data = response.data.data;
             return {
                 增强小药: data.HeightenDrug,
@@ -262,11 +264,12 @@ class Api{
                 name: xf || "冰心诀"
             }   
         });
-        if(response.code == 200) {
-            let data = response.data;
+        if(response.data.code == 200) {
+            let data = response.data.data;
             return {
                 name: data.name,
-                time: data.time * 1000,
+                time: response.data.time * 1000,
+                eye: data.eye,
                 一重粗识: data.one,
                 二重略懂: data.two,
                 三重巧熟: data.three,
