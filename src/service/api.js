@@ -423,6 +423,93 @@ class Api{
             throw '你看，你也缺情缘，我也缺情缘，你密我，我们就都不缺情缘了';
         }
     }
+
+    static async searchOutwardFromXiaoHei(name) {
+        let url = `https://www.j3price.top:8088/black-api/api/outward/search`;
+        let response = await axios.post(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            },
+            params: {
+                step: 0,
+                page: 1,
+                size: 1,
+                name: name
+            }
+        });
+        let data = response.data;
+        if(data.state == 0 && data.data.list.length > 0) {
+            return data.data.list[0].id;
+        }else{
+            throw '错误：未找到该外观的数据';
+        }
+    }
+
+    static async getOutwardFromXiaoHei(id){
+        let image_url = `https://www.j3price.top:8088/black-api/api/common/search/index/outward`;
+        let image_response = await axios.post(image_url, null, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*',
+                'X-Token': ''
+            },
+            params: {
+                imageLimit: 1,
+                outwardId: 552,
+                regionId: 1
+            }
+        });
+        let image_data = image_response.data.data;
+        let info = {
+            name: image_data.name,
+            alias: image_data.name1,
+            image: image_data.images[0].image,
+            desc: image_data.info
+        }
+        let data_url = 'https://www.j3price.top:8088/black-api/api/common/search/index/outward/second'
+        let regions = {
+            1: '电信点卡区',
+            2: '双线一区',
+            3: '电信一区',
+            4: '双线二区',
+            5: '双线四区'
+        }
+        let datas = [];
+        for(let i in regions) {
+            let data = {
+                region: regions[i],
+                data: []
+            }
+            let response = await axios.post(data_url, null, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                    'Accept': 'application/json, text/plain, */*',
+                    'X-Token': ''
+                },
+                params: {
+                    page: 1,
+                    limit: 5,
+                    regionId: parseInt(i),
+                    outwardId: id
+                }  
+            })
+            for(let j in response.data.data.prices) {
+                let cur = response.data.data.prices[j];
+                data.data.push({
+                    price: cur.price,
+                    server: cur.server,
+                    date: `20${cur.tradeTime}`.replace('/', '-').replace('/', '-'),
+                    saleCode: cur.saleCode
+                });
+            }
+            datas.push(data);
+        }
+        return {
+            info: info,
+            data: datas
+        }
+    }
 }
 
 module.exports = Api;

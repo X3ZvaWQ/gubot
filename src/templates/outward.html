@@ -1,0 +1,110 @@
+<style>
+    body{
+        background-color: cornsilk;
+        color: dodgerblue;
+        font-family: 'Noto Sans SC', sans-serif;
+        width: 680px;
+        font-size: 0;
+        padding: 2rem;
+    }
+    h2{
+        text-align: center;
+        font-size: 24px;
+    }
+    h3{
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 0.25rem;
+    }
+    span.b{
+        font-weight: bold;
+    }
+    p.desc{
+        margin-top: 0.5rem;
+        margin-bottom: 1.6rem;
+        text-align: center;
+        font-size: 16px;
+    }
+    p.tips{
+        margin-top: 0.5rem;
+        margin-bottom: 0.25rem;
+        text-align: left;
+        font-size: 16px;
+    }
+    div#img-box{
+        width: 100%;
+        height: 340;
+        display: block;
+        text-align: center;
+    }
+    div#img-box img{
+        max-height: 100%;
+        margin: auto;
+    }
+    .price-table:nth-of-type(2n){
+        border-right: cornflowerblue solid 2px;
+    }
+    .price-table{
+        border-bottom: cornflowerblue solid 2px;
+        display: inline-block;
+        width: 49%;
+        height: 150px;
+    }
+    .price-table table{
+        display: block;
+    }
+    .price-table th{
+        margin-bottom: 1rem;
+    }
+    .price-table table > tbody > tr:first-of-type > td{
+        width: 12rem;
+    }
+    .price-table table > tbody > tr:nth-of-type(2) > td{
+        width: 4rem;
+    }
+    .price-table table > tbody > tr:nth-of-type(3) > td{
+        width: 3rem;
+    }
+    .price-table table > tbody > tr:nth-of-type(4) > td{
+        width: 10rem;
+    }
+    td{
+        text-align: center;
+    }
+</style>
+<div id="template">
+    <h2>咕-bot物价查询</h2>
+    <div id="img-box">
+        <img src="{{info.image}}?imageView/1/w/640/h/340" alt="外观图片">
+    </div>
+    <h3>{{ info.name }} ({{ info.alias }})</h3>
+    <p class="desc">{{ info.desc }}</p>
+    <% for(var i = 0; i < data.length; i++) { %>
+        <div class="price-table">
+            <table>
+                <thead>
+                    <tr><th colspan="4">{{ data[i].region }}报价</th></tr>
+                </thead>
+                <tbody>
+                    <% for(var j = 0; j < data[i].data.length; j++) { %>
+                        <tr>
+                            <td>{{data[i].data[j].date}}</td>
+                            <td>{{data[i].data[j].server}}</td>
+                            <td>{{data[i].data[j].price}}</td>
+                            <td>{{data[i].data[j].saleCode}}</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+    <p class="tips">
+        数据获取时间：2021-03-08 17:36
+    </p>
+    <p class="tips">
+        数据来源：<span class="b">剑网三物价君小小黑 小程序</span>
+    </p>
+    <p class="tips">
+        如果你收了或者出了外观不妨去<span class="b">小程序</span>报价提供数据供他人参考吧！
+    </p>
+</div>

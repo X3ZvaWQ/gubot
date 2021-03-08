@@ -1,158 +1,110 @@
-const ENV = require('../env.json');
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(ENV.db_database, ENV.db_username, ENV.db_password, {
-  dialect: ENV.db_dialect,
-  host: ENV.db_host,
-  port: ENV.db_port
-});
-global.sequelize = sequelize;
-
-if(ENV.use_redis){
-    const redis = require('async-redis');
-    const client = redis.createClient({
-        host: ENV.redis_host || 'localhost',
-        port: ENV.redis_port || 6379
-    });
-    client.on("error", function (err) {
-        console.log("Redis Error: " + err);
-    });
-    global.redis = client;
-}else{
-    global.redis = new Proxy({}, {
-        get: () => (async () => null),
-    });
+/* const axios = require('axios');
+const md5 = require('js-md5');
+let url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
+let app_key = 'ZKHU1KDsGQD15zgb';
+let params = {
+    app_id: '2167071591',
+    time_stamp: Math.floor(Date.now()/1000),
+    nonce_str: `20e3408a79`,
+    session: '3303928580',
+    question: '在？反手把你禁言了',
+    sign: ''
 }
+let keys = Object.keys(params).sort();
+let str = '';
 
-const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
-const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json'); 
-const allschool = require('@jx3box/jx3box-data/data/xf/school.json');
-const allxftype = require('../src/assets/json/xftype.json');
-const Alias = require('../src/model/alias');
-
-async function generateEmptyData(squad, group) {
-    squad = squad.toLowerCase();
-    let squads = squad.match(/(\d+\D+)/g);
-    let _squads = [];
-    let result = [];
-    for(let i in squads){
-        let squad = squads[i];
-        let [_, num, value] = squad.match(/(\d+)(\D+)/);
-        let limits = value.split(/\!|\|/);
-        let limit = {
-            us: false,
-            usid: -1,
-            ux: false,
-            uxid: -1,
-            boss: false,
-            num: num,
-            xfs: [],
-            schools: [],
-            priority: 5,
-            valid: false
-        };
-
-        for(let li in limits) {
-            let xf = limits[li];
-            //if xf is determiners
-            if(xf == 'us'){
-                limit.us = true;
-                limit.usid = i;
-            }
-            if(xf == 'ux'){
-                limit.ux = true;
-                limit.uxid = i;
-            }
-            if(xf == 'b'){
-                limit.boss = true;
-                limit.schools = Object.values(allschool.school);
-                limit.xfs = Object.keys(allxfid).map(x => parseInt(x));
-                limit.valid = true;
-                limit.priority = 4;
-                continue;
-            }
-            if(xf == 't'){
-                limit.xfs.push(...allxftype.t);
-                limit.valid = true;
-                limit.priority = 4;
-                continue;
-            }
-            if(xf == 'h'){
-                limit.xfs.push(...allxftype.h);
-                limit.valid = true;
-                limit.priority = 4;
-                continue;
-            }
-            if(xf == 'd'){
-                limit.xfs.push(...allxftype.dps);
-                limit.valid = true;
-                limit.priority = 4;
-                continue;
-            }
-            if(xf == 'n'){
-                limit.xfs.push(...allxftype.ng);
-                limit.valid = true;
-                limit.priority = 3;
-                continue;
-            }
-            if(xf == 'w'){
-                limit.xfs.push(...allxftype.wg);
-                limit.valid = true;
-                limit.priority = 3;
-                continue;
-            }
-            if(xf == 'j'){
-                limit.xfs.push(...allxftype.jz);
-                limit.valid = true;
-                limit.priority = 3;
-                continue;
-            }
-            if(xf == 'y'){
-                limit.xfs.push(...allxftype.yc);
-                limit.valid = true;
-                limit.priority = 3;
-                continue;
-            }
-            //if xf is a xf
-            let _xf;
-            if(group != undefined) {
-                _xf = await Alias.get(xf, 'xf', group);
-                _xf = xf == _xf ? await Alias.get(xf, 'xf') : _xf;
-            }else{
-                _xf = await Alias.get(xf, 'xf');
-            }
-            if(allxf[_xf] != undefined){
-                limit.valid = true;
-                limit.xfs.push(allxf[_xf].id);
-                limit.priority = 1;
-                continue;
-            }
-        }
-        _squads.push(limit);
+for(let i in keys){
+    let key = keys[i];
+    if(params[key] != '') {
+        str += `${key}=${encodeURIComponent(params[key])}&`
     }
-    _squads.sort((a,b) => a.priority - b.priority);
-    for(let i in _squads){
-        let limit = _squads[i];
-        for(let j = 0; j < limit.num; j++){
-            result.push({
-                boss: limit.boss,
-                xf: null,
-                xf_optional: limit.xfs,
-                uxid: limit.uxid,
-                school: null,
-                school_optional: limit.schools,
-                usid: limit.usid,
-                applied: false,
-                applicant: {
-                    qq: null,
-                    nickname: null,
-                    id: null,
-                }
+}
+str += `app_key=${app_key}`
+let sign = md5(str).toUpperCase();
+params.sign = sign;
+console.log(params);
+
+axios.get(url, {
+    headers: { 
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+        'Accept': 'application/json, text/plain'
+    },
+    params: params
+}).then((response) => {
+    let data = response.data;
+    console.log(data);
+}) */
+
+
+const axios = require('axios');
+async function getOutwardFromXiaoHei(id){
+    let image_url = `https://www.j3price.top:8088/black-api/api/common/search/index/outward`;
+    let image_response = await axios.post(image_url, null, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*',
+            'X-Token': ''
+        },
+        params: {
+            imageLimit: 1,
+            outwardId: 552,
+            regionId: 1
+        }
+    });
+    let image_data = image_response.data.data;
+    let info = {
+        name: image_data.name,
+        alias: image_data.name1,
+        image: image_data.images[0].image,
+        desc: image_data.info
+    }
+    let data_url = 'https://www.j3price.top:8088/black-api/api/common/search/index/outward/second'
+    let regions = {
+        1: '电信点卡区',
+        2: '双线一区',
+        3: '电信一区',
+        4: '双线二区',
+        5: '双线四区'
+    }
+    let datas = [];
+    for(let i in regions) {
+        let data = {
+            region: regions[i],
+            data: []
+        }
+        let response = await axios.post(data_url, null, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*',
+                'X-Token': ''
+            },
+            params: {
+                page: 1,
+                limit: 5,
+                regionId: parseInt(i),
+                outwardId: id
+            }  
+        })
+        for(let j in response.data.data.prices) {
+            let cur = response.data.data.prices[j];
+            data.data.push({
+                price: cur.price,
+                server: cur.server,
+                date: `20${cur.tradeTime}`.replace('/', '-').replace('/', '-'),
+                saleCode: cur.saleCode
             });
         }
+        datas.push(data);
     }
-    return result;
+    return {
+        info: info,
+        data: datas
+    }
 }
 
-(async () => {
-    console.log(await generateEmptyData('2T!US4H!US9N9W1B'));
-})();
+getOutwardFromXiaoHei(552)
+.then((x) => console.log(x))
+.catch((error) => {
+    console.log(error);
+    return error;
+});
