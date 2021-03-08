@@ -21,9 +21,10 @@ if(ENV.use_redis){
 //make mysql connection
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(ENV.db_database, ENV.db_username, ENV.db_password, {
-  dialect: ENV.db_dialect,
-  host: ENV.db_host,
-  port: ENV.db_port
+    logging: ENV.db_logging || false,
+    dialect: ENV.db_dialect,
+    host: ENV.db_host,
+    port: ENV.db_port
 });
 global.sequelize = sequelize;
 
