@@ -15,7 +15,7 @@ module.exports = class PriceHandler {
         if (result == null || args['update'] || !await fs.exists(result)) {
             let id = await Api.searchOutwardFromXiaoHei(args.name);
             let data = await Api.getOutwardFromXiaoHei(id);
-            let image = await Image.generateFromTemplateFile('ourward', data);
+            let image = await Image.generateFromTemplateFile('outward', data);
             result = image;
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 1800);

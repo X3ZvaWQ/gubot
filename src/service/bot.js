@@ -72,6 +72,7 @@ class Bot{
             奇遇: '/serendipity',
             沙盘: '/sandbox',
             家具: '/furniture',
+            物价: '/price',
             器物谱: '/travel',
             群昵称: '/group nickname',
             创建团队: '/team create',

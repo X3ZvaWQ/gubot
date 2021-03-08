@@ -43,6 +43,9 @@
         max-height: 100%;
         margin: auto;
     }
+    .price-table:last-of-type{
+        border-bottom: none !important;
+    }
     .price-table:nth-of-type(2n){
         border-right: cornflowerblue solid 2px;
     }
@@ -50,7 +53,7 @@
         border-bottom: cornflowerblue solid 2px;
         display: inline-block;
         width: 49%;
-        height: 150px;
+        height: 172px;
     }
     .price-table table{
         display: block;
@@ -74,37 +77,52 @@
         text-align: center;
     }
 </style>
-<h2>咕-bot物价查询</h2>
-<div id="img-box">
-    <img src="{{info.image}}?imageView/1/w/640/h/340" alt="外观图片">
-</div>
-<h3>{{ info.name }} ({{ info.alias }})</h3>
-<p class="desc">{{ info.desc }}</p>
-<% for(var i = 0; i < data.length; i++) { %>
-    <div class="price-table">
-        <table>
-            <thead>
-                <tr><th colspan="4">{{ data[i].region }}报价</th></tr>
-            </thead>
-            <tbody>
-                <% for(var j = 0; j < data[i].data.length; j++) { %>
-                    <tr>
-                        <td>{{data[i].data[j].date}}</td>
-                        <td>{{data[i].data[j].server}}</td>
-                        <td>{{data[i].data[j].price}}</td>
-                        <td>{{data[i].data[j].saleCode}}</td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
+<div id="template">
+    <h2>咕-bot物价查询</h2>
+    <div id="img-box">
+        <img src="{{ info.image }}?imageView/1/w/640/h/340" alt="外观图片">
     </div>
-<% } %>
-<p class="tips">
-    数据获取时间：2021-03-08 17:36
-</p>
-<p class="tips">
-    数据来源：<span class="b">剑网三物价君小小黑 小程序</span>
-</p>
-<p class="tips">
-    如果你收了或者出了外观不妨去<span class="b">小程序</span>报价提供数据供他人参考吧！
-</p>
+    <h3>{{ info.name }} ({{ info.alias }})</h3>
+    <p class="desc">{{ info.desc }}</p>
+    <% for(var i = 0; i < data.length; i++) { %>
+        <div class="price-table">
+            <table>
+                <thead>
+                    <tr><th colspan="4">{{ data[i].region }}报价</th></tr>
+                </thead>
+                <tbody>
+                    {{if data[i].data.length < 1}}
+                        <!-- because i cannot make it alignment. I make this invisible tr :( -->
+                        <tr style="color: cornsilk">
+                            <td>2000-00-00</td>
+                            <td>唯满侠</td>
+                            <td>16500</td>
+                            <td>收了</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">暂无报价</td>
+                        </tr>
+                    {{else}}
+                    <% for(var j = 0; j < data[i].data.length; j++) { %>
+                        <tr>
+                            <td>{{data[i].data[j].date}}</td>
+                            <td>{{data[i].data[j].server}}</td>
+                            <td>{{data[i].data[j].price}}</td>
+                            <td>{{data[i].data[j].saleCode}}</td>
+                        </tr>
+                    <% } %>
+                    {{/if}}
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+    <p class="tips">
+        数据获取时间：2021-03-08 17:36
+    </p>
+    <p class="tips">
+        数据来源：<span class="b">剑网三物价君小小黑 小程序</span>
+    </p>
+    <p class="tips">
+        如果你收了或者出了外观不妨去<span class="b">小程序</span>报价提供数据供他人参考吧！
+    </p>
+</div>
