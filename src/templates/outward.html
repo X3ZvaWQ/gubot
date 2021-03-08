@@ -51,27 +51,32 @@
         border-bottom: cornflowerblue solid 2px;
         display: inline-block;
         width: 49%;
-        height: 172px;
+        height: 160px;
     }
     .price-table table{
         display: block;
+        border-collapse: collapse;
+        border-spacing: 0; 
     }
     .price-table th{
         margin-bottom: 1rem;
     }
-    .price-table table > tbody > tr:first-of-type > td{
-        width: 12rem;
+    .price-table table > tbody > tr > td:first-of-type{
+        width: 6rem;
     }
-    .price-table table > tbody > tr:nth-of-type(2) > td{
-        width: 4rem;
+    .price-table table > tbody > tr > td:nth-of-type(2){
+        width: 5.8rem;
     }
-    .price-table table > tbody > tr:nth-of-type(3) > td{
+    .price-table table > tbody > tr > td:nth-of-type(3){
         width: 3rem;
     }
-    .price-table table > tbody > tr:nth-of-type(4) > td{
-        width: 10rem;
+    .price-table table > tbody > tr > td:nth-of-type(4){
+        width: 7rem;
     }
     td{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         text-align: center;
     }
 </style>
