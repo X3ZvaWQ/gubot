@@ -426,7 +426,7 @@ class Api{
 
     static async searchOutwardFromXiaoHei(name) {
         let url = `https://www.j3price.top:8088/black-api/api/outward/search`;
-        let response = await axios.post(url, {
+        let response = await axios.post(url, null, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
                 'Accept': 'application/json, text/plain, */*'
@@ -456,7 +456,7 @@ class Api{
             },
             params: {
                 imageLimit: 1,
-                outwardId: 552,
+                outwardId: id,
                 regionId: 1
             }
         });

@@ -48,7 +48,7 @@
         border-bottom: cornflowerblue solid 2px;
         display: inline-block;
         width: 49%;
-        height: 150px;
+        height: 172px;
     }
     .price-table table{
         display: block;
@@ -75,7 +75,7 @@
 <div id="template">
     <h2>咕-bot物价查询</h2>
     <div id="img-box">
-        <img src="{{info.image}}?imageView/1/w/640/h/340" alt="外观图片">
+        <img src="{{ info.image }}?imageView/1/w/640/h/340" alt="外观图片">
     </div>
     <h3>{{ info.name }} ({{ info.alias }})</h3>
     <p class="desc">{{ info.desc }}</p>
@@ -86,6 +86,17 @@
                     <tr><th colspan="4">{{ data[i].region }}报价</th></tr>
                 </thead>
                 <tbody>
+                    {{if data[i].data.length < 1}}
+                        <tr>
+                            <td colspan="4">暂无报价</td>
+                        </tr>
+                        <tr style="color: cornsilk">
+                            <td>2000-00-00</td>
+                            <td>唯满侠</td>
+                            <td>16500</td>
+                            <td>收了</td>
+                        </tr>
+                    {{else}}
                     <% for(var j = 0; j < data[i].data.length; j++) { %>
                         <tr>
                             <td>{{data[i].data[j].date}}</td>
@@ -94,6 +105,7 @@
                             <td>{{data[i].data[j].saleCode}}</td>
                         </tr>
                     <% } %>
+                    {{/if}}
                 </tbody>
             </table>
         </div>
