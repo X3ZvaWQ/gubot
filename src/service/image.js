@@ -66,7 +66,9 @@ class Image {
         let html_content = await fs.readFile(filename, {encoding: 'utf8'});
         let render_content = artTemplate.render(`<div id="template">${html_content}</div>`, data);
         if(options) {
-            options.selector = '#template'
+            if(!options.selector) {
+                options.selector = '#template'
+            }
         }else{
             options = {selector: '#template'}
         }
