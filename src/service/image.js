@@ -4,10 +4,11 @@ const uuid = v4;
 const marked = require('marked');
 const md5 = require('js-md5');
 const artTemplate = require('art-template');
+const fonts = require('../../env.json').image_fonts;
 
 class Image {
     static puppeteer;
-
+    
     static async generateFromHtmlFile(htmlname, options){
         options = options || {};
         let configs = {
@@ -27,6 +28,7 @@ class Image {
                 'load'
             ]
          });
+        await page.evaluate(`document.querySelector('body').style.fontFamily = "${fonts || "'Noto Sans SC', sans-serif, 'consolas'"}"`);
         let imagename = `${process.cwd()}/storage/images/${uuid()}.png`;
         let element = configs['selector'] ? await page.$(configs['selector']): page;
         if(configs.selector) {
@@ -143,7 +145,7 @@ class Image {
         }
         let element = configs['selector'] ? await page.$(configs['selector']) : page;
         if(element == null) {
-            throw '错误：该成就暂时没有攻略'
+            throw '错误：抓取不到需要的内容'
         }
         let imagename = `${process.cwd()}/storage/images/${uuid()}.png`;
         await element.screenshot({path: imagename});
