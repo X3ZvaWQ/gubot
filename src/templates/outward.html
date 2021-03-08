@@ -41,6 +41,9 @@
         max-height: 100%;
         margin: auto;
     }
+    .price-table:last-of-type{
+        border-bottom: none !important;
+    }
     .price-table:nth-of-type(2n){
         border-right: cornflowerblue solid 2px;
     }
@@ -87,14 +90,15 @@
                 </thead>
                 <tbody>
                     {{if data[i].data.length < 1}}
-                        <tr>
-                            <td colspan="4">暂无报价</td>
-                        </tr>
+                        <!-- because i cannot make it alignment. I make this invisible tr :( -->
                         <tr style="color: cornsilk">
                             <td>2000-00-00</td>
                             <td>唯满侠</td>
                             <td>16500</td>
                             <td>收了</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">暂无报价</td>
                         </tr>
                     {{else}}
                     <% for(var j = 0; j < data[i].data.length; j++) { %>
