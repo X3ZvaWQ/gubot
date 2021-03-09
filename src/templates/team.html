@@ -1,9 +1,10 @@
 <style>
     body{
+        background-color: cornsilk;
         width: 812px;
     }
     #table{
-        height: 560px;
+        height: 480px;
         padding: 16px 24px;
     }
     #title{
@@ -29,47 +30,56 @@
         height: 100%;
         width: 39%;
     }
-    #team{
+    #team{ 
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: flex-start;
-        height: 488px;
+        height: 390px;
         width: 752px;
     }
-    .cell{
-        width: 150px;
-        height: 95px;
-        border: 1px solid gray;
+    .cell-applicant.right-border, .cell-optional.right-border{
+        border-right: 1px solid gray;
     }
-    .cell p:first-of-type{
+    .cell-applicant.bottom-border, .cell-optional.bottom-border{
+        border-bottom: 1px solid gray;
+    }
+    .cell-applicant, .cell-optional{
+        width: 150px;
+        height: 75px;
+        border-left: 1px solid gray;
+        border-top: 1px solid gray;
+    }
+    .cell-applicant p:first-of-type{
         padding-left: 0.75rem;
-        padding-top: 0.45rem;
+        padding-top: 0.70rem;
         margin: 0;
         font-size: 16px;
     }
-    .cell p:first-of-type span:last-of-type{
+    .cell-applicant p:first-of-type span:last-of-type{
+        padding-top: 0.06rem;
         padding-right: 0.45rem;
         float: right;
     }
-    .cell p:first-of-type span:last-of-type img{
+    .cell-applicant p:first-of-type span:last-of-type img{
         width: 24px;
         height: 24px;
     }
-    .cell p:nth-of-type(2){
+    .cell-applicant p:nth-of-type(2){
         padding-left: 0.75rem;
         padding-top: 0.45rem;
         margin: 0;
-        font-size: 16px;
+        font-size: 14px;
     }
-    .cell p:nth-of-type(3){
+    .cell-optional p{
         padding-left: 0.32rem;
         padding-top: 0.2rem;
         margin:0;
     }
-    .cell p:nth-of-type(3) img{
-        width: 16px;
-        height: 16px;
+    .cell-optional p img{
+        width: 20px;
+        height: 20px;
+        opacity: 0.2;
     }
 </style>
 <div id="table">
@@ -84,28 +94,26 @@
     </div>
     <div id="team">
         <% for (var i = 0; i<cells.length; i++) { %>
-            <div class="cell" {{if cells[i].color}} style="background-color: {{ cells[i].color }};" {{/if}}>
+            {{if cells[i].applicant.qq}}
+            <div class="cell-applicant {{if i>19}} right-border {{/if}} {{if (i+1)%5==0}}bottom-border{{/if}}" style="background-color: {{ cells[i].color }}CC;">
                 <p>
-                    <span>({{cells[i].id}}){{if cells[i].applicant.id}}{{cells[i].applicant.id}}{{else}}&nbsp;{{/if}}<!-- 秀秀不咕 --></span>
+                    <span>{{if cells[i].applicant.id}}{{cells[i].applicant.id}}{{else}}&nbsp;{{/if}}</span>
                     <span>{{if cells[i].xf}}<img src="https://img.jx3box.com/image/xf/{{ cells[i].xf }}.png" alt="{{ cells[i].xf }}">{{/if}}</span>
                 </p>
-                <p>{{if cells[i].applicant.qq}}{{cells[i].applicant.qq}}{{else}}-{{/if}}<!-- 3303928580 --></p>
+                <p>{{if cells[i].applicant.qq}}{{cells[i].applicant.qq}}{{else}}-{{/if}}</p>
+            </div>
+            {{else}}
+            <div class="cell-optional {{if i>19}} right-border {{/if}} {{if (i+1)%5==0}}bottom-border{{/if}}">
                 <p>
                     <% for(var j = 0; j < cells[i].xf_optional.length; j ++) { %>
-                        {{if j < 14}}
+                        {{if j < 18 && cells[i].xf_optional[j] != 10145 }}
                         <img src="https://img.jx3box.com/image/xf/{{ cells[i].xf_optional[j] }}.png" alt="{{ cells[i].xf_optional[j] }}">
                         {{/if}}
                     <% } %>
                 </p>
             </div>
+            {{/if}}
         <% } %>
-        <!-- <div class="cell" style="background-color: #FF7DADaa;">
-            <p>
-                <span>秀秀不咕</span>
-                <span><img src="https://img.jx3box.com/image/xf/10081.png" alt="冰心"></span>
-            </p>
-            <p>3303928580</p>
-            <p><img src="https://img.jx3box.com/image/xf/10081.png" alt="冰心"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"><img src="https://img.jx3box.com/image/xf/10175.png" alt="毒经"></p>
-        </div> -->
     </div>
+    <p style="color: gray; font-size: 14px; text-align: center; margin-top: 0;">团队排表功能由开源免费的QQ群机器人咕-bot提供, 发送 "<span style="color: red; font-weight: bold">团队报名 心法 id</span>" 即可报名</p>
 </div>

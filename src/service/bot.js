@@ -151,7 +151,6 @@ class Bot{
                     }
                 }
                 if(arg.limit && arg.limit.min != undefined && arg.limit.max != undefined && arg.type == 'string'){
-                    console.log(arg.limit, value, value.length);
                     if(typeof value != 'string' || value.length < arg.limit.min || value.length > arg.limit.max){
                         throw `Error: ${arg.name} 参数不符合规范，请使用/help 命令查看命令用法`;
                     }
