@@ -1,3 +1,14 @@
+const { Socket } = require('net');
+let socket = new Socket().on('connect', () => {
+    console.log('connected');
+}).on('error', (e) => {
+    console.log(`error: ${e.message}`);
+}).on('timeout', () => {
+    console.log('timeout');
+});
+socket.connect(process.argv[2], process.argv[3]);
+
+
 /* const axios = require('axios');
 const md5 = require('js-md5');
 let url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
@@ -36,13 +47,13 @@ axios.get(url, {
 }) */
 
 
-const axios = require('axios');
+/* const axios = require('axios');
 async function getOutwardFromXiaoHei(id){
     let image_url = `https://www.j3price.top:8088/black-api/api/common/search/index/outward`;
     let image_response = await axios.post(image_url, null, {
         headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-            'Accept': 'application/json, text/plain, */*',
+            'Accept': 'application/json, text/plain, *',
             'X-Token': ''
         },
         params: {
@@ -75,7 +86,7 @@ async function getOutwardFromXiaoHei(id){
         let response = await axios.post(data_url, null, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*',
+                'Accept': 'application/json, text/plain, *',
                 'X-Token': ''
             },
             params: {
@@ -107,4 +118,4 @@ getOutwardFromXiaoHei(552)
 .catch((error) => {
     console.log(error);
     return error;
-});
+}); */

@@ -7,8 +7,11 @@ let sequelize = global.sequelize;
 class Alias extends Model {
     static async get(alias,scope,group){
         try{
+            if(typeof alias == 'string') {
+                alias = alias.toLowerCase();
+            }
             let where = {
-                alias: alias.toLowerCase(),
+                alias: alias,
                 scope: scope,
                 group: group || '*'
             };
