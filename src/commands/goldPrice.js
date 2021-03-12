@@ -16,12 +16,17 @@ module.exports = class GoldPriceHandler {
         if (result == null || !await fs.exists(result) || args['update']) {
             let table = [];
 
-            let ark_data = (await Api.getGoldPriceFromArkwish()).data;
-            if (ark_data[args.server] == undefined) {
-                return (`ERROR: Unknown Server!\n错误：没找到这个服务器的数据。`);
-            }   
-            let tieba_gold = _.mean(ark_data[args.server]['today']['post']).toFixed(2);
-            table.push(['贴吧', tieba_gold]);
+            try{
+                let ark_data = (await Api.getGoldPriceFromArkwish()).data;
+                if (ark_data[args.server] == undefined) {
+                    return (`ERROR: Unknown Server!\n错误：没找到这个服务器的数据。`);
+                }   
+                let tieba_gold = _.mean(ark_data[args.server]['today']['post']).toFixed(2);
+                table.push(['贴吧', tieba_gold]);
+            }
+            catch(e) {
+                table.push(['贴吧', '接口报错无返回值']);
+            }
 
             let data = await Api.getGoldPriceFromJx3Api(args.server);
             for(let i in data){

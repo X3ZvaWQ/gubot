@@ -463,7 +463,7 @@ class Api{
         let info = {
             name: image_data.name,
             alias: image_data.name1,
-            image: image_data.images[0].image,
+            image: image_data.images[0] ? image_data.images[0].image : '',
             desc: image_data.info
         }
         let data_url = 'https://www.j3price.top:8088/black-api/api/common/search/index/outward/second'
