@@ -2,6 +2,7 @@ const axios = require('axios');
 const md5 = require('js-md5');
 const {JSDOM} = require("jsdom");
 const jx3api_baseurl = require('../../env.json').jx3api_baseurl;
+const moment = require('moment');
 
 class Api{
     static async getFlowerPriceFromSpider(params) {
@@ -80,16 +81,34 @@ class Api{
         return data;
     }
     
-    static async getServerStatus() {
-        let url = 'https://spider.jx3box.com/jx3servers';
-        let response = await axios.get(url,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            }
+    static async getServerStatus(s) {
+        const servers = require('../assets/json/servers.json');
+        if(servers[s] == undefined) {
+            throw '错误：该服务器不存在。';
+        }
+        let server = servers[s];
+        const { Socket } = require('net');
+        let connectTest = () => new Promise((resolve, reject) => {
+            let socket = new Socket().on('connect', () => {
+                socket.destroy();
+                resolve('success')
+            }).on('error', (e) => {
+                socket.destroy();
+                reject('error');
+            }).on('timeout', () => {
+                socket.destroy();
+                reject('timeout');
+            });
+            socket.connect(server['ipPort'], server['ipAddress']);
         });
-        let data = response.data;
-        return data;
+        let result = await connectTest();
+        if(result == 'success') {
+            server.connectState = true;
+        }else{
+            server.connectState = false;
+        }
+        server.checkTime = moment().tz('Asia/Shanghai').locale('zh-cn').format('YYYY-MM-DD LTS');
+        return server;
     }
     
     static async getAchievementSearch(keyword) {

@@ -1,0 +1,72 @@
+<style>
+    body{
+        background-color: cornsilk;
+        width: 400px;
+        color:dodgerblue;
+        font-family: 'Noto Sans SC', sans-serif, 'consolas';
+        text-align: center;
+    }
+    h2.success {
+        text-shadow: green 0 0 1rem; 
+        color: greenyellow; 
+        font-size: 2rem;
+    }
+    h2.faild {
+        text-shadow: red 0 0 1rem; 
+        color: red; 
+        font-size: 2rem;
+    }
+    span.stress{
+        color: hotpink;
+        font-weight: bold;
+    }
+    table{
+        display: inline-block;
+        font-size: 1rem;
+    }
+    td:first-of-type{
+        text-align: right;
+        padding-right: 0.65rem;
+    }
+    td:last-of-type{
+        text-align: left;
+    }
+    p.note{
+        font-size: 0.8rem;
+        color: skyblue;
+    }
+</style>
+<div>
+    <h2>Gubot - 开服查询</h2>
+    {{if connectState}}
+    <h2 class="success">可连接</h2>
+    {{else}}
+    <h2 class="faild">维护中</h2>
+    {{/if}}
+    <table>
+        <tbody>
+            <tr>
+                <td>服务器</td>
+                <td>{{serverName}}</td>
+            </tr>
+            {{if serverName != mainServer}}
+            <tr>
+                <td>主服</td>
+                <td>{{mainServer}}</td>
+            </tr>
+            {{/if}}
+            <tr>
+                <td>大区</td>
+                <td>{{zoneName}}</td>
+            </tr>
+            <tr>
+                <td>测试IP</td>
+                <td>{{ipAddress}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="note">
+        数据来源<span class="stress">咕Bot</span>，测试时间<span class="stress">{{checkTime}}</span><br />
+        本机器人是开源免费的机器人，有需要直接加好友拉进群即可
+    </p>
+</div>

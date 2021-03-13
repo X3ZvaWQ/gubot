@@ -1,15 +1,27 @@
 const Api = require('../service/api');
+const Cq = require('../service/cqhttp');
+const Image = require('../service/image');
+const servers = require('../assets/json/servers.json');
 
 module.exports = class ServerStatusHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        let redis_key = 'ServerStatus';
+        let redis_key = `ServerStatus:${args.server}`;
         //get data from redis
-        let serverStatus = await redis.get(redis_key);
-        let servers = {};
-        //check data is empty?
-        if (serverStatus != undefined && serverStatus != null && !args['update']) {
+        let result = await redis.get(redis_key);
+        if (result == null || !await fs.exists(result) || args['update']) {
+            let server;
+            try{
+                server = await Api.getServerStatus(args.server);
+            }catch(e) {
+                throw e;
+            }
+            result = await Image.generateFromTemplateFile('serverStatus', server);
+        }
+        return Cq.ImageCQCode('file://' + result);
+        /* //check data is empty?
+        if (serverStatus != undefined && serverStatus != null) {
             servers = JSON.parse(serverStatus);
         } else {
             let data = await Api.getServerStatus();
@@ -38,7 +50,7 @@ module.exports = class ServerStatusHandler {
         连接状态:${serverStatus.connectState ? '可连接' : '不可连接'}
         ----------------
         数据来源于jx3box仅供参考。
-        `.replace(/[ ]{2,}/g, "");
+        `.replace(/[ ]{2,}/g, ""); */
     }
 
     static argsList() {

@@ -45,7 +45,7 @@ module.exports = class GoldPriceHandler {
             await redis.expire(redis_key, 600);
         } 
         
-        return `${Cq.ImageCQCode('file://' + result)}`;
+        return Cq.ImageCQCode('file://' + result);
     }
 
     static argsList() {

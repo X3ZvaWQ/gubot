@@ -1,4 +1,45 @@
-const { Socket } = require('net');
+const {Socket} = require('net');
+server = {
+    'ipPort': 80,
+    'ipAddress': 'baidu.com'
+}
+let connectTest = () => new Promise((resolve, reject) => {
+    let socket = new Socket().on('connect', () => {
+        socket.destroy();
+        resolve('success')
+    }).on('error', (e) => {
+        socket.destroy();
+        reject('error');
+    }).on('timeout', () => {
+        socket.destroy();
+        reject('timeout');
+    });
+    socket.connect(server['ipPort'], server['ipAddress']);
+});
+/* new Promise(connectTest).then((x) => {
+    console.log(x);
+}).catch((e) => {
+    console.log(e);
+}); */
+(async () => {
+    let x = await connectTest();
+    console.log(x);
+})();
+/* const fs = require('fs-extra');
+
+let content = fs.readJson('/d/workspace/gubot/src/assets/json/servers.json').then(
+    (c) => {
+        
+        let servers = {};
+        for(let i in c) {
+            delete c[i]['connectState'];
+            servers[c[i]['serverName']] = c[i];
+        }
+        fs.outputJson('/d/workspace/gubot/src/assets/json/servers1.json', servers);
+    }
+);
+ */
+/* const { Socket } = require('net');
 let socket = new Socket().on('connect', () => {
     console.log('connected');
 }).on('error', (e) => {
@@ -7,7 +48,7 @@ let socket = new Socket().on('connect', () => {
     console.log('timeout');
 });
 socket.connect(process.argv[2], process.argv[3]);
-
+ */
 
 /* const axios = require('axios');
 const md5 = require('js-md5');
