@@ -18,6 +18,8 @@ module.exports = class ServerStatusHandler {
                 throw e;
             }
             result = await Image.generateFromTemplateFile('serverStatus', server);
+            await redis.set(redis_key, result);
+            await redis.expire(redis_key, 30);
         }
         return Cq.ImageCQCode('file://' + result);
         /* //check data is empty?

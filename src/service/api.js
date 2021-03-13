@@ -94,11 +94,12 @@ class Api{
                 resolve('success')
             }).on('error', (e) => {
                 socket.destroy();
-                reject('error');
+                resolve('error');
             }).on('timeout', () => {
                 socket.destroy();
-                reject('timeout');
+                resolve('timeout');
             });
+            socket.setTimeout(2000);
             socket.connect(server['ipPort'], server['ipAddress']);
         });
         let result = await connectTest();
