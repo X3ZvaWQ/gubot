@@ -1,7 +1,7 @@
 const Api = require('../service/api');
 const Cq = require('../service/cqhttp');
 const Image = require('../service/image');
-const servers = require('../assets/json/servers.json');
+const fs = require('fs-extra');
 
 module.exports = class ServerStatusHandler {
     async handle(ctx) {

@@ -99,7 +99,7 @@ class Api{
                 socket.destroy();
                 resolve('timeout');
             });
-            socket.setTimeout(2000);
+            socket.setTimeout(1000);
             socket.connect(server['ipPort'], server['ipAddress']);
         });
         let result = await connectTest();
