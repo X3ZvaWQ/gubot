@@ -7,7 +7,7 @@ let sequelize = global.sequelize;
 class Alias extends Model {
     static async get(alias,scope,group){
         try{
-            if(typeof alias == 'string') {
+            if(typeof alias == 'string' && scope != 'command') {
                 alias = alias.toLowerCase();
             }
             let where = {
