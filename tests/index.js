@@ -1,4 +1,9 @@
-const {Socket} = require('net');
+/* let q1 = /(\S+)宏/;
+let q2 = new RegExp('^([\\S\\s]+)\\s?(攻略|成就)$');
+let str = '阴阳两界成就 ';
+console.log(q2.test(str), str.replace(q2, '\n$1,$2,$3,$4')); */
+
+/* const {Socket} = require('net');
 server = {
     'ipPort': 80,
     'ipAddress': 'baidu.com'
@@ -15,16 +20,16 @@ let connectTest = () => new Promise((resolve, reject) => {
         reject('timeout');
     });
     socket.connect(server['ipPort'], server['ipAddress']);
-});
+}); */
 /* new Promise(connectTest).then((x) => {
     console.log(x);
 }).catch((e) => {
     console.log(e);
-}); */
+}); *//* 
 (async () => {
     let x = await connectTest();
     console.log(x);
-})();
+})(); */
 /* const fs = require('fs-extra');
 
 let content = fs.readJson('/d/workspace/gubot/src/assets/json/servers.json').then(

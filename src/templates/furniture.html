@@ -1,33 +1,35 @@
-<div id="template">
-    <h2>咕-bot家具查询</h2>
-    <table>
-        <tr>
-            <td>
-                <img height="160" width="160" src="{{image_url}}" />
-            </td>
-            <td>
-                <p>{{name}}</p> 
-                <ul>
-                    <li>观赏：{{view}}</li>
-                    <li>实用：{{practical}}</li>
-                    <li>坚固：{{hard}}</li>
-                    <li>风水：{{geomantic}}</li>
-                    <li>趣味：{{interesting}}</li>
-                    <li>品质等级：{{quality}}</li>
-                    <li>获取来源: {{source}}</li>
-                    <li>需求家园等级: {{levelLimit}}</li>
-                </ul>
-            </td>
-        </tr>
-    </table>
-    <p>{{tip}}</p>
-</div>
+
+<h2>咕-bot家具查询</h2>
+<table>
+    <tr>
+        <td>
+            <img height="160" width="160" src="{{image_url}}" />
+        </td>
+        <td>
+            <p>{{name}}</p> 
+            <ul>
+                <li>观赏：{{view}}</li>
+                <li>实用：{{practical}}</li>
+                <li>坚固：{{hard}}</li>
+                <li>风水：{{geomantic}}</li>
+                <li>趣味：{{interesting}}</li>
+                <li>品质等级：{{quality}}</li>
+                <li>获取来源: {{source}}</li>
+                <li>需求家园等级: {{levelLimit}}</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+<p>{{tip}}</p>
 <style>
+    body{
+        width: 25rem;
+    }
     #template {
         margin-left: auto; 
         margin-right: auto;
     }
-    #template>p{
+    #template p{
         text-indent: 2rem;
     }
     td p {

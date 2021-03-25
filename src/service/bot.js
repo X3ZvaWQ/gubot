@@ -56,40 +56,67 @@ class Bot{
                 return null
             }
         }
-        let alias = {
-            宏: '/macro',
-            骚话: '/saohua',
-            帮助: '/help',
-            花价: '/flowerPrice',
-            科举: '/exam',
-            金价: '/goldPrice',
-            开服: '/serverStatus',
-            攻略: '/achievement',
-            更新: '/gameUpdate',
-            日常: '/daily',
-            小药: '/reinforcement',
-            阵眼: '/eye',
-            奇遇: '/serendipity',
-            沙盘: '/sandbox',
-            家具: '/furniture',
-            物价: '/price',
-            器物谱: '/travel',
-            群昵称: '/group nickname',
-            创建团队: '/team create',
-            删除团队: '/team delete',
-            团队列表: '/team list',
-            查看团队: '/team view',
-            取消报名: '/team cancel',
-            团队报名: '/team apply',
-            群服务器: '/group server',
-            简便命令: '/group convenient',
-            添加别名: '/alias add',
-            删除别名: '/alias delete',
+        let regex_map = {
+            '^(\\S+)\\s?宏$': '/macro $1',
+            '^宏\\s(\\S+)$': '/macro $1',
+
+            '^骚话$': '/saohua',
+
+            '^帮助\\s?(\\S+)$': '/help $1',
+            '^(\\S+)\\s?帮助$': '/help $1',
+
+            '^花价\\s?([\\S\\s]+)$': '/flowerPrice $1',
+            '^科举\\s?([\\S\\s]+)$': '/exam $1',
+
+            '^金价\\s?(\\S+)$': '/goldPrice $1',
+            '^(\\S+)\\s?金价$': '/goldPrice $1',
+
+            '^开服\\s?([\\S\\s]+)$': '/serverStatus $1',
+            '^([\\S\\s]+)\\s?开服$': '/serverStatus $1',
+
+            '^(\\S+)\\s?(攻略|成就)$': '/achievement $1',
+            '^(攻略|成就)\\s?(\\S+)$': '/achievement $2',
+
+            '^更新|游戏更新$': '/gameUpdate',
+            '^日常|游戏日常$': '/daily',
+
+            '^(\\S+)\\s?小药$': '/reinforcement $1',
+            '^小药\\s?(\\S+)$': '/reinforcement $1',
+
+            '^(\\S+)\\s?阵眼$': '/eye $1',
+            '^阵眼\\s?(\\S+)$': '/eye $1',
+
+            '^(奇遇|查询)\\s?([\\S\\s]+)$': '/serendipity $2',
+
+            '^(沙盘|阵营沙盘)\\s?(\\S+)$': '/sandbox $2',
+            '^(\\S+)\\s?(沙盘|阵营沙盘)$': '/sandbox $1',
+
+            '^器物谱\\s?(\\S+)$': '/travel $1',
+            '^(\\S+)\\s?器物谱$': '/travel $1',
+            '^家具\\s?(\\S+)$': '/furniture $1',
+            '^(\\S+)\\s?家具$': '/furniture $1',
+            '^物价\\s?(\\S+)$': '/price $1',
+            '^(\\S+)\\s?物价$': '/price $1',
+
+            '^群昵称\\s?([\S\s]+)': '/group nickname $1',
+            '^群服务器\\s?([\S\s]+)': '/group server $1',
+            '^简便命令\\s?([\S\s]+)': '/group convenient $1',
+
+            '^创建团队\\s?([\S\s]+)': '/team create $1',
+            '^删除团队\\s?([\S\s]+)': '/team delete $1',
+            '^团队列表\\s?([\S\s]+)': '/team list $1',
+            '^查看团队\\s?([\S\s]+)': '/team view $1',
+            '^取消报名\\s?([\S\s]+)': '/team cancel $1',
+            '^团队报名\\s?([\S\s]+)': '/team apply $1',
+            
+            '^添加别名\\s?([\S\s]+)': '/alias add $1',
+            '^删除别名\\s?([\S\s]+)': '/alias delete $1'
         };
-        let message = data.message;
-        for(let i in alias) {
-            if(message.indexOf(i) === 0) {
-                data.message = message.replace(i, alias[i]);
+        let message = data.message.trim();
+        for(let i in regex_map) {
+            let regex = new RegExp(i);
+            if(regex.test(message)) {
+                data.message = message.replace(regex, regex_map[i]);
                 return await this.handleCommand(data);
             }
         }
