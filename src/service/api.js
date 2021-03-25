@@ -333,7 +333,7 @@ class Api{
                     quality: cur.qualityLevel,
                     levelLimit: cur.levelLimit,
                     image_url: cur.imagePath,
-                    tip: cur.tip.replaceAll('\n', '<br />')
+                    tip: cur.tip.replace(/\n/g, '<br />')
                 });
             }
             return result;
@@ -375,7 +375,7 @@ class Api{
                     quality: cur.level,
                     levelLimit: cur.limit,
                     image_url: `https://dl.pvp.xoyo.com/prod/icons/ui/image/homeland/data/source/${cur.img}`,
-                    tip: cur.desc.replaceAll('\n', '<br />')
+                    tip: cur.desc.replace(/\n/g, '<br />')
                 });
             }
             return result;
