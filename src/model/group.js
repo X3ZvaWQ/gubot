@@ -14,6 +14,7 @@ Group.init({
     },
     nickname: {
         type: DataTypes.STRING,
+        defaultValue: '咕咕'
     },
     groupname: {
         type: DataTypes.STRING,
@@ -23,6 +24,22 @@ Group.init({
         defaultValue: '唯我独尊'
     },
     convenient:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    chat:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    server_broadcast:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    serendipity_broadcast:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    meme:{
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },

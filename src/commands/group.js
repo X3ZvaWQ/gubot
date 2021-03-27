@@ -1,5 +1,6 @@
 const Group = require("../model/group");
 const moment = require('moment');
+const Alias = require("../model/alias");
 
 
 module.exports = class GroupHandler {
@@ -16,8 +17,8 @@ module.exports = class GroupHandler {
             return await this.nickname(ctx);
         } else if (action == 'groupname') {
             return await this.groupname(ctx);
-        }else if (action == 'convenient') {
-            return await this.convenient(ctx);
+        }else if (action == 'set') {
+            return await this.set(ctx);
         }
     }
 
@@ -156,6 +157,48 @@ module.exports = class GroupHandler {
         }
     }
 
+    async set(ctx){
+        let args = ctx.args;
+        if (ctx.data.message_type == 'group') {
+            if (args.switch != null && args.switch != undefined) {
+                if (ctx.permissions < 4) {
+                    return '权限不足。'
+                }
+                let group_id = ctx.data.group_id;
+                let func = Alias.get(args.function, 'function', group_id);
+                let swi = args.switch == 'true';
+                let whilelist = ['convenient', 'chat', 'server_broadcast', 'serendipity_broadcast', 'meme'];
+                if(whilelist.indexOf(func) == -1) {
+                    return `错误：功能 ${args.function} 不存在`;
+                }
+                let group = await Group.findOne({
+                    where: {
+                        group_id: group_id
+                    }
+                });
+                if (group == null) {
+                    group = await Group.create({
+                        group_id: group_id,
+                        server: '唯我独尊',
+                        nickname: '咕咕',
+                        groupname: group_id
+                    });
+                }
+                group[func] = swi;
+                group.save();
+                let redis_key = `GroupFunc:${func}:${group_id}`;
+                await redis.set(redis_key, swi=='true'? true : false);
+                redis_key = `GroupInfo:${group_id}`;
+                await redis.del(redis_key);
+                return `本群${func}功能开关已被修改为：${swi}`;
+            } else {
+                return this.info(ctx);
+            }
+        } else if (ctx.data.message_type == 'private') {
+            return '本命令仅限群内使用';
+        }
+    }
+    
     async convenient(ctx) {
         let swi = ctx.args.switch;
         if (ctx.data.message_type == 'group') {
@@ -180,7 +223,7 @@ module.exports = class GroupHandler {
                     group.convenient = swi=='true' ? true : false;
                     group.save();
                 }
-                let redis_key = `GroupConvenient:${group_id}`;
+                let redis_key = `GroupFunc:${func}:${group_id}`;
                 await redis.set(redis_key, swi=='true'? true : false);
                 redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
@@ -241,16 +284,26 @@ module.exports = class GroupHandler {
                     nullable: true,
                     default: null
                 }],
-                convenient: [{
+                set: [{
+                    name: 'function',
+                    alias: 'function',
+                    type: 'string',
+                    defaultIndex: 2,
+                    shortArgs: null,
+                    longArgs: 'function',
+                    limit: null,
+                    nullable: false,
+                    default: null
+                }, {
                     name: 'switch',
                     alias: 'boolean',
                     type: 'boolean',
-                    defaultIndex: 2,
+                    defaultIndex: 3,
                     shortArgs: null,
                     longArgs: 'switch',
                     limit: null,
                     nullable: true,
-                    default: null
+                    default: true
                 }],
             }
         };

@@ -37,7 +37,7 @@ class Bot{
 
     async handleMessage(data) {
         if(data.group_id) {
-            let redis_key = `GroupConvenient:${data.group_id}`;
+            let redis_key = `switchs:${data.group_id}`;
             let boolean = await redis.get(redis_key);
             if(boolean == null){
                 let group = await Group.findOne({
@@ -98,16 +98,17 @@ class Bot{
             '^物价\\s?(\\S+)$': '/price $1',
             '^(\\S+)\\s?物价$': '/price $1',
 
-            '^群昵称\\s?([\S\s]+)': '/group nickname $1',
+            '^群昵称\\s?([\S\s]+)': '/group groupname $1',
+            '^咕咕称呼\\s?([\S\s]+)': '/group nickname $1',
             '^群服务器\\s?([\S\s]+)': '/group server $1',
-            '^简便命令\\s?([\S\s]+)': '/group convenient $1',
+            '^(打开|关闭|开|关)\\s?(奇遇播报|开服播报|间便命令|智障对话|斗图)': '/group set $2 $1',
 
-            '^创建团队\\s?([\S\s]+)': '/team create $1',
-            '^删除团队\\s?([\S\s]+)': '/team delete $1',
-            '^团队列表\\s?([\S\s]+)': '/team list $1',
-            '^查看团队\\s?([\S\s]+)': '/team view $1',
-            '^取消报名\\s?([\S\s]+)': '/team cancel $1',
-            '^团队报名\\s?([\S\s]+)': '/team apply $1',
+            '^(开团|创建团队)\\s?([\S\s]+)': '/team create $2',
+            '^(删除团队)\\s?([\S\s]+)': '/team delete $2',
+            '^(列表|团队列表)\\s?([\S\s]+)': '/team list $2',
+            '^(查看|查看团队)\\s?([\S\s]+)': '/team view $2',
+            '^(取消|取消报名)\\s?([\S\s]+)': '/team cancel $2',
+            '^(报名|团队报名)\\s?([\S\s]+)': '/team apply $2',
             
             '^添加别名\\s?([\S\s]+)': '/alias add $1',
             '^删除别名\\s?([\S\s]+)': '/alias delete $1'

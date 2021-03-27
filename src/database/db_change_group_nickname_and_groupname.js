@@ -11,9 +11,8 @@ const Group = require('../model/group');
 groups = Group.findAll().then(x => {
     for(let i in x) {
         let group = x[i];
-        let temp = group.groupname;
         group.groupname = group.nickname;
-        group.nickname = temp;
+        group.nickname = '咕咕';
         group.save();
     }
 });
