@@ -15,6 +15,9 @@ Group.init({
     nickname: {
         type: DataTypes.STRING,
     },
+    groupname: {
+        type: DataTypes.STRING,
+    },
     server: {
         type: DataTypes.STRING,
         defaultValue: '唯我独尊'

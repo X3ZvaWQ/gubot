@@ -14,7 +14,9 @@ module.exports = class GroupHandler {
             return await this.server(ctx);
         } else if (action == 'nickname') {
             return await this.nickname(ctx);
-        } else if (action == 'convenient') {
+        } else if (action == 'groupname') {
+            return await this.groupname(ctx);
+        }else if (action == 'convenient') {
             return await this.convenient(ctx);
         }
     }
@@ -110,7 +112,42 @@ module.exports = class GroupHandler {
                 }
                 let redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
-                return '本群称呼已被修改为：' + nickname;
+                return '本群咕咕的称呼已被修改为：' + nickname;
+            } else {
+                return this.info(ctx);
+            }
+        } else if (ctx.data.message_type == 'private') {
+            return '本命令仅限群内使用';
+        }
+    }
+
+    async groupname(ctx) {
+        let groupname = ctx.args.groupname;
+        if (ctx.data.message_type == 'group') {
+            if (groupname != null && groupname != undefined) {
+                if (ctx.permissions < 4) {
+                    return '权限不足。'
+                }
+                let group_id = ctx.data.group_id;
+                let group = await Group.findOne({
+                    where: {
+                        group_id: group_id
+                    }
+                });
+                if (group == null) {
+                    group = await Group.create({
+                        group_id: group_id,
+                        server: '唯我独尊',
+                        nickname: '咕咕',
+                        groupname: groupname
+                    });
+                } else {
+                    group.groupname = groupname;
+                    group.save();
+                }
+                let redis_key = `GroupInfo:${group_id}`;
+                await redis.del(redis_key);
+                return '本群称呼已被修改为：' + groupname;
             } else {
                 return this.info(ctx);
             }
@@ -189,7 +226,18 @@ module.exports = class GroupHandler {
                     defaultIndex: 2,
                     shortArgs: null,
                     longArgs: 'nickname',
-                    limit: null,
+                    limit: {min: 2, max: 8},
+                    nullable: true,
+                    default: null
+                }],
+                groupname: [{
+                    name: 'groupname',
+                    alias: null,
+                    type: 'string',
+                    defaultIndex: 2,
+                    shortArgs: null,
+                    longArgs: 'groupname',
+                    limit: {min: 2, max: 8},
                     nullable: true,
                     default: null
                 }],
