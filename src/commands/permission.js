@@ -18,7 +18,7 @@ module.exports = class PermissionHandler {
 
     async list(ctx) {
         if (ctx.permissions < 2) {
-            return '权限不足。'
+            throw '权限不足。'
         }
         if (ctx.data.message_type == 'group') {
             let group_id = ctx.data.group_id;
@@ -85,7 +85,7 @@ module.exports = class PermissionHandler {
 
     async set(ctx) {
         if (ctx.permissions < 4) {
-            return '权限不足。'
+            throw '权限不足。'
         }
         let args = ctx.args;
         let targetQQ = Cq.AtCQCodeParse(args.user);

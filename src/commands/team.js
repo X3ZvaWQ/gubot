@@ -31,8 +31,8 @@ module.exports = class TeamHandler {
     async create(ctx){
         let args = ctx.args;
         let permission = ctx.permission;
-        if(permission < 2) return '权限不足';
-        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        if(permission < 2) throw '权限不足';
+        if(!ctx.data.group_id) throw '该命令仅限群内使用';
         let emptyData;
         try{
             emptyData = await Team.generateEmptyData(args.squad, ctx.data.group_id);
@@ -53,8 +53,8 @@ module.exports = class TeamHandler {
     async delete(ctx){
         let args = ctx.args;
         let permission = ctx.permission;
-        if(permission < 2) return '权限不足';
-        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        if(permission < 2) throw '权限不足';
+        if(!ctx.data.group_id) throw '该命令仅限群内使用';
         let team;
         if(args.team_id == '-') {
             team = await Team.findAll({
@@ -63,7 +63,7 @@ module.exports = class TeamHandler {
                 }
             });
             if(team.length > 1) {
-                return '错误：本群存在多个团队，请指定团队id'
+                throw '错误：本群存在多个团队，请指定团队id'
             }
             team = team[0];
         }else{
@@ -75,7 +75,7 @@ module.exports = class TeamHandler {
             });
         }
         if(team == null) {
-            return '错误：该团队不存在，请使用/team list查看本群团队';
+            throw '错误：该团队不存在，请使用/team list查看本群团队';
         }
         let [id, name] = [team.id, team.name];
         await team.destroy();
@@ -83,7 +83,7 @@ module.exports = class TeamHandler {
     }
 
     async list(ctx){
-        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        if(!ctx.data.group_id) throw '该命令仅限群内使用';
         let group_id = ctx.data.group_id;
         let group = await Group.findOne({
             where: {
@@ -106,13 +106,13 @@ module.exports = class TeamHandler {
 
     async apply(ctx){
         let args = ctx.args;
-        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        if(!ctx.data.group_id) throw '该命令仅限群内使用';
         let group_id = ctx.data.group_id;
         let team_id = args.team_id;
         let _xf = args.xf;
         let xf = allxf[_xf];
         if(xf == undefined){
-            return `错误：未知的心法 ${_xf} !`;
+            throw `错误：未知的心法 ${_xf} !`;
         }
         xf = xf.id;
         let team;
@@ -123,7 +123,7 @@ module.exports = class TeamHandler {
                 }
             });
             if(team.length > 1) {
-                return '错误：本群存在多个团队，请指定团队id'
+                throw '错误：本群存在多个团队，请指定团队id'
             }
             team = team[0];
         }else{
@@ -135,12 +135,12 @@ module.exports = class TeamHandler {
             });
         }
         if(team == null) {
-            return `错误：本群不存在id为${team_id}的团队。`;
+            throw `错误：本群不存在id为${team_id}的团队。`;
         }
         let cells = JSON.parse(team.data);
         let cells_valid = cells.filter((x) => (x.xf_optional.indexOf(xf) != -1 && !x.applied));
         if(cells_valid.length < 1) {
-            return `错误：id为 ${team_id} 的团队没有 ${xf} 的坑位。`;
+            throw `错误：id为 ${team_id} 的团队没有 ${xf} 的坑位。`;
         }
         let success = false;
         for(let i in cells_valid) {
@@ -184,13 +184,13 @@ module.exports = class TeamHandler {
             await team.save();
             return `报名成功，可以使用/team view id/name 查看团队`;
         }else{
-            return `报名失败，请检查团队对应坑位是否充足`;
+            throw `报名失败，请检查团队对应坑位是否充足`;
         }
     }
 
     async cancel(ctx){
         let args = ctx.args;
-        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        if(!ctx.data.group_id) throw '该命令仅限群内使用';
         let group_id = ctx.data.group_id;
         let team_id = args.team_id;
         let team;
@@ -201,7 +201,7 @@ module.exports = class TeamHandler {
                 }
             });
             if(team.length > 1) {
-                return '错误：本群存在多个团队，请指定团队id'
+                throw '错误：本群存在多个团队，请指定团队id'
             }
             team = team[0];
         }else{
@@ -213,12 +213,12 @@ module.exports = class TeamHandler {
             });
         }
         if(team == null) {
-            return `错误：本群不存在id为${team_id}的团队。`;
+            throw `错误：本群不存在id为${team_id}的团队。`;
         }
         let cells = JSON.parse(team.data);
         let cell = cells.filter((x) => (x.applied && x.applicant.qq == ctx.data.sender.user_id));
         if(cell.length < 1) {
-            return `错误：你没有报名id为 ${team_id} 的团队。`;
+            throw `错误：你没有报名id为 ${team_id} 的团队。`;
         }
         if(args.game_id == '-') {
             for(let i in cell) {
@@ -243,7 +243,7 @@ module.exports = class TeamHandler {
                     cells[cell[i].id] = cell[i];
                 }
             }else{
-                return `错误：你并没有报名游戏id为 ${args.game_id} 的角色`;
+                throw `错误：你并没有报名游戏id为 ${args.game_id} 的角色`;
             }
         }
         team.data = JSON.stringify(cells);
@@ -253,7 +253,7 @@ module.exports = class TeamHandler {
 
     async view(ctx) {
         let args = ctx.args;
-        if(!ctx.data.group_id) return '该命令仅限群内使用';
+        if(!ctx.data.group_id) throw '该命令仅限群内使用';
         let group_id = ctx.data.group_id;
         let team;
         if(args.team_id == '-') {
@@ -264,7 +264,7 @@ module.exports = class TeamHandler {
                 }
             });
             if(team.length > 1) {
-                return '错误：本群存在多个团队，请指定团队id'
+                throw '错误：本群存在多个团队，请指定团队id'
             }
             team = team[0];
         }else{
@@ -276,7 +276,7 @@ module.exports = class TeamHandler {
             });
         }
         if(team == null) {
-            return '错误：该团队不存在，请使用/team list查看本群团队';
+            throw '错误：该团队不存在，请使用/team list查看本群团队';
         }
         let cells = JSON.parse(team.data);
         for(let i in cells) {

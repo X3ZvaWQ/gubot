@@ -28,7 +28,7 @@ module.exports = class SerendipityHandler {
             }
 
             if (serendipitys == '') {
-                return 'ERROR: Serendipity Not Found.\n错误: 你写的这玩意......他真的存在吗?';
+                throw 'ERROR: Serendipity Not Found.\n错误: 你写的这玩意......他真的存在吗?';
             }
             data = await Api.getSerendipity({
                 role: args.player,
@@ -40,7 +40,7 @@ module.exports = class SerendipityHandler {
             if (data.code == 0) {
                 data = data.data.data;
             } else {
-                return 'ERROR: Server Error.\n错误: 接口炸了，不关机器人的事儿';
+                throw 'ERROR: Server Error.\n错误: 接口炸了，不关机器人的事儿';
             }
             await redis.set(key, JSON.stringify(data));
             await redis.expire(key, 300);

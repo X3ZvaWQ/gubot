@@ -12,17 +12,17 @@ module.exports = class MacroHandler {
         if (result == null) {
             let kungfuid = xfs[args.xf];
             if (kungfuid == undefined) {
-                return 'ERROR: Unknown xf.\n错误：未知的心法';
+                throw 'ERROR: Unknown xf.\n错误：未知的心法';
             }
             kungfuid = kungfuid.id;
             let rank = await Api.getMacroTops(kungfuid);
             if (rank == null || rank.length == 0) {
-                return 'ERROR: Spide Macro Rank Error.\n错误：抓取该心法宏排行时出现错误';
+                throw 'ERROR: Spide Macro Rank Error.\n错误：抓取该心法宏排行时出现错误';
             }
             rank = rank[args.rank - 1];
             let post = await Api.getMacroContent(rank.pid);
             if (post.code != 10064) {
-                return 'ERROR: Spide Macro Content Error.\n错误：抓取宏内容时出现错误';
+                throw 'ERROR: Spide Macro Content Error.\n错误：抓取宏内容时出现错误';
             }
             post = post.data.post;
             let macro_qixues = post.post_subtype;
@@ -30,7 +30,7 @@ module.exports = class MacroHandler {
             if (qixue_xf == null) {
                 qixue_xf = await Api.getQiXue();
                 if (qixue_xf == null) {
-                    return 'ERROR: Spide QiXue Content Error.\n错误：抓取奇穴内容时出现错误';
+                    throw 'ERROR: Spide QiXue Content Error.\n错误：抓取奇穴内容时出现错误';
                 }
                 qixue_xf = qixue_xf[macro_qixues];
                 await redis.set(`QiXues:${macro_qixues}`, JSON.stringify(qixue_xf));

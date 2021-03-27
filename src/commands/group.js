@@ -51,7 +51,7 @@ module.exports = class GroupHandler {
             }
             return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
         } else if (ctx.data.message_type == 'private') {
-            return '本命令仅限群内使用';
+            throw '本命令仅限群内使用';
         }
     }
 
@@ -60,7 +60,7 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (server != null && server != undefined) {
                 if (ctx.permissions < 4) {
-                    return '权限不足。'
+                    throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
                 let group = await Group.findOne({
@@ -85,7 +85,7 @@ module.exports = class GroupHandler {
                 return this.info(ctx);
             }
         } else if (ctx.data.message_type == 'private') {
-            return '本命令仅限群内使用';
+            throw '本命令仅限群内使用';
         }
     }
 
@@ -94,7 +94,7 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (nickname != null && nickname != undefined) {
                 if (ctx.permissions < 4) {
-                    return '权限不足。'
+                    throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
                 let group = await Group.findOne({
@@ -121,7 +121,7 @@ module.exports = class GroupHandler {
                 return this.info(ctx);
             }
         } else if (ctx.data.message_type == 'private') {
-            return '本命令仅限群内使用';
+            throw '本命令仅限群内使用';
         }
     }
 
@@ -130,7 +130,7 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (groupname != null && groupname != undefined) {
                 if (ctx.permissions < 4) {
-                    return '权限不足。'
+                    throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
                 let group = await Group.findOne({
@@ -156,7 +156,7 @@ module.exports = class GroupHandler {
                 return this.info(ctx);
             }
         } else if (ctx.data.message_type == 'private') {
-            return '本命令仅限群内使用';
+            throw '本命令仅限群内使用';
         }
     }
 
@@ -165,14 +165,14 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (args.switch != null && args.switch != undefined) {
                 if (ctx.permissions < 4) {
-                    return '权限不足。'
+                    throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
                 let func = Alias.get(args.function, 'function', group_id);
                 let swi = args.switch == 'true';
                 let whilelist = ['convenient', 'chat', 'server_broadcast', 'serendipity_broadcast', 'meme'];
                 if(whilelist.indexOf(func) == -1) {
-                    return `错误：功能 ${args.function} 不存在`;
+                    throw `错误：功能 ${args.function} 不存在`;
                 }
                 let group = await Group.findOne({
                     where: {
@@ -198,7 +198,7 @@ module.exports = class GroupHandler {
                 return this.info(ctx);
             }
         } else if (ctx.data.message_type == 'private') {
-            return '本命令仅限群内使用';
+            throw '本命令仅限群内使用';
         }
     }
 

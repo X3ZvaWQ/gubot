@@ -18,7 +18,7 @@ module.exports = class FlowerPriceHandler {
         } else {
             let response = await Api.getFlowerPriceFromSpider(parms);
             if (JSON.stringify(response.data) == '{}') {
-                return 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
+                throw 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }
             flowerPrice = response.data
             await redis.set(key, JSON.stringify(flowerPrice));

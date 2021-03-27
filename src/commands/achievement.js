@@ -16,7 +16,7 @@ module.exports = class AchievementHandler {
             if (search.code == 200 && search.data.achievements.length > 0) {
                 achievementID = search.data.achievements[0].ID;
             } else {
-                return 'ERROR: Unknown Achievement!\n错误：没找到这个成就的数据。';
+                throw 'ERROR: Unknown Achievement!\n错误：没找到这个成就的数据。';
             }
             let id = achievementID;
             let name = search.data.achievements[0].Name;

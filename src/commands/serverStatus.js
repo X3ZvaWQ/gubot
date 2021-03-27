@@ -22,37 +22,6 @@ module.exports = class ServerStatusHandler {
             await redis.expire(redis_key, 30);
         }
         return Cq.ImageCQCode('file://' + result);
-        /* //check data is empty?
-        if (serverStatus != undefined && serverStatus != null) {
-            servers = JSON.parse(serverStatus);
-        } else {
-            let data = await Api.getServerStatus();
-            if (data.code != 0) {
-                return (`ERROR: ${data.msg}`);
-            } else {
-                serverStatus = data.data
-            }
-            for (let i in serverStatus) {
-                servers[serverStatus[i]['serverName']] = serverStatus[i];
-            }
-            await redis.set(redis_key, JSON.stringify(servers));
-            await redis.expire(redis_key, 300);
-        }
-
-        let server = args['server'];
-        if (servers[server] == undefined) {
-            return (`ERROR: Unknown Server!\n错误：没找到这个服务器的数据。`);
-        }
-        serverStatus = servers[server];
-        return `---服务器状态---
-        所属大区:${serverStatus.zoneName}
-        主服务器:${serverStatus.mainServer}
-        服务器:${serverStatus.serverName}
-        IP地址:${serverStatus.ipAddress}
-        连接状态:${serverStatus.connectState ? '可连接' : '不可连接'}
-        ----------------
-        数据来源于jx3box仅供参考。
-        `.replace(/[ ]{2,}/g, ""); */
     }
 
     static argsList() {

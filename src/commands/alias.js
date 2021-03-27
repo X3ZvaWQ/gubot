@@ -7,7 +7,7 @@ module.exports = class AliasHandler {
     async handle(ctx) {
         let action = ctx.args.action;
         if (action == 'list') {
-            return '性能原因，暂时禁止使用' //this.list(ctx);
+            throw '性能原因，暂时禁止使用' //this.list(ctx);
         } else if (action == 'add') {
             return await this.add(ctx);
         } else if (action == 'delete') {
@@ -18,10 +18,10 @@ module.exports = class AliasHandler {
     async add(ctx) {
         let args = ctx.args;
         if(args.permission < 2) {
-            return '权限不足。需要admin及以上权限';
+            throw '权限不足。需要admin及以上权限';
         }
         if(args.alias == args.real) {
-            return '错误：禁止套娃！'
+            throw '错误：禁止套娃！'
         }
         let where = {
             real: args.real,
@@ -37,7 +37,7 @@ module.exports = class AliasHandler {
             where: where
         });
         if (alias != null) {
-            return 'ERROR: Alias already exists.\n错误：该别名已存在！';
+            throw 'ERROR: Alias already exists.\n错误：该别名已存在！';
         }
         alias = await Alias.create(where)
         let result = `别名已成功创建,现在 ${where.scope} 的 ${where.alias} 会被认为是 ${where.real}`;
@@ -49,7 +49,7 @@ module.exports = class AliasHandler {
     async delete(ctx) {
         let args = ctx.args;
         if(args.permission < 2) {
-            return '权限不足。需要admin及以上权限';
+            throw '权限不足。需要admin及以上权限';
         }
         let where = {
             real: args.real,
@@ -71,7 +71,7 @@ module.exports = class AliasHandler {
             await redis.del('Alias:'+JSON.stringify(where));
             return result;
         }else{
-            return '该别名不存在';
+            throw '该别名不存在';
         }
     }
 
