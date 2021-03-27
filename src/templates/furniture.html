@@ -1,12 +1,10 @@
-
-<h2>咕-bot家具查询</h2>
+<h3>{{name}}</h3>
 <table>
     <tr>
         <td>
             <img height="160" width="160" src="{{image_url}}" />
         </td>
         <td>
-            <p>{{name}}</p> 
             <ul>
                 <li>观赏：{{view}}</li>
                 <li>实用：{{practical}}</li>
@@ -20,17 +18,30 @@
         </td>
     </tr>
 </table>
-<p>{{tip}}</p>
+<p>{{@ tip }}</p>
+<p class="note">
+    数据来源<span class="stress">jx3api.com/jx3box.com</span><br />
+    本机器人是免费的机器人，有需要直接加好友拉进群即可
+</p>
 <style>
+    div#template{
+        padding: 1.2rem 2rem;
+        text-align: center;
+    }
+    span.stress{
+        color: hotpink;
+        font-weight: bold;
+    }
+    p.note{
+        font-size: 0.8rem;
+        color: skyblue;
+    }
     body{
-        width: 25rem;
+        width: 30rem;
     }
     #template {
         margin-left: auto; 
         margin-right: auto;
-    }
-    #template p{
-        text-indent: 2rem;
     }
     td p {
         font-size: 18px; 

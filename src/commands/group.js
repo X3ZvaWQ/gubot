@@ -210,7 +210,7 @@ module.exports = class GroupHandler {
                 defaultIndex: 1,
                 shortArgs: null,
                 longArgs: 'action',
-                limit: ['server', 'info', 'nickname', 'convenient'],
+                limit: ['server', 'info', 'nickname', 'groupname' ,'set'],
                 nullable: true,
                 default: 'info'
             },

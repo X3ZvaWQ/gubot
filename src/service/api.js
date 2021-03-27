@@ -535,7 +535,7 @@ class Api{
         let url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
         let app_id = ENV.tecent_nlp_chat_appid;
         let app_key = ENV.tecent_nlp_chat_appkey;
-        let message = message.replace(new RegExp(nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), '小豪豪');
+        message = message.replace(new RegExp(nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), '小豪豪');
         let params = {
             app_id: app_id,
             time_stamp: Math.floor(Date.now()/1000),
@@ -564,7 +564,7 @@ class Api{
             params: params
         });
         if(response.data.ret == 0) {
-            return response.data.answer.replace(/小豪豪/g, nickname);
+            return response.data.data.answer.replace(/小豪豪/g, nickname);
         }else{
             return null;
         }

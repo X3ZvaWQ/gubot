@@ -19,5 +19,6 @@ module.exports = {
     travel: require('./travel'),
     furniture: require('./furniture'),
     saohua: require('./saohua'),
-    price: require('./price')
+    price: require('./price'),
+    chat: require('./chat')
 }

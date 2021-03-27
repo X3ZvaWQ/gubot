@@ -29,7 +29,7 @@ class Bot{
             if(typeof(e) == 'string') {
                 return e;
             }else{
-                return '机器人内部错误';
+                return '机器人内部错误, 如果可以的话, 请加群116523057反馈';
             }
         }
         
@@ -48,39 +48,39 @@ class Bot{
 
             '^骚话$': '/saohua',
 
-            '^帮助\\s?(\\S+)$': '/help $1',
-            '^(\\S+)\\s?帮助$': '/help $1',
+            '^帮助\\s?(\\S*)$': '/help $1',
+            '^(\\S*)\\s?帮助$': '/help $1',
 
-            '^花价\\s?([\\S\\s]+)$': '/flowerPrice $1',
+            '^花价\\s?([\\S\\s]*)$': '/flowerPrice $1',
             '^科举\\s?([\\S\\s]+)$': '/exam $1',
 
-            '^金价\\s?(\\S+)$': '/goldPrice $1',
-            '^(\\S+)\\s?金价$': '/goldPrice $1',
+            '^金价\\s?(\\S*)$': '/goldPrice $1',
+            '^(\\S*)\\s?金价$': '/goldPrice $1',
 
-            '^开服\\s?([\\S\\s]+)$': '/serverStatus $1',
-            '^([\\S\\s]+)\\s?开服$': '/serverStatus $1',
+            '^开服\\s?([\\S\\s]*)$': '/serverStatus $1',
+            '^([\\S\\s]*)\\s?开服$': '/serverStatus $1',
 
             '^(\\S+)\\s?(攻略|成就)$': '/achievement $1',
-            '^(攻略|成就)\\s?(\\S+)$': '/achievement $2',
+            '^(攻略|成就)\\s?(\\S*)$': '/achievement $2',
 
             '^更新|游戏更新$': '/gameUpdate',
             '^日常|游戏日常$': '/daily',
 
-            '^(\\S+)\\s?小药$': '/reinforcement $1',
-            '^小药\\s?(\\S+)$': '/reinforcement $1',
+            '^(\\S*)\\s?小药$': '/reinforcement $1',
+            '^小药\\s?(\\S*)$': '/reinforcement $1',
 
-            '^(\\S+)\\s?阵眼$': '/eye $1',
-            '^阵眼\\s?(\\S+)$': '/eye $1',
+            '^(\\S*)\\s?阵眼$': '/eye $1',
+            '^阵眼\\s?(\\S*)$': '/eye $1',
 
-            '^(奇遇|查询)\\s?([\\S\\s]+)$': '/serendipity $2',
+            '^(奇遇|查询)\\s?([\\S\\s]*)$': '/serendipity $2',
 
-            '^(沙盘|阵营沙盘)\\s?(\\S+)$': '/sandbox $2',
-            '^(\\S+)\\s?(沙盘|阵营沙盘)$': '/sandbox $1',
+            '^(沙盘|阵营沙盘)\\s?(\\S*)$': '/sandbox $2',
+            '^(\\S*)\\s?(沙盘|阵营沙盘)$': '/sandbox $1',
 
-            '^器物谱\\s?(\\S+)$': '/travel $1',
-            '^(\\S+)\\s?器物谱$': '/travel $1',
-            '^家具\\s?(\\S+)$': '/furniture $1',
-            '^(\\S+)\\s?家具$': '/furniture $1',
+            '^器物谱\\s?(\\S*)$': '/travel $1',
+            '^(\\S*)\\s?器物谱$': '/travel $1',
+            '^家具\\s?(\\S*)$': '/furniture $1',
+            '^(\\S*)\\s?家具$': '/furniture $1',
             '^物价\\s?(\\S+)$': '/price $1',
             '^(\\S+)\\s?物价$': '/price $1',
 
@@ -89,12 +89,12 @@ class Bot{
             '^群服务器\\s?([\S\s]+)': '/group server $1',
             '^(打开|关闭|开|关)\\s?(奇遇播报|开服播报|间便命令|智障对话|斗图)': '/group set $2 $1',
 
-            '^(开团|创建团队)\\s?([\S\s]+)': '/team create $2',
-            '^(删除团队)\\s?([\S\s]+)': '/team delete $2',
-            '^(列表|团队列表)\\s?([\S\s]+)': '/team list $2',
-            '^(查看|查看团队)\\s?([\S\s]+)': '/team view $2',
-            '^(取消|取消报名)\\s?([\S\s]+)': '/team cancel $2',
-            '^(报名|团队报名)\\s?([\S\s]+)': '/team apply $2',
+            '^(开团|创建团队)\\s?([\S\s]*)': '/team create $2',
+            '^(删除团队)\\s?([\S\s]*)': '/team delete $2',
+            '^(团队列表)\\s?([\S\s]*)': '/team list $2',
+            '^(查看团队)\\s?([\S\s]*)': '/team view $2',
+            '^(取消报名)\\s?([\S\s]*)': '/team cancel $2',
+            '^(团队报名)\\s?([\S\s]+)': '/team apply $2',
             
             '^添加别名\\s?([\S\s]+)': '/alias add $1',
             '^删除别名\\s?([\S\s]+)': '/alias delete $1'
@@ -102,17 +102,23 @@ class Bot{
         if(data.group_id && data.switchs.chat) {
             let nickname = await redis.get(`GroupNickname:${data.group_id}`);
             if(nickname == null) {
-                nickname = (await Group.findOne({where: {group_id: data.group_id}})).nickname;
+                nickname = (await Group.findOne({where: {group_id: data.group_id}}));
+                if(nickname != null) {
+                    nickname = nickname.nickname;
+                }else{
+                    nickname = '咕咕'
+                }
                 await redis.set(`GroupNickname:${data.group_id}`, nickname);
             }
             nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-            regex_map[`^(${nickname})\\s?([\S\s]+)$`] = '/chat $1$2';
+            regex_map[`^(${nickname})\\s?([\\S\\s]+)$`] = '/chat $1$2';
         }
         let message = data.message.trim();
         for(let i in regex_map) {
             let regex = new RegExp(i);
             if(regex.test(message)) {
                 data.message = message.replace(regex, regex_map[i]);
+                console.log(data.message)
                 return await this.handleCommand(data);
             }
         }
