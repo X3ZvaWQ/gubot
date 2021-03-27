@@ -113,6 +113,8 @@ module.exports = class GroupHandler {
                 }
                 let redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
+                redis_key = `GroupNickname:${group_id}`;
+                await redis.set(redis_key, nickname);
                 return '本群咕咕的称呼已被修改为：' + nickname;
             } else {
                 return this.info(ctx);
@@ -191,43 +193,6 @@ module.exports = class GroupHandler {
                 redis_key = `GroupInfo:${group_id}`;
                 await redis.del(redis_key);
                 return `本群${func}功能开关已被修改为：${swi}`;
-            } else {
-                return this.info(ctx);
-            }
-        } else if (ctx.data.message_type == 'private') {
-            return '本命令仅限群内使用';
-        }
-    }
-    
-    async convenient(ctx) {
-        let swi = ctx.args.switch;
-        if (ctx.data.message_type == 'group') {
-            if (swi != null && swi != undefined) {
-                if (ctx.permissions < 4) {
-                    return '权限不足。'
-                }
-                let group_id = ctx.data.group_id;
-                let group = await Group.findOne({
-                    where: {
-                        group_id: group_id
-                    }
-                });
-                if (group == null) {
-                    group = await Group.create({
-                        group_id: group_id,
-                        server: '唯我独尊',
-                        nickname: group_id,
-                        convenient: swi=='true' ? true : false 
-                    });
-                } else {
-                    group.convenient = swi=='true' ? true : false;
-                    group.save();
-                }
-                let redis_key = `GroupFunc:${func}:${group_id}`;
-                await redis.set(redis_key, swi=='true'? true : false);
-                redis_key = `GroupInfo:${group_id}`;
-                await redis.del(redis_key);
-                return '本群简便命令开关已被修改为：' + swi;
             } else {
                 return this.info(ctx);
             }

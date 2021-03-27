@@ -3,8 +3,14 @@ const Api = require('../service/api');
 module.exports = class ChatHandler {
     async handle(ctx) {
         let message = ctx.args.message;
-        let answer = await Api.getChatAnswer(message);
-        return text.replace(/[ ]{2,}/g, "");;
+        let session = ctx.data.group_id || ctx.data.user_id || 'session_undefined';
+        let nickname = await redis.get(`GroupNickname:${data.group_id}`);
+            if(nickname == null) {
+                nickname = (await Group.findOne({where: {group_id: data.group_id}})).nickname;
+                await redis.set(`GroupNickname:${data.group_id}`, nickname);
+            }
+        let answer = await Api.getChatAnswer(message, session, nickname);
+        return answer;
     }
 
     static argsList() {
@@ -16,7 +22,7 @@ module.exports = class ChatHandler {
             shortArgs: null,
             longArgs: 'message',
             limit: null,
-            nullable: true
+            nullable: false
         }];
     }
 }

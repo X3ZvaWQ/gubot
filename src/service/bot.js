@@ -19,7 +19,7 @@ class Bot{
             }
             if(this.route[command] != undefined) {
                 if(this.route[command].demandPermission){
-                    ctx['permission'] = this.permissionJudge(data);
+                    ctx['permission'] = this.checkPermission(data);
                 }
                 let handler = new this.route[command]();
                 return await handler.handle(ctx);
@@ -37,23 +37,9 @@ class Bot{
 
     async handleMessage(data) {
         if(data.group_id) {
-            let redis_key = `switchs:${data.group_id}`;
-            let boolean = await redis.get(redis_key);
-            if(boolean == null){
-                let group = await Group.findOne({
-                    where: {
-                        group_id: data.group_id
-                    }
-                });
-                if(group != null) {
-                    boolean = `${group.convenient}`
-                    await redis.set(redis_key, boolean);
-                }else{
-                    await redis.set(redis_key, 'true');
-                }
-            };
-            if(boolean == 'false') {
-                return null
+            data.switchs = await this.checkFunctionSwitch(data);
+            if(!data.switchs.convenient) {
+                return null;
             }
         }
         let regex_map = {
@@ -113,6 +99,15 @@ class Bot{
             '^添加别名\\s?([\S\s]+)': '/alias add $1',
             '^删除别名\\s?([\S\s]+)': '/alias delete $1'
         };
+        if(data.group_id && data.switchs.chat) {
+            let nickname = await redis.get(`GroupNickname:${data.group_id}`);
+            if(nickname == null) {
+                nickname = (await Group.findOne({where: {group_id: data.group_id}})).nickname;
+                await redis.set(`GroupNickname:${data.group_id}`, nickname);
+            }
+            nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            regex_map[`^(${nickname})\\s?([\S\s]+)$`] = '/chat $1$2';
+        }
         let message = data.message.trim();
         for(let i in regex_map) {
             let regex = new RegExp(i);
@@ -216,7 +211,7 @@ class Bot{
         }
     }
 
-    async permissionJudge(data) {
+    async checkPermission(data) {
         if(data.message_type == 'private') {
             let user = await User.findOne({
                 where: {
@@ -252,6 +247,42 @@ class Bot{
         }else {
             return 0;
         }
+    }
+
+    async checkFunctionSwitch(data) {
+        let funcs = ['convenient', 'chat', 'server_broadcast', 'serendipity_broadcast', 'meme'];
+        if(data.group_id) {
+            let group = null;
+            let result = {};
+            for(let i in funcs) {
+                let func = funcs[i];
+                let redis_key = `GroupFunc:${func}:${data.group_id}`;
+                let boolean = await redis.get(redis_key);
+                if(boolean == null){
+                    if(group == null) {
+                        group = await Group.findOne({
+                            where: {
+                                group_id: data.group_id
+                            }
+                        });
+                        if(group == null) {
+                            group = await Group.create({
+                                group_id: data.group_idd,
+                                server: '唯我独尊',
+                                nickname: '咕咕',
+                                groupname: data.group_id
+                            });
+                        }
+                    }
+                    boolean = `${group[func]}`;
+                };
+                result[func] = boolean == 'true';
+            }
+            return result;
+        }else{
+            return {};
+        }
+
     }
 }
 

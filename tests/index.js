@@ -55,7 +55,7 @@ let socket = new Socket().on('connect', () => {
 socket.connect(process.argv[2], process.argv[3]);
  */
 
-/* const axios = require('axios');
+const axios = require('axios');
 const md5 = require('js-md5');
 let url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
 let app_key = 'ZKHU1KDsGQD15zgb';
@@ -64,7 +64,7 @@ let params = {
     time_stamp: Math.floor(Date.now()/1000),
     nonce_str: `20e3408a79`,
     session: '3303928580',
-    question: '在？反手把你禁言了',
+    question: '小豪豪是谁啊？',
     sign: ''
 }
 let keys = Object.keys(params).sort();
@@ -90,7 +90,7 @@ axios.get(url, {
 }).then((response) => {
     let data = response.data;
     console.log(data);
-}) */
+})
 
 
 /* const axios = require('axios');
