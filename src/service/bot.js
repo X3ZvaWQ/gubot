@@ -273,7 +273,7 @@ class Bot{
                         });
                         if(group == null) {
                             group = await Group.create({
-                                group_id: data.group_idd,
+                                group_id: data.group_id,
                                 server: '唯我独尊',
                                 nickname: '咕咕',
                                 groupname: data.group_id
