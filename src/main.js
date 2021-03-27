@@ -83,7 +83,7 @@ if(ENV.use_http_post) {
                         if(group == null) {
                             group = await Group.create({
                                 group_id: data.group_id,
-                                nickname: data.group_id,
+                                groupname: data.group_id,
                                 server: '唯我独尊'
                             });
                         }
@@ -163,7 +163,7 @@ if(ENV.use_websocket) {
                     if(group == null) {
                         group = await Group.create({
                             group_id: data.group_id,
-                            nickname: data.group_id,
+                            groupname: data.group_id,
                             server: '唯我独尊'
                         });
                     }

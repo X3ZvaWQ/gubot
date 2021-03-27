@@ -37,11 +37,12 @@ module.exports = class GroupHandler {
                     group = await Group.create({
                         group_id: group_id,
                         server: '唯我独尊',
-                        nickname: group_id
+                        groupname: group_id
                     });
                 }
                 result = `------咕Bot·本群配置------
-                群称呼：${group.nickname}
+                咕咕称呼:${group.nickname}
+                群称呼：${group.groupname}
                 群默认服务器：${group.server}
                 便捷命令开关：${group.convenient}
                 机器人入群时间：${moment(group.created_at).format('YYYY-MM-DD hh:mm:ss')}
