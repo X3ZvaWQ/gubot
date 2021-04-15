@@ -43,7 +43,7 @@ class Bot{
             }
         }
         let regex_map = {
-            '^(\\S+)\\s?宏$': '/macro $1',
+            //'^(\\S+)\\s?宏$': '/macro $1',
             '^宏\\s(\\S+)$': '/macro $1',
 
             '^骚话$': '/saohua',
@@ -58,9 +58,9 @@ class Bot{
             '^(\\S*)\\s?金价$': '/goldPrice $1',
 
             '^开服\\s?([\\S\\s]*)$': '/serverStatus $1',
-            '^([\\S\\s]*)\\s?开服$': '/serverStatus $1',
+            //'^([\\S\\s]*)\\s?开服$': '/serverStatus $1',
 
-            '^(\\S+)\\s?(攻略|成就)$': '/achievement $1',
+            //'^(\\S+)\\s?(攻略|成就)$': '/achievement $1',
             '^(攻略|成就)\\s?(\\S*)$': '/achievement $2',
 
             '^更新|游戏更新$': '/gameUpdate',
@@ -78,11 +78,11 @@ class Bot{
             '^(\\S*)\\s?(沙盘|阵营沙盘)$': '/sandbox $1',
 
             '^器物谱\\s?(\\S*)$': '/travel $1',
-            '^(\\S*)\\s?器物谱$': '/travel $1',
+            //'^(\\S*)\\s?器物谱$': '/travel $1',
             '^家具\\s?(\\S*)$': '/furniture $1',
-            '^(\\S*)\\s?家具$': '/furniture $1',
+            //'^(\\S*)\\s?家具$': '/furniture $1',
             '^物价\\s?(\\S+)$': '/price $1',
-            '^(\\S+)\\s?物价$': '/price $1',
+            //'^(\\S+)\\s?物价$': '/price $1',
 
             '^群昵称\\s?([\\S\\s]+)': '/group groupname $1',
             '^咕咕称呼\\s?([\\S\\s]+)': '/group nickname $1',
@@ -111,7 +111,7 @@ class Bot{
                 await redis.set(`GroupNickname:${data.group_id}`, nickname);
             }
             nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-            regex_map[`^(${nickname})\\s?([\\S\\s]+)$`] = '/chat $1$2';
+            regex_map[`^(${nickname})\\s?([\\S\\s]+)$`] = '/chat $2';
         }
         let message = data.message.trim();
         for(let i in regex_map) {

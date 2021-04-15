@@ -786,6 +786,11 @@ he@1.2.x, he@^1.2.0:
   resolved "https://registry.npm.taobao.org/he/download/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha1-hK5l+n6vsWX922FWauFLrwVmTw8=
 
+hmacsha1@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/hmacsha1/download/hmacsha1-1.0.0.tgz#c1b7ae03a4ea116348090af14f8148c12938a917"
+  integrity sha1-wbeuA6TqEWNICQrxT4FIwSk4qRc=
+
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/html-encoding-sniffer/download/html-encoding-sniffer-2.0.1.tgz#42a6dc4fd33f00281176e8b23759ca4e4fa185f3"
@@ -955,6 +960,11 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.npm.taobao.org/isstream/download/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
+
+js-base64@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npm.taobao.org/js-base64/download/js-base64-3.6.0.tgz#773e1de628f4f298d65a7e9842c50244751f5756"
+  integrity sha1-dz4d5ij08pjWWn6YQsUCRHUfV1Y=
 
 js-md5@^0.7.3:
   version "0.7.3"
