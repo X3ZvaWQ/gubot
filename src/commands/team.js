@@ -228,7 +228,7 @@ module.exports = class TeamHandler {
                     qq: null,
                     id: null
                 }
-                cells[cell[i].id] = cell[i];
+                cells[cell[i].id-1] = cell[i];
             }
         }else{
             cell = cell.filter((c) => {return c.applicant.id == args.game_id});
@@ -240,7 +240,7 @@ module.exports = class TeamHandler {
                         qq: null,
                         id: null
                     }
-                    cells[cell[i].id] = cell[i];
+                    cells[cell[i].id-1] = cell[i];
                 }
             }else{
                 throw `错误：你并没有报名游戏id为 ${args.game_id} 的角色`;
