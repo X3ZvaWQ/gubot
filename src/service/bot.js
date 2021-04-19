@@ -19,7 +19,7 @@ class Bot{
             }
             if(this.route[command] != undefined) {
                 if(this.route[command].demandPermission){
-                    ctx['permission'] = this.checkPermission(data);
+                    ctx['permission'] = await this.checkPermission(data);
                 }
                 let handler = new this.route[command]();
                 return await handler.handle(ctx);
