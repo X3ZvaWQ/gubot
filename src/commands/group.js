@@ -59,7 +59,8 @@ module.exports = class GroupHandler {
         let server = ctx.args.server;
         if (ctx.data.message_type == 'group') {
             if (server != null && server != undefined) {
-                if (ctx.permissions < 4) {
+                let permission = ctx.permission;
+                if (permission < 4) {
                     throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
@@ -93,7 +94,8 @@ module.exports = class GroupHandler {
         let nickname = ctx.args.nickname;
         if (ctx.data.message_type == 'group') {
             if (nickname != null && nickname != undefined) {
-                if (ctx.permissions < 4) {
+                let permission = ctx.permission;
+                if (permission < 4) {
                     throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
@@ -129,7 +131,8 @@ module.exports = class GroupHandler {
         let groupname = ctx.args.groupname;
         if (ctx.data.message_type == 'group') {
             if (groupname != null && groupname != undefined) {
-                if (ctx.permissions < 4) {
+                let permission = ctx.permission;
+                if (permission < 4) {
                     throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
@@ -164,7 +167,8 @@ module.exports = class GroupHandler {
         let args = ctx.args;
         if (ctx.data.message_type == 'group') {
             if (args.switch != null && args.switch != undefined) {
-                if (ctx.permissions < 4) {
+                let permission = ctx.permission;
+                if (permission < 4) {
                     throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
