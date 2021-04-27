@@ -17,7 +17,8 @@ module.exports = class PermissionHandler {
     }
 
     async list(ctx) {
-        if (ctx.permissions < 2) {
+        let permission = ctx.permission;
+        if (permission < 2) {
             throw '权限不足。'
         }
         if (ctx.data.message_type == 'group') {
@@ -84,7 +85,8 @@ module.exports = class PermissionHandler {
     }
 
     async set(ctx) {
-        if (ctx.permissions < 4) {
+        let permission = ctx.permission;
+        if (permission < 4) {
             throw '权限不足。'
         }
         let args = ctx.args;

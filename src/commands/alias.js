@@ -4,6 +4,9 @@ const Cq = require('../service/cqhttp');
 const Image = require('../service/image');
 
 module.exports = class AliasHandler {
+    
+    static demandPermission = true;
+    
     async handle(ctx) {
         let action = ctx.args.action;
         if (action == 'list') {
@@ -17,7 +20,8 @@ module.exports = class AliasHandler {
 
     async add(ctx) {
         let args = ctx.args;
-        if(args.permission < 2) {
+        let permission = ctx.permission;
+        if(permission < 2) {
             throw '权限不足。需要admin及以上权限';
         }
         if(args.alias == args.real) {
@@ -48,7 +52,8 @@ module.exports = class AliasHandler {
 
     async delete(ctx) {
         let args = ctx.args;
-        if(args.permission < 2) {
+        let permission = ctx.permission;
+        if(permission < 2) {
             throw '权限不足。需要admin及以上权限';
         }
         let where = {
