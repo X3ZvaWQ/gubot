@@ -11,7 +11,7 @@ yarn (npm install)
 
 然后，你需要将env.example.json更名为env.json，然后在里面填写本地环境。主要包括数据库信息，某些功能的开启、关闭与配置等。  
 ```bash
-mv env.example.json env.json
+cp env.example.json env.json
 vi env.json
 ```
 
