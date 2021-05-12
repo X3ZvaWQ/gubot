@@ -118,7 +118,6 @@ class Bot{
             let regex = new RegExp(i);
             if(regex.test(message)) {
                 data.message = message.replace(regex, regex_map[i]);
-                console.log(data.message)
                 return await this.handleCommand(data);
             }
         }

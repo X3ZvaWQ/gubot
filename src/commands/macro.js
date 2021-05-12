@@ -70,8 +70,7 @@ module.exports = class MacroHandler {
                 macro: macros
             }
             let macro_sync = macros.map((x) => x.name);
-            result = `
-                ${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}
+            result = `${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}
                 云端宏:
                 ${macro_sync.join('\n')}
             `;
