@@ -39,7 +39,7 @@ module.exports = class GoldPriceHandler {
             table = [['渠道', '价格'], ...table];
             result = await Image.generateFromArrayTable(table, {
                 title: `咕Bot - 金价查询 - ${data.server}`,
-                tail: `数据获取时间：${moment(data.time).locale('zh-cn').tz('Asia/Shanghai').format('YYYY-MM-DD LTS')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/gold/\) 仅供参考`
+                tail: `数据获取时间：${moment(data.time).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/gold/\) 仅供参考`
             })
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 600);

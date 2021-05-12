@@ -1,5 +1,6 @@
 const moment = require('moment');
-const uuid = require('uuid').v4;
+console.log(moment().locale('zhcn').format('YYYY-MM-DD HH:mm:ss'));
+/* const uuid = require('uuid').v4;
 const hmacsha1 = require('hmacsha1');
 const axios = require('axios');
 
@@ -38,4 +39,4 @@ axios.post('http://nls-meta.cn-shanghai.aliyuncs.com/', params).then(x => {
 }).catch((x) => {
   
     console.log(x);
-})
+}) */

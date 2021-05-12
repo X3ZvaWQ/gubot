@@ -17,7 +17,7 @@ module.exports = class ReinforcementHandler {
             }
             result = await Image.generateFromArrayTable(table, {
                 title: `咕Bot - 小药查询 - ${args.xf}`,
-                tail: `数据获取时间：${moment().locale('zh-cn').tz('Asia/Shanghai').format('YYYY-MM-DD LTS')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/reinforcement\) 仅供参考  \n**注意：接口给出的都是紫色小药，很贵。**  \n**建议小地图右下方小扳手->枫影插件集->材料药品查询 找蓝色的小吃小药**  `
+                tail: `数据获取时间：${moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/reinforcement\) 仅供参考  \n**注意：接口给出的都是紫色小药，很贵。**  \n**建议小地图右下方小扳手->枫影插件集->材料药品查询 找蓝色的小吃小药**  `
             });
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 600);

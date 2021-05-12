@@ -109,7 +109,7 @@ class Api{
         }else{
             server.connectState = false;
         }
-        server.checkTime = moment().tz('Asia/Shanghai').locale('zh-cn').format('YYYY-MM-DD LTS');
+        server.checkTime = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
         return server;
     }
     

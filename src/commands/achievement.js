@@ -22,7 +22,7 @@ module.exports = class AchievementHandler {
             let name = search.data.achievements[0].Name;
             let post = (await Api.getAchievementPost(id)).data.post;
             let html = post.content;
-            let updated_at = moment(post.updated * 1000).tz('Asia/Shanghai').locale('zh-cn').format('YYYY-MM-DD LTS');
+            let updated_at = moment(post.updated * 1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
             let image = await Image.generateFromHtml(html);
             result = `咕Bot - 成就攻略 - ${name}
             ${Cq.ImageCQCode('file://' + image)}
