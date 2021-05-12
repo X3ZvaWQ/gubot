@@ -70,12 +70,11 @@ module.exports = class MacroHandler {
                 macro: macros
             }
             let macro_sync = macros.map((x) => x.name);
-            result = `咕Bot - 云端宏查询 - ${args.xf} - rank.${args.rank}
-            云端宏:
-            ${macro_sync.join('\n')}
-            食用教程：https://www.jx3box.com/tool/14671#/
-            详细内容:
-            ${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}`;
+            result = `
+                ${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}
+                云端宏:
+                ${macro_sync.join('\n')}
+            `;
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }
