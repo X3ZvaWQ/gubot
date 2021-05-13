@@ -51,8 +51,8 @@ class Bot{
             '^帮助\\s(\\S*)$': '/help $1',
             //'^(\\S*)\\s?帮助$': '/help $1',
 
-            '^花价\\s([\\S\\s]*)$': '/flowerPrice $1',
-            '^科举\\s([\\S\\s]+)$': '/exam $1',
+            '^花价\\s?([\\S\\s]*)$': '/flowerPrice $1',
+            '^科举\\s?([\\S\\s]+)$': '/exam $1',
 
             '^金价\\s?(\\S*)$': '/goldPrice $1',
             //'^(\\S*)\\s?金价$': '/goldPrice $1',
@@ -118,6 +118,7 @@ class Bot{
             let regex = new RegExp(i);
             if(regex.test(message)) {
                 data.message = message.replace(regex, regex_map[i]);
+                console.log(data);
                 return await this.handleCommand(data);
             }
         }

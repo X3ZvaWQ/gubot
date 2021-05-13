@@ -16,13 +16,18 @@ module.exports = class FlowerPriceHandler {
         let result = await redis.get(key);
         //get data from redis
         //check data is empty?
-        if (flowerPrice == null || args['update'] || await fs.exists(result)) {
+        if (result == null || args['update'] || await fs.exists(result)) {
             let response = await Api.getFlowerPriceFromSpider(parms);
             if (JSON.stringify(response.data) == '{}') {
                 throw 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }
-            flowerPrice = response.data
-            result = await Image.generateFromTemplateFile('flowerPrice', flowerPrice);
+            let flowerPrice = response.data
+            if(flowerPrice == undefined || flowerPrice.length < 1) {
+                throw 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
+            }
+            result = await Image.generateFromTemplateFile('flowerPrice', {
+                price: flowerPrice
+            });
             await redis.set(key, result);
             await redis.expire(key, 300);
         }
