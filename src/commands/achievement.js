@@ -27,8 +27,7 @@ module.exports = class AchievementHandler {
             result = `咕Bot - 成就攻略 - ${name}
             ${Cq.ImageCQCode('file://' + image)}
             以上内容来源于jx3box用户[${post.user_nickname}]。
-            上次更新时间：[${updated_at}]
-            需要查看原版可以前往https://www.jx3box.com/cj/#/view/${id}查看。`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
+            上次更新时间：[${updated_at}]`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 3600);
         }
