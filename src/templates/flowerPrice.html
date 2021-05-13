@@ -1,0 +1,38 @@
+<div id="template">
+    <h2>咕Bot - 花价查询</h2>
+    <div class="content">
+        {{each price}}
+        <div class="info-group">
+            <p>{{$value.server}}·{{$value.name}}·{{$value.map}}</p>
+            <p>线路：{{$value.branch.map((x) => x.number).join(',')}}</p>
+            <p>日期：{{$value.date}}</p>
+        </div>
+        {{/each}}
+    </div>
+    <p class="note">
+        数据来源<span class="stress">jx3box.com</span><br />
+        本机器人是免费的机器人，有需要直接加好友拉进群即可
+    </p>
+</div>
+<style>
+    #template {
+        padding: 0.6rem;
+    }
+    .info-group:not(:last-of-type){
+        border-bottom: 1px skyblue solid;
+    }
+    body{
+        background-color: cornsilk;
+        width: 28rem;
+        color:dodgerblue;
+        font-family: 'Noto Sans SC', sans-serif, 'consolas';
+    }
+    h2{
+        text-align: center;
+    }
+    p.note{
+        font-size: 0.8rem;
+        color: skyblue;
+        text-align: center;
+    }
+</style>

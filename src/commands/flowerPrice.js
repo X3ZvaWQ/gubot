@@ -1,4 +1,7 @@
 const Api = require('../service/api');
+const Image = require('../service/image');
+const Cq = require('../service/cqhttp');
+const fs = require('fs-extra')
 
 module.exports = class FlowerPriceHandler {
     async handle(ctx) {
@@ -10,30 +13,20 @@ module.exports = class FlowerPriceHandler {
             type: args.flower
         }
         let key = JSON.stringify('FlowerPrice:' + JSON.stringify(parms));
+        let result = await redis.get(key);
         //get data from redis
-        let flowerPrice = await redis.get(key);
         //check data is empty?
-        if (flowerPrice != undefined && flowerPrice != null && !args['update']) {
-            flowerPrice = JSON.parse(flowerPrice);
-        } else {
+        if (flowerPrice == null || args['update'] || await fs.exists(result)) {
             let response = await Api.getFlowerPriceFromSpider(parms);
             if (JSON.stringify(response.data) == '{}') {
                 throw 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }
             flowerPrice = response.data
-            await redis.set(key, JSON.stringify(flowerPrice));
+            result = await Image.generateFromTemplateFile('flowerPrice', flowerPrice);
+            await redis.set(key, result);
             await redis.expire(key, 300);
         }
-        //combine datas to string reply.
-        let text = [];
-        let price = flowerPrice;
-        for (let i in price) {
-            let lines = price[i].branch.map((x) => x.number);
-            text.push(`${price[i].server}·${price[i].name}·${price[i].map}
-            线路：${lines.join(',')}
-            日期：${price[i].date}`);
-        }
-        return (text.join('\n—————————\n') + `\n数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");
+        return Cq.ImageCQCode(result).replace(/[ ]{2,}/g, "");
     }
 
     static argsList() {
