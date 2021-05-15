@@ -25,14 +25,8 @@ class Bot{
                 return await handler.handle(ctx);
             }
         }catch(e) {
-            console.log(e);
-            if(typeof(e) != 'string') {
-                return '机器人内部错误, 如果可以的话, 请加群116523057反馈';
-            }else{
-                return e;
-            }
+            console.log(e, data.message);
         }
-        
     }
 
     async handleMessage(data) {
