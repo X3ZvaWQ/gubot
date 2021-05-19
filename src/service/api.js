@@ -34,7 +34,7 @@ class Api{
     }
     
     static async getGoldPriceFromJx3Api(server) {
-        let priceUrl = `${jx3api_baseurl}app/getGold`;
+        let priceUrl = `${jx3api_baseurl}app/gold`;
         let response = await axios.get(priceUrl,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -223,7 +223,7 @@ class Api{
     }
 
     static async getDailyFromJx3Api(server){
-        let url = `${jx3api_baseurl}app/getDaily`;
+        let url = `${jx3api_baseurl}app/daily`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -251,7 +251,7 @@ class Api{
     }
 
     static async getReinforcementFromJx3Api(xf){
-        let url = `${jx3api_baseurl}app/getHeighten`;
+        let url = `${jx3api_baseurl}app/strengthen`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -275,7 +275,7 @@ class Api{
     }
     
     static async getEyeFromJx3Api(xf){
-        let url = `${jx3api_baseurl}app/getFormation`;
+        let url = `${jx3api_baseurl}app/gest`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -305,7 +305,7 @@ class Api{
     }
 
     static async getTravelFromJx3Api(map){
-        let url = `${jx3api_baseurl}app/getTravel`;
+        let url = `${jx3api_baseurl}app/travel`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -429,7 +429,7 @@ class Api{
     }
 
     static async getSaoHuaFromJx3Api() {
-        let url = `${jx3api_baseurl}app/getRandom`;
+        let url = `${jx3api_baseurl}app/random`;
         let response = await axios.get(url,{
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
