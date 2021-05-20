@@ -1,5 +1,14 @@
-const moment = require('moment');
-console.log(moment().locale('zhcn').format('YYYY-MM-DD HH:mm:ss'));
+const WebSocket = require('ws');
+const wsApi = new WebSocket(`wss://socket.nicemoe.cn`);
+wsApi.on('open', () => {
+    console.log('INFO: Api WebSocket Server connected.');
+});
+wsApi.on('message', (message) => {
+    console.log(message);
+});
+
+/* const moment = require('moment');
+console.log(moment().locale('zhcn').format('YYYY-MM-DD HH:mm:ss')); */
 /* const uuid = require('uuid').v4;
 const hmacsha1 = require('hmacsha1');
 const axios = require('axios');
