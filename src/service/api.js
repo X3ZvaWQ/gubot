@@ -235,16 +235,19 @@ class Api{
         });
         if(response.data.code == 200) {
             let data = response.data.data;
-            return {
+            let result = {
                 时间: data.Date,
                 星期: data.Week,
                 秘境日常: data.DayWar,
                 驰援任务: data.DayCommon,
+                阵营日常: data.DayCamp,
+                美人图: data.DayDraw || '（今天不画）',
                 战场首胜: data.DayBattle,
                 周常五人本: data.WeekFive,
                 周常十人本: data.WeekTeam,
                 周公共日常: data.WeekCommon
-            }
+            };
+            return result; 
         }else{
             throw `调用jx3api.getDaily返回值错误`;
         }
