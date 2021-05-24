@@ -236,7 +236,7 @@ class Api{
         if(response.data.code == 200) {
             let data = response.data.data;
             let result = {
-                时间: data.Date,
+                时间: data.DateTime,
                 星期: data.Week,
                 秘境日常: data.DayWar,
                 驰援任务: data.DayCommon,
