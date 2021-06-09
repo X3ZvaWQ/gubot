@@ -4,6 +4,7 @@ const {JSDOM} = require("jsdom");
 const jx3api_baseurl = require('../../env.json').jx3api_baseurl;
 const ENV = require('../../env.json');
 const moment = require('moment');
+const Game = require('./game');
 
 class Api{
     static async getFlowerPriceFromSpider(params) {
@@ -82,12 +83,36 @@ class Api{
         return data;
     }
     
+    static async getServerListFromJx3Box() {
+        let url = 'https://spider.jx3box.com/jx3servers';
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            }
+        });
+        if(response.data.code != 0) {
+            throw `url：https://spider.jx3box.com/jx3servers \n 获取服务器列表失败`;
+        }
+        let servers = {}
+        let datas = response.data.data;
+        for(let server of datas){
+            servers[server.serverName] = {
+                zoneName: server.zoneName,
+                serverName: server.serverName,
+                ipAddress: server.ipAddress,
+                ipPort: server.ipPort,
+                mainServer: server.mainServer
+            }
+        }
+        return servers;
+    }
+
     static async getServerStatus(s) {
-        const servers = require('../assets/json/servers.json');
-        if(servers[s] == undefined) {
+        let server = await Game.getServerInfo(s);
+        if(server == null) {
             throw '错误：该服务器不存在。';
         }
-        let server = servers[s];
         const { Socket } = require('net');
         let connectTest = () => new Promise((resolve, reject) => {
             let socket = new Socket().on('connect', () => {
