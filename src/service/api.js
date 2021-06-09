@@ -4,7 +4,6 @@ const {JSDOM} = require("jsdom");
 const jx3api_baseurl = require('../../env.json').jx3api_baseurl;
 const ENV = require('../../env.json');
 const moment = require('moment');
-const Game = require('./game');
 
 class Api{
     static async getFlowerPriceFromSpider(params) {
@@ -109,10 +108,7 @@ class Api{
     }
 
     static async getServerStatus(s) {
-        let server = await Game.getServerInfo(s);
-        if(server == null) {
-            throw '错误：该服务器不存在。';
-        }
+        let server = s;
         const { Socket } = require('net');
         let connectTest = () => new Promise((resolve, reject) => {
             let socket = new Socket().on('connect', () => {

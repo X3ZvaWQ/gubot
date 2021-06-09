@@ -2,6 +2,7 @@ const Api = require('../service/api');
 const Cq = require('../service/cqhttp');
 const Image = require('../service/image');
 const fs = require('fs-extra');
+const Game = require('../service/game');
 
 module.exports = class ServerStatusHandler {
     async handle(ctx) {
@@ -13,7 +14,11 @@ module.exports = class ServerStatusHandler {
         if (result == null || !await fs.exists(result) || args['update']) {
             let server;
             try{
-                server = await Api.getServerStatus(args.server);
+                server = await Game.getServerInfo(args.server);
+                if(server == null) {
+                    throw '错误：该服务器不存在。';
+                }
+                server = await Api.getServerStatus(server);
             }catch(e) {
                 throw e;
             }
