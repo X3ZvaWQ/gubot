@@ -45,7 +45,7 @@ module.exports = class PermissionHandler {
                 let user = users[i];
                 display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
             }
-            result = `群[${group.nickname || group.group_id || ctx.data.group_id}]·权限列表
+            let result = `群[${group.nickname || group.group_id || ctx.data.group_id}]·权限列表
             ${display.join('\n')}`
             return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");;
         } else if (ctx.data.message_type == 'private') {
@@ -66,7 +66,7 @@ module.exports = class PermissionHandler {
                 let user = users[i];
                 display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
             }
-            result = `机器人全局权限列表
+            let result = `机器人全局权限列表
             ${display.join('\n')}`;
             return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");;
         }
