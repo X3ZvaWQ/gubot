@@ -23,63 +23,51 @@ module.exports = class PermissionHandler {
         }
         if (ctx.data.message_type == 'group') {
             let group_id = ctx.data.group_id;
-            let redis_key = `GroupPermissionList:${group_id}`;
-            let result = await redis.get(redis_key);
-            if (result == null) {
-                let user_id = ctx.data.sender.user_id;
-                let group = await Group.findOne({
-                    where: {
-                        group_id: group_id
-                    }
-                });
-                let users = await User.findAll({
-                    where: {
-                        qq: user_id,
-                        group: group_id
-                    }
-                });
-                const n2r = {
-                    1: 'member',
-                    2: 'admin',
-                    4: 'owner'
+            let user_id = ctx.data.sender.user_id;
+            let group = await Group.findOne({
+                where: {
+                    group_id: group_id
                 }
-                let display = [];
-                for (let i in users) {
-                    let user = users[i];
-                    display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
+            });
+            let users = await User.findAll({
+                where: {
+                    qq: user_id,
+                    group: group_id
                 }
-                result = `------群${group.nickname || group.group_id || ctx.data.group_id}·权限列表------
-                ${display.join('\n')}
-                `
-                await redis.set(redis_key, result);
+            });
+            const n2r = {
+                1: 'member',
+                2: 'admin',
+                4: 'owner'
             }
+            let display = [];
+            for (let i in users) {
+                let user = users[i];
+                display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
+            }
+            result = `群[${group.nickname || group.group_id || ctx.data.group_id}]·权限列表
+            ${display.join('\n')}`
             return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");;
         } else if (ctx.data.message_type == 'private') {
             let user_id = ctx.data.sender.user_id;
-            let redis_key = `GlobalPermissionList`;
-            let result = await redis.get(redis_key);
-            if (result == null) {
-                let users = await User.findAll({
-                    where: {
-                        qq: user_id,
-                        group: '*'
-                    }
-                });
-                const n2r = {
-                    1: 'member',
-                    2: 'admin',
-                    4: 'owner'
+            let users = await User.findAll({
+                where: {
+                    qq: user_id,
+                    group: '*'
                 }
-                let display = [];
-                for (let i in users) {
-                    let user = users[i];
-                    display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
-                }
-                result = `------机器人全局权限列表------
-                ${display.join('\n')}
-                `;
-                await redis.set(redis_key, result);
+            });
+            const n2r = {
+                1: 'member',
+                2: 'admin',
+                4: 'owner'
             }
+            let display = [];
+            for (let i in users) {
+                let user = users[i];
+                display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
+            }
+            result = `机器人全局权限列表
+            ${display.join('\n')}`;
             return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");;
         }
     }
@@ -111,13 +99,10 @@ module.exports = class PermissionHandler {
                 user.permissions = level;
                 user.save();
             }
-            let redis_key = `GroupPermissionList:${group_id}`;
-            await redis.del(redis_key);
             return '权限修改成功';
         } else if (ctx.data.message_type == 'private') {
             let target_id = args.user;
-            let redis_key = `GlobalPermissionList`;
-            let users = await User.findAll({
+            let user = await User.findAll({
                 where: {
                     qq: target_id,
                     group: '*'
@@ -134,7 +119,6 @@ module.exports = class PermissionHandler {
                 user.permissions = level;
                 user.save();
             }
-            await redis.del(redis_key);
             return '权限修改成功';
         }
     }
