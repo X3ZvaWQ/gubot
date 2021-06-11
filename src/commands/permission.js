@@ -51,7 +51,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return Cq.ImageCQCode('file://' + Image.generateFromTemplateFile('permissionList', data));
+            return Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('permissionList', data));
         } else if (ctx.data.message_type == 'private') {
             let users = await User.findAll({
                 where: {
@@ -70,7 +70,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return Cq.ImageCQCode('file://' + Image.generateFromTemplateFile('permissionList', data));
+            return Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('permissionList', data));
         }
     }
 
