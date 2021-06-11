@@ -23,7 +23,6 @@ module.exports = class PermissionHandler {
         }
         if (ctx.data.message_type == 'group') {
             let group_id = ctx.data.group_id;
-            let user_id = ctx.data.sender.user_id;
             let group = await Group.findOne({
                 where: {
                     group_id: group_id
@@ -31,7 +30,6 @@ module.exports = class PermissionHandler {
             });
             let users = await User.findAll({
                 where: {
-                    qq: user_id,
                     group: group_id
                 }
             });
@@ -49,10 +47,8 @@ module.exports = class PermissionHandler {
             ${display.join('\n')}`
             return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");;
         } else if (ctx.data.message_type == 'private') {
-            let user_id = ctx.data.sender.user_id;
             let users = await User.findAll({
                 where: {
-                    qq: user_id,
                     group: '*'
                 }
             });
