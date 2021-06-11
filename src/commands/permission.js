@@ -1,6 +1,7 @@
 const Group = require("../model/group");
 const User = require("../model/user");
 const Cq = require("../service/cqhttp");
+const Image = require("../service/image");
 
 module.exports = class PermissionHandler {
     static demandPermission = true;
@@ -21,6 +22,11 @@ module.exports = class PermissionHandler {
         if (permission < 2) {
             throw '权限不足。'
         }
+        const n2r = {
+            1: 'member',
+            2: 'admin',
+            4: 'owner'
+        }
         if (ctx.data.message_type == 'group') {
             let group_id = ctx.data.group_id;
             let group = await Group.findOne({
@@ -33,38 +39,38 @@ module.exports = class PermissionHandler {
                     group: group_id
                 }
             });
-            const n2r = {
-                1: 'member',
-                2: 'admin',
-                4: 'owner'
+            let data = {
+                groupName: group.nickname || group.group_id || ctx.data.group_id,
+                numbers: []
             }
-            let display = [];
             for (let i in users) {
                 let user = users[i];
-                display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
+                data.numbers.push({
+                    permission: n2r[user.permissions],
+                    qq: user.qq,
+                    nickname: user.nickname
+                });
             }
-            let result = `群[${group.nickname || group.group_id || ctx.data.group_id}]·权限列表
-            ${display.join('\n')}`
-            return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");;
+            return Cq.ImageCQCode('file://' + Image.generateFromTemplateFile('permissionList', data));
         } else if (ctx.data.message_type == 'private') {
             let users = await User.findAll({
                 where: {
                     group: '*'
                 }
             });
-            const n2r = {
-                1: 'member',
-                2: 'admin',
-                4: 'owner'
+            let data = {
+                groupName: '全局',
+                numbers: []
             }
-            let display = [];
             for (let i in users) {
                 let user = users[i];
-                display.push(`${user.nickname}(${user.qq}) - ${n2r[user.permissions]}`);
+                data.numbers.push({
+                    permission: n2r[user.permissions],
+                    qq: user.qq,
+                    nickname: user.nickname
+                });
             }
-            let result = `机器人全局权限列表
-            ${display.join('\n')}`;
-            return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");;
+            return Cq.ImageCQCode('file://' + Image.generateFromTemplateFile('permissionList', data));
         }
     }
 

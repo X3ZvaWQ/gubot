@@ -1,0 +1,65 @@
+<style>
+    body{
+        background-color: cornsilk;
+        width: 600px;
+        color:dodgerblue;
+        font-family: 'Noto Sans SC', sans-serif, 'consolas';
+        text-align: center;
+    }
+    h2.success {
+        text-shadow: green 0 0 1rem; 
+        color: greenyellow; 
+        font-size: 2rem;
+    }
+    h2.faild {
+        text-shadow: red 0 0 1rem; 
+        color: red; 
+        font-size: 2rem;
+    }
+    span.stress{
+        color: hotpink;
+        font-weight: bold;
+    }
+    table{
+        display: inline-block;
+        font-size: 1rem;
+    }
+    td:first-of-type{
+        text-align: right;
+        padding-right: 0.65rem;
+    }
+    td:last-of-type{
+        text-align: left;
+    }
+    p.note{
+        font-size: 0.8rem;
+        color: skyblue;
+    }
+</style>
+<div>
+    <h3>Gubot <span class="stress">[{{groupName}}]</span> 权限列表</h3>
+    <table>
+        <tbody>
+            {{each numbers}}
+            <tr>
+                <td>{{ $value.permission }}</td>
+                <td>{{ $value.qq }}</td>
+                <td>{{ $value.nickname }}</td>
+            </tr>
+            <tr>
+                <td>{{ $value.permission }}</td>
+                <td>{{ $value.qq }}</td>
+                <td>{{ $value.nickname }}</td>
+            </tr>
+            <tr>
+                <td>{{ $value.permission }}</td>
+                <td>{{ $value.qq }}</td>
+                <td>{{ $value.nickname }}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <p class="note">
+        本机器人是开源免费的机器人，有需要直接加好友拉进群即可
+    </p>
+</div>
