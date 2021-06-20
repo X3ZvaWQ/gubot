@@ -315,12 +315,12 @@ class Api{
                 name: data.name,
                 time: response.data.time * 1000,
                 eye: data.skillName,
-                一重粗识: data.desc[0],
-                二重略懂: data.desc[1],
-                三重巧熟: data.desc[2],
-                四重精妙: data.desc[3],
-                五重游刃: data.desc[4], 
-                六重忘我: data.desc[5],
+                一重粗识: data.descs[0].desc,
+                二重略懂: data.descs[1].desc,
+                三重巧熟: data.descs[2].desc,
+                四重精妙: data.descs[3].desc,
+                五重游刃: data.descs[4].desc, 
+                六重忘我: data.descs[5].desc,
                 七重归一: '空'
             }
         }else{
