@@ -25,7 +25,7 @@ class Bot{
                 return await handler.handle(ctx);
             }
         }catch(e) {
-            console.log(e, data.message);
+            return e + '\n' + data.message;
         }
     }
 
@@ -46,17 +46,17 @@ class Bot{
             '^帮助\\s(\\S*)$': '/help $1',
             //'^(\\S*)\\s?帮助$': '/help $1',
 
-            '^花价\\s?([\\S\\s]*)$': '/flowerPrice $1',
-            '^科举\\s?([\\S\\s]+)$': '/exam $1',
+            '^花价\\s([\\S\\s]*)$': '/flowerPrice $1',
+            '^科举\\s([\\S\\s]+)$': '/exam $1',
 
-            '^金价\\s?(\\S*)$': '/goldPrice $1',
+            '^金价\\s(\\S*)$': '/goldPrice $1',
             //'^(\\S*)\\s?金价$': '/goldPrice $1',
 
-            '^开服\\s?([\\S\\s]*)$': '/serverStatus $1',
+            '^开服\\s([\\S\\s]*)$': '/serverStatus $1',
             //'^([\\S\\s]*)\\s?开服$': '/serverStatus $1',
 
             //'^(\\S+)\\s?(攻略|成就)$': '/achievement $1',
-            '^(攻略|成就)\\s?(\\S*)$': '/achievement $2',
+            '^(攻略|成就)\\s(\\S*)$': '/achievement $2',
 
             '^更新|游戏更新$': '/gameUpdate',
             '^日常|游戏日常$': '/daily',
@@ -69,7 +69,7 @@ class Bot{
 
             '^(奇遇|查询)\\s([\\S\\s]*)$': '/serendipity $2',
 
-            '^(沙盘|阵营沙盘)\\s?(\\S*)$': '/sandbox $2',
+            '^(沙盘|阵营沙盘)\\s(\\S*)$': '/sandbox $2',
             //'^(\\S*)\\s?(沙盘|阵营沙盘)$': '/sandbox $1',
 
             '^器物谱\\s(\\S*)$': '/travel $1',
@@ -79,20 +79,20 @@ class Bot{
             '^物价\\s(\\S+)$': '/price $1',
             //'^(\\S+)\\s?物价$': '/price $1',
 
-            '^群昵称\\s?([\\S\\s]+)': '/group groupname $1',
-            '^咕咕称呼\\s?([\\S\\s]+)': '/group nickname $1',
-            '^群服务器\\s?([\\S\\s]+)': '/group server $1',
-            '^(打开|关闭|开|关)\\s?(奇遇播报|开服播报|间便命令|智障对话|斗图)': '/group set $2 $1',
+            '^群昵称\\s([\\S\\s]+)': '/group groupname $1',
+            '^咕咕称呼\\s([\\S\\s]+)': '/group nickname $1',
+            '^群服务器\\s([\\S\\s]+)': '/group server $1',
+            '^(打开|关闭|开|关)\\s(奇遇播报|开服播报|间便命令|智障对话|斗图)': '/group set $2 $1',
 
-            '^(开团|创建团队)\\s?([\\S\\s]*)': '/team create $2',
-            '^(删除团队)\\s?([\\S\s]*)': '/team delete $2',
-            '^(团队列表)\\s?([\\S\\s]*)': '/team list $2',
-            '^(查看团队)\\s?([\\S\\s]*)': '/team view $2',
-            '^(取消报名)\\s?([\\S\\s]*)': '/team cancel $2',
-            '^(团队报名)\\s?([\\S\\s]+)': '/team apply $2',
+            '^(开团|创建团队)\\s([\\S\\s]*)': '/team create $2',
+            '^(删除团队)\\s([\\S\s]*)': '/team delete $2',
+            '^(团队列表)\\s([\\S\\s]*)': '/team list $2',
+            '^(查看团队)\\s([\\S\\s]*)': '/team view $2',
+            '^(取消报名)\\s([\\S\\s]*)': '/team cancel $2',
+            '^(团队报名)\\s([\\S\\s]+)': '/team apply $2',
             
-            '^添加别名\\s?([\\S\\s]+)': '/alias add $1',
-            '^删除别名\\s?([\\S\\s]+)': '/alias delete $1'
+            '^添加别名\\s([\\S\\s]+)': '/alias add $1',
+            '^删除别名\\s([\\S\\s]+)': '/alias delete $1'
         };
         if(data.group_id && data.switchs.chat) {
             let nickname = await redis.get(`GroupNickname:${data.group_id}`);
