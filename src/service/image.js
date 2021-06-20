@@ -1,6 +1,5 @@
 const fs = require('fs-extra');
-const {v4} = require('uuid');
-const uuid = v4;
+const uuid = require('uuid').v4;
 const marked = require('marked');
 const md5 = require('js-md5');
 const artTemplate = require('art-template');

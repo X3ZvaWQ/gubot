@@ -288,10 +288,10 @@ class Api{
         if(response.data.code == 200) {
             let data = response.data.data;
             return {
-                增强小药: data.HeightenDrug,
-                增强小吃: data.HeightenFood,
-                辅助小药: data.AuxiliaryDrug,
-                辅助小吃: data.AuxiliaryFood
+                增强小药: data.heightenDrug,
+                增强小吃: data.heightenFood,
+                辅助小药: data.auxiliaryDrug,
+                辅助小吃: data.auxiliaryFood
             }
         }else{
             throw `调用jx3api.getHeighten返回值错误，请检查参数是否正确。`;
