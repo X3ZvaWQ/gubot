@@ -314,17 +314,17 @@ class Api{
             return {
                 name: data.name,
                 time: response.data.time * 1000,
-                eye: data.eye,
-                一重粗识: data.one,
-                二重略懂: data.two,
-                三重巧熟: data.three,
-                四重精妙: data.four,
-                五重游刃: data.five, 
-                六重忘我: data.six,
+                eye: data.skillName,
+                一重粗识: data.desc[0],
+                二重略懂: data.desc[1],
+                三重巧熟: data.desc[2],
+                四重精妙: data.desc[3],
+                五重游刃: data.desc[4], 
+                六重忘我: data.desc[5],
                 七重归一: '空'
             }
         }else{
-            throw `调用jx3api.getHeighten返回值错误，请检查参数是否正确。`;
+            throw `调用jx3api.eye返回值错误，请检查参数是否正确。`;
         }
     }
 

@@ -72,8 +72,7 @@ module.exports = class MacroHandler {
             let macro_sync = macros.map((x) => x.name);
             result = `${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}
                 云端宏:
-                ${macro_sync.join('\n')}
-            `;
+                ${macro_sync.join('\n')}`;
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }
