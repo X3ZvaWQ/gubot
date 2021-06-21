@@ -28,7 +28,7 @@ module.exports = class SerendipityHandler {
             }
 
             if (serendipitys == '') {
-                throw 'ERROR: Serendipity Not Found.\n错误: 你写的这玩意......他真的存在吗?';
+                throw '错误: 你写的这玩意......他真的存在吗?';
             }
             data = await Api.getSerendipity({
                 role: args.player,
@@ -40,7 +40,7 @@ module.exports = class SerendipityHandler {
             if (data.code == 0) {
                 data = data.data.data;
             } else {
-                throw 'ERROR: Server Error.\n错误: 接口炸了，不关机器人的事儿';
+                throw '错误: 接口炸了，不关机器人的事儿';
             }
             await redis.set(key, JSON.stringify(data));
             await redis.expire(key, 300);
@@ -60,9 +60,9 @@ module.exports = class SerendipityHandler {
             }
         }
 
-        return (`--${args.player} 的奇遇记录--
+        return (`${args.player} 的奇遇记录
             ${array.length > 1 ? Cq.ImageCQCode('file://' + await generateFromArrayTable(array)) : '这位侠士这里光秃秃的，什么也没有。'}
-            ----------------------
+            -----
             服务器：${args.server}
             数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");
     }
@@ -72,6 +72,7 @@ module.exports = class SerendipityHandler {
             {
                 name: 'player',
                 alias: null,
+                displayName: '角色名',
                 type: 'string',
                 defaultIndex: 1,
                 shortArgs: null,
@@ -83,6 +84,7 @@ module.exports = class SerendipityHandler {
             {
                 name: 'serendipity',
                 alias: 'serendipity',
+                displayName: '奇遇名称',
                 type: 'string',
                 defaultIndex: 2,
                 shortArgs: null,
@@ -93,6 +95,7 @@ module.exports = class SerendipityHandler {
             }, {
                 name: 'server',
                 alias: 'server',
+                displayName: '服务器',
                 type: 'server',
                 defaultIndex: 3,
                 shortArgs: null,

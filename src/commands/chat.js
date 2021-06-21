@@ -18,6 +18,7 @@ module.exports = class ChatHandler {
         return [{
             name: 'message',
             alias: null,
+            displayName: '消息',
             type: 'string',
             defaultIndex: 1,
             shortArgs: null,

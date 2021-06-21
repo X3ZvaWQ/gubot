@@ -130,6 +130,7 @@ module.exports = class PermissionHandler {
             action: {
                 name: 'action',
                 alias: 'permission_action',
+                displayName: '权限-分支命令',
                 type: 'string',
                 defaultIndex: 1,
                 shortArgs: null,
@@ -142,6 +143,7 @@ module.exports = class PermissionHandler {
                 set: [{
                     name: 'user',
                     alias: null,
+                    displayName: '@群内用户',
                     type: 'CQ',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -152,6 +154,7 @@ module.exports = class PermissionHandler {
                 }, {
                     name: 'level',
                     alias: 'role',
+                    displayName: '权限等级',
                     type: 'string',
                     defaultIndex: 3,
                     shortArgs: null,

@@ -51,6 +51,7 @@ module.exports = class FurnitureHandler {
             {
                 name: 'name',
                 alias: 'furniture',
+                displayName: '家具名',
                 type: 'furniture',
                 defaultIndex: 1,
                 shortArgs: null,

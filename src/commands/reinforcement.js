@@ -29,6 +29,7 @@ module.exports = class ReinforcementHandler {
         return [{
             name: 'xf',
             alias: 'xf',
+            displayName: '心法',
             type: 'string',
             defaultIndex: 1,
             shortArgs: null,

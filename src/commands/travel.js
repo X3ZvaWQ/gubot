@@ -16,7 +16,7 @@ module.exports = class TravelHandler {
             let data = await Api.getTravelFromJx3Api(map);
             let furnitures = data.data;
             let images = [];
-            for(let i in furnitures){
+            for (let i in furnitures) {
                 images.push(await Image.generateFromTemplateFile('furniture', furnitures[i]));
             }
             return images;
@@ -25,19 +25,19 @@ module.exports = class TravelHandler {
             result = await getResult(args.map);
             await redis.set(redis_key, JSON.stringify(result));
             await redis.expire(redis_key, 86400);
-        }else{
+        } else {
             let cache_valid = true;
             result = JSON.parse(result);
-            if(result instanceof Array) {
-                for(let i in result) {
-                    if(!await fs.exists(result[i])){
+            if (result instanceof Array) {
+                for (let i in result) {
+                    if (!await fs.exists(result[i])) {
                         cache_valid = false;
                     }
                 }
-            }else{
+            } else {
                 cache_valid = false;
             }
-            if(!cache_valid) {
+            if (!cache_valid) {
                 result = await getResult(args.map);
                 await redis.set(redis_key, JSON.stringify(result));
                 await redis.expire(redis_key, 86400);
@@ -51,6 +51,7 @@ module.exports = class TravelHandler {
             {
                 name: 'map',
                 alias: 'map',
+                displayName: '地图',
                 type: 'map',
                 defaultIndex: 1,
                 shortArgs: null,

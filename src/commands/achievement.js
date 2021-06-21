@@ -38,6 +38,7 @@ module.exports = class AchievementHandler {
         return [{
             name: 'achievement',
             alias: 'achievement',
+            displayName: '成就名称',
             type: 'string',
             defaultIndex: 1,
             shortArgs: null,

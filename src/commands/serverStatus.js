@@ -33,6 +33,7 @@ module.exports = class ServerStatusHandler {
         return [{
             name: 'server',
             alias: 'server',
+            displayName: '服务器',
             type: 'server',
             defaultIndex: 1,
             shortArgs: null,
@@ -43,6 +44,7 @@ module.exports = class ServerStatusHandler {
         }, {
             name: 'update',
             alias: null,
+            displayName: '刷新缓存',
             type: 'boolean',
             defaultIndex: 2,
             shortArgs: 'u',

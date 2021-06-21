@@ -21,6 +21,7 @@ module.exports = class BpsHandler {
         return [{
             name: 'xf',
             alias: 'xf',
+            displayName: '心法',
             type: 'string',
             defaultIndex: 1,
             shortArgs: null,

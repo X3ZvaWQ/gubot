@@ -53,6 +53,7 @@ class Bot{
             //'^(\\S*)\\s?金价$': '/goldPrice $1',
 
             '^开服\\s([\\S\\s]*)$': '/serverStatus $1',
+            '^开服$': '/serverStatus',
             //'^([\\S\\s]*)\\s?开服$': '/serverStatus $1',
 
             //'^(\\S+)\\s?(攻略|成就)$': '/achievement $1',
@@ -70,6 +71,7 @@ class Bot{
             '^(奇遇|查询)\\s([\\S\\s]*)$': '/serendipity $2',
 
             '^(沙盘|阵营沙盘)\\s(\\S*)$': '/sandbox $2',
+            '^(沙盘|阵营沙盘)$': '/sandbox',
             //'^(\\S*)\\s?(沙盘|阵营沙盘)$': '/sandbox $1',
 
             '^器物谱\\s(\\S*)$': '/travel $1',
@@ -84,12 +86,12 @@ class Bot{
             '^群服务器\\s([\\S\\s]+)': '/group server $1',
             '^(打开|关闭|开|关)\\s(奇遇播报|开服播报|间便命令|智障对话|斗图)': '/group set $2 $1',
 
-            '^(开团|创建团队)\\s([\\S\\s]*)': '/team create $2',
-            '^(删除团队)\\s([\\S\s]*)': '/team delete $2',
-            '^(团队列表)\\s([\\S\\s]*)': '/team list $2',
-            '^(查看团队)\\s([\\S\\s]*)': '/team view $2',
-            '^(取消报名)\\s([\\S\\s]*)': '/team cancel $2',
-            '^(团队报名)\\s([\\S\\s]+)': '/team apply $2',
+            '^(开团|创建团队)\\s?([\\S\\s]*)': '/team create $2',
+            '^(删除团队)\\s?([\\S\s]*)': '/team delete $2',
+            '^(团队列表)\\s?([\\S\\s]*)': '/team list $2',
+            '^(查看团队)\\s?([\\S\\s]*)': '/team view $2',
+            '^(取消报名)\\s?([\\S\\s]*)': '/team cancel $2',
+            '^(团队报名)\\s?([\\S\\s]+)': '/team apply $2',
             
             '^添加别名\\s([\\S\\s]+)': '/alias add $1',
             '^删除别名\\s([\\S\\s]+)': '/alias delete $1'
@@ -138,7 +140,7 @@ class Bot{
                     if(arg.nullable) {
                         value = arg.default;
                     }else{
-                        throw `Error: ${arg.name} 参数缺失，请使用/help命令查看命令用法`;
+                        throw `Error: ${arg.displayName || arg.name || ''} 必填参数缺失，请使用/help命令查看命令用法`;
                     }
                 }
                 if(arg.type == 'server' && value == '-'){
@@ -165,17 +167,17 @@ class Bot{
                 }
                 if(arg.limit instanceof Object && arg.type == 'integer'){
                     if(value < arg.limit.min || value > arg.limit.max){
-                        throw `Error: ${arg.name} 参数不符合规范，请使用/help 命令查看命令用法`;
+                        throw `Error: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值范围[${arg.limit.min}, ${arg.limit.max}](闭区间)\n请使用/help 命令查看命令用法`;
                     }
                 }
                 if(arg.limit instanceof Array && arg.type == 'string'){
                     if(arg.limit.indexOf(value) == -1){
-                        throw `Error: ${arg.name} 参数不符合规范，请使用/help 命令查看命令用法`;
+                        throw `Error: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值为{${arg.limit.join(',')}}中的一个\n请使用/help 命令查看命令用法`;
                     }
                 }
                 if(arg.limit && arg.limit.min != undefined && arg.limit.max != undefined && arg.type == 'string'){
                     if(typeof value != 'string' || value.length < arg.limit.min || value.length > arg.limit.max){
-                        throw `Error: ${arg.name} 参数不符合规范，请使用/help 命令查看命令用法`;
+                        throw `Error: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求字符串长度在[${arg.limit.min},${arg.limit.max}](闭区间)之间\n请使用/help 命令查看命令用法`;
                     }
                 }
                 return value;

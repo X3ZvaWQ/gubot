@@ -7,7 +7,7 @@ const fs = require('fs-extra')
 module.exports = class PriceHandler {
     async handle(ctx) {
         //get args from state
-        let args = ctx.args;    
+        let args = ctx.args;
         let redis_key = `OutwardPrice:${args.name}`;
         //get data from redis
         let result = await redis.get(redis_key);
@@ -30,6 +30,7 @@ module.exports = class PriceHandler {
             {
                 name: 'name',
                 alias: 'outward',
+                displayName: '外观名称',
                 type: 'string',
                 defaultIndex: 1,
                 shortArgs: null,
@@ -41,6 +42,7 @@ module.exports = class PriceHandler {
             {
                 name: 'update',
                 alias: null,
+                displayName: '刷新缓存',
                 type: 'boolean',
                 defaultIndex: 2,
                 longArgs: 'update',

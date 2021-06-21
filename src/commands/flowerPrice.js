@@ -39,6 +39,7 @@ module.exports = class FlowerPriceHandler {
             {
                 name: 'flower',
                 alias: 'flower',
+                displayName: '花种类',
                 type: 'string',
                 defaultIndex: 1,
                 shortArgs: null,
@@ -50,6 +51,7 @@ module.exports = class FlowerPriceHandler {
             {
                 name: 'server',
                 alias: 'server',
+                displayName: '服务器',
                 type: 'server',
                 defaultIndex: 2,
                 shortArgs: null,
@@ -60,6 +62,7 @@ module.exports = class FlowerPriceHandler {
             }, {
                 name: 'map',
                 alias: 'map',
+                displayName: '地图',
                 type: 'string',
                 defaultIndex: 3,
                 shortArgs: null,
@@ -70,6 +73,7 @@ module.exports = class FlowerPriceHandler {
             }, {
                 name: 'update',
                 alias: null,
+                displayName: '刷新缓存',
                 type: 'boolean',
                 defaultIndex: 4,
                 shortArgs: 'u',

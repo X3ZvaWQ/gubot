@@ -10,7 +10,7 @@ module.exports = class AliasHandler {
     async handle(ctx) {
         let action = ctx.args.action;
         if (action == 'list') {
-            throw '性能原因，暂时禁止使用' //this.list(ctx);
+            throw '错误：性能原因，暂时禁止使用' //this.list(ctx);
         } else if (action == 'add') {
             return await this.add(ctx);
         } else if (action == 'delete') {
@@ -22,7 +22,7 @@ module.exports = class AliasHandler {
         let args = ctx.args;
         let permission = ctx.permission;
         if(permission < 2) {
-            throw '权限不足。需要admin及以上权限';
+            throw '错误：权限不足。需要admin及以上权限';
         }
         if(args.alias == args.real) {
             throw '错误：禁止套娃！'
@@ -41,10 +41,10 @@ module.exports = class AliasHandler {
             where: where
         });
         if (alias != null) {
-            throw 'ERROR: Alias already exists.\n错误：该别名已存在！';
+            throw '错误：该别名已存在！';
         }
         alias = await Alias.create(where)
-        let result = `别名已成功创建,现在 ${where.scope} 的 ${where.alias} 会被认为是 ${where.real}`;
+        let result = `成功：别名已成功创建,现在[${where.scope}]作用域下的[${where.alias}]会被认为是[${where.real}]`;
         delete where.real;
         await redis.del('Alias:'+JSON.stringify(where));
         return result;
@@ -54,7 +54,7 @@ module.exports = class AliasHandler {
         let args = ctx.args;
         let permission = ctx.permission;
         if(permission < 2) {
-            throw '权限不足。需要admin及以上权限';
+            throw '错误：权限不足。需要admin及以上权限';
         }
         let where = {
             real: args.real,
@@ -71,12 +71,12 @@ module.exports = class AliasHandler {
         });
         if (alias != null) {
             alias.destroy();
-            let result = `成功,${where.scope} 下 ${where.real} 的别名 ${where.alias} 已删除`;
+            let result = `成功：[${where.scope}]作用域下[${where.real}]的别名[${where.alias}]已删除`;
             delete where.real;
             await redis.del('Alias:'+JSON.stringify(where));
             return result;
         }else{
-            throw '该别名不存在';
+            throw '错误：该别名不存在';
         }
     }
 
@@ -104,7 +104,7 @@ module.exports = class AliasHandler {
                 let alias = alias_all[i];
                 array.push([alias.scope, alias.alias, alias.real]);
             }
-            result = `------查询的别名列表------
+            result = `查询的别名列表:
             ${Cq.ImageCQCode('file://' + await Image.generateFromArrayTable(array))}
             `.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
             await redis.set(redis_key, result);
@@ -118,6 +118,7 @@ module.exports = class AliasHandler {
             action: {
                 name: 'action',
                 alias: 'alias_action',
+                displayName: '别名-命令分支',
                 type: 'string',
                 defaultIndex: 1,
                 shortArgs: null,
@@ -130,6 +131,7 @@ module.exports = class AliasHandler {
                 list: [{
                     name: 'real',
                     alias: null,
+                    displayName: '真实名称',
                     type: 'string',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -140,6 +142,7 @@ module.exports = class AliasHandler {
                 }, {
                     name: 'alias',
                     alias: null,
+                    displayName: '别名',
                     type: 'string',
                     defaultIndex: 3,
                     shortArgs: null,
@@ -150,6 +153,7 @@ module.exports = class AliasHandler {
                 }, {
                     name: 'scope',
                     alias: null,
+                    displayName: '别名作用域',
                     type: 'string',
                     defaultIndex: 4,
                     shortArgs: null,
@@ -161,6 +165,7 @@ module.exports = class AliasHandler {
                 delete: [{
                     name: 'real',
                     alias: null,
+                    displayName: '真实名称',
                     type: 'string',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -171,6 +176,7 @@ module.exports = class AliasHandler {
                 }, {
                     name: 'alias',
                     alias: null,
+                    displayName: '别名',
                     type: 'string',
                     defaultIndex: 3,
                     shortArgs: null,
@@ -181,6 +187,7 @@ module.exports = class AliasHandler {
                 }, {
                     name: 'scope',
                     alias: null,
+                    displayName: '别名作用域',
                     type: 'string',
                     defaultIndex: 4,
                     shortArgs: null,
@@ -192,6 +199,7 @@ module.exports = class AliasHandler {
                 add: [{
                     name: 'real',
                     alias: null,
+                    displayName: '真实名称',
                     type: 'string',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -202,7 +210,8 @@ module.exports = class AliasHandler {
                 }, {
                     name: 'alias',
                     alias: null,
-                    type: 'boolean',
+                    displayName: '别名',
+                    type: 'string',
                     defaultIndex: 3,
                     shortArgs: null,
                     longArgs: 'alias',
@@ -212,6 +221,7 @@ module.exports = class AliasHandler {
                 }, {
                     name: 'scope',
                     alias: null,
+                    displayName: '别名作用域',
                     type: 'string',
                     defaultIndex: 4,
                     shortArgs: null,

@@ -27,6 +27,7 @@ module.exports = class ServerStatusHandler {
         return [{
             name: 'update',
             alias: null,
+            displayName: '刷新缓存',
             type: 'boolean',
             defaultIndex: 1,
             shortArgs: 'u',

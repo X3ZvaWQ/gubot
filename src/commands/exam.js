@@ -18,6 +18,7 @@ module.exports = class ExamHandler {
         return [{
             name: 'key',
             alias: null,
+            displayName: '试题关键词',
             type: 'string',
             defaultIndex: 1,
             shortArgs: null,

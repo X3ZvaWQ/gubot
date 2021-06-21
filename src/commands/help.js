@@ -16,6 +16,7 @@ module.exports = class HelpHandler {
         return [{
             name: 'command',
             alias: 'command',
+            displayName: '具体命令',
             type: 'string',
             defaultIndex: 1,
             shortArgs: null,

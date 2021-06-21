@@ -53,6 +53,7 @@ module.exports = class GoldPriceHandler {
             {
                 name: 'server',
                 alias: 'server',
+                displayName: '服务器',
                 type: 'server',
                 defaultIndex: 1,
                 shortArgs: null,
@@ -63,6 +64,7 @@ module.exports = class GoldPriceHandler {
             }, {
                 name: 'update',
                 alias: null,
+                displayName: '刷新缓存',
                 type: 'boolean',
                 defaultIndex: 2,
                 shortArgs: 'u',

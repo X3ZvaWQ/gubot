@@ -211,6 +211,7 @@ module.exports = class GroupHandler {
             action: {
                 name: 'action',
                 alias: 'group_action',
+                displayName: '群组-命令分支',
                 type: 'string',
                 defaultIndex: 1,
                 shortArgs: null,
@@ -224,6 +225,7 @@ module.exports = class GroupHandler {
                 server: [{
                     name: 'server',
                     alias: 'server',
+                    displayName: '服务器',
                     type: 'server',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -235,6 +237,7 @@ module.exports = class GroupHandler {
                 nickname: [{
                     name: 'nickname',
                     alias: null,
+                    displayName: '机器人称呼',
                     type: 'string',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -246,6 +249,7 @@ module.exports = class GroupHandler {
                 groupname: [{
                     name: 'groupname',
                     alias: null,
+                    displayName: '群称呼',
                     type: 'string',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -257,6 +261,7 @@ module.exports = class GroupHandler {
                 set: [{
                     name: 'function',
                     alias: 'function',
+                    displayName: '功能名称',
                     type: 'string',
                     defaultIndex: 2,
                     shortArgs: null,
@@ -267,6 +272,7 @@ module.exports = class GroupHandler {
                 }, {
                     name: 'switch',
                     alias: 'boolean',
+                    displayName: '开关',
                     type: 'boolean',
                     defaultIndex: 3,
                     shortArgs: null,
