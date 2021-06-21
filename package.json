@@ -5,6 +5,7 @@
   "main": "app.js",
   "author": "X3ZvaWQ",
   "license": "MIT",
+  "type": "module",
   "private": false,
   "dependencies": {
     "@jx3box/jx3box-common": "^5.5.1",

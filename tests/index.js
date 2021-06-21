@@ -1,11 +1,29 @@
-const WebSocket = require('ws');
+import Axios from "axios";
+
+const instance = Axios.create({
+    baseURL: 'https://jx3api.com/app',
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*'
+    }
+});
+
+instance.get('/gest', {
+    params: {
+        name: '冰心诀',
+    }
+}).then((x) => {
+    console.log(x.data);
+})
+
+/* const WebSocket = require('ws');
 const wsApi = new WebSocket(`wss://socket.nicemoe.cn`);
 wsApi.on('open', () => {
     console.log('INFO: Api WebSocket Server connected.');
 });
 wsApi.on('message', (message) => {
     console.log(message);
-});
+}); */
 
 /* const moment = require('moment');
 console.log(moment().locale('zhcn').format('YYYY-MM-DD HH:mm:ss')); */
@@ -46,6 +64,6 @@ console.log(params);
 axios.post('http://nls-meta.cn-shanghai.aliyuncs.com/', params).then(x => {
     console.log(x.data);
 }).catch((x) => {
-  
+
     console.log(x);
 }) */
