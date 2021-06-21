@@ -27,7 +27,7 @@ module.exports = class ServerStatusHandler {
             await redis.expire('Daily', 600);
         }
 
-        return `${Cq.ImageCQCode('file://' + result)}`;
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {

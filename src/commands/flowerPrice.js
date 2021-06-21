@@ -31,7 +31,7 @@ module.exports = class FlowerPriceHandler {
             await redis.set(key, result);
             await redis.expire(key, 300);
         }
-        return Cq.ImageCQCode('file://' + result).replace(/[ ]{2,}/g, "");
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {

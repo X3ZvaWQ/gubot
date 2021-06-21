@@ -61,7 +61,7 @@ module.exports = class SerendipityHandler {
         }
 
         return (`${args.player} 的奇遇记录
-            ${array.length > 1 ? Cq.ImageCQCode('file://' + await generateFromArrayTable(array)) : '这位侠士这里光秃秃的，什么也没有。'}
+            ${array.length > 1 ? `[CQ:image,file=file://${await generateFromArrayTable(array)}]` : '这位侠士这里光秃秃的，什么也没有。'}
             -----
             服务器：${args.server}
             数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");

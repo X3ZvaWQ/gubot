@@ -1,12 +1,78 @@
-const Alias = require("../model/alias");
-const User = require('../model/user');
-const Group = require('../model/group');
-const yargs_parser = require('yargs-parser');
-const commandsRoute = require('../commands');
-
 class Bot{
-    constructor() {
-        this.route = commandsRoute;
+    constructor(ENV) {
+        this.ENV = ENV;
+        /* this.route = commandsRoute; */
+    }
+    
+    async initRedis(env) {
+        if(env.enable){
+            const redis = require('async-redis');
+            const client = redis.createClient({
+                host: env.host || 'localhost',
+                port: env.port || 6379
+            });
+            client.on("error", function (err) {
+                console.log("Redis Error: " + err);
+            });
+            this.redis = client;
+        }else{
+            this.redis = new Proxy({}, {
+                get: () => (async () => null),
+            });
+        }
+        console.log('Redis: init success'.yellow);
+    }
+
+    async initSequelize(env) {
+        const Sequelize = require('sequelize');
+        const sequelize = new Sequelize(env.database, env.username, env.password, {
+            logging: env.logging || false,
+            dialect: env.dialect,
+            host: env.host,
+            port: env.port
+        });
+        this.sequelize = sequelize;
+        console.log('Sequelize: init success'.yellow);
+    }
+
+    async initImageGenerator(enable) {
+        if(enable) {
+            const ImageGenerator = require('./imageGenerator');
+            const puppeteer = require('puppeteer');
+            const browser = await puppeteer.launch();
+            this.imageGenerator = new ImageGenerator(browser);
+        }else{
+            this.imageGenerator = new Proxy({}, {
+                get: () => (async () => 'ImageGenerator has been closed. Please check env.json/enable_puppeteer'),
+            });
+        }
+        console.log('ImageGenerator: init success'.yellow);
+    }
+
+    async initCqhttps(env) {
+        this.cqhttps = [];
+        const Cqhttp = require('./cqhttp');
+        for(let cqhttp_config of env){
+            let cqhttp = new Cqhttp(cqhttp_config, this);
+            cqhttp.onMessage = function() {
+
+            }
+            this.cqhttps.push(cqhttp);
+            console.log(`Cqhttp: [${cqhttp.name}] init success`.yellow);
+        }
+    }
+
+    async start() {
+        global.bot = this;
+    }
+
+    async handleRequest(request) {
+        if(request.post_type == 'message') {
+
+        }
+        if(request.post_type == 'request') {
+            
+        }
     }
 
     async handleCommand(data) {
@@ -100,11 +166,7 @@ class Bot{
             let nickname = await redis.get(`GroupNickname:${data.group_id}`);
             if(nickname == null) {
                 nickname = (await Group.findOne({where: {group_id: data.group_id}}));
-                if(nickname != null) {
-                    nickname = nickname.nickname;
-                }else{
-                    nickname = '咕咕'
-                }
+                nickname = nickname ?? '咕咕';
                 await redis.set(`GroupNickname:${data.group_id}`, nickname);
             }
             nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');

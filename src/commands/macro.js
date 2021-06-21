@@ -1,7 +1,7 @@
 const Api = require('../service/api');
 const xfs = require('@jx3box/jx3box-data/data/xf/xf.json');
 const xfids = require('@jx3box/jx3box-data/data/xf/xfid.json')
-const Image = require('../service/image');
+const Image = require('../service/imageGenerator');
 const Cq = require('../service/cqhttp');
 
 module.exports = class MacroHandler {
@@ -70,7 +70,7 @@ module.exports = class MacroHandler {
                 macro: macros
             }
             let macro_sync = macros.map((x) => x.name);
-            result = `${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}
+            result = `[CQ:image,file=file://${await Image.generateFromTemplateFile('macro', data)}]
                 云端宏:
                 ${macro_sync.join('\n')}`;
             await redis.set(redis_key, result);

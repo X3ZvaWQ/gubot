@@ -1,5 +1,5 @@
 const Api = require('../service/api');
-const Image = require('../service/image');
+const Image = require('../service/imageGenerator');
 const Cq = require('../service/cqhttp');
 const fs = require('fs-extra')
 const moment = require('moment');
@@ -14,7 +14,7 @@ module.exports = class BpsHandler {
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 600);
         }
-        return `${Cq.ImageCQCode('file://' + result)}`;
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {

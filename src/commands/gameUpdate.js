@@ -20,7 +20,7 @@ module.exports = class ServerStatusHandler {
             await redis.expire('GameUpdate', 600);
         }
 
-        return `${Cq.ImageCQCode('file://' + result)}`;
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {

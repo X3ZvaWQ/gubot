@@ -293,7 +293,7 @@ module.exports = class TeamHandler {
             remarks: team.remarks,
             cells: cells,
         });
-        return `${Cq.ImageCQCode('file://' + image)}`;
+        return `[CQ:image,file=file://${image}]`;
     }
 
     static argsList(ctx) {

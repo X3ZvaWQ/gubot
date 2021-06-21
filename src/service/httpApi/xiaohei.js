@@ -1,6 +1,6 @@
-import Axios from "axios";
+const { Axios } = require('axios');
 
-export class XiaoHei{
+class XiaoHei{
     constructor() {
         this.axiosInstance = Axios.create({
             baseURL: 'https://www.j3price.top:8088/black-api/api',
@@ -90,3 +90,5 @@ export class XiaoHei{
         }
     }
 }
+
+module.exports = XiaoHei;

@@ -23,7 +23,7 @@ module.exports = class ReinforcementHandler {
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 600);
         }
-        return `${Cq.ImageCQCode('file://' + result)}`;
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {

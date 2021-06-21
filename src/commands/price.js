@@ -2,7 +2,7 @@ const Api = require('../service/api');
 const Image = require('../service/image');
 const Cq = require('../service/cqhttp');
 const fs = require('fs-extra')
-import { XiaoHei } from '../service/httpApi/xiaohei';
+const XiaoHei = require('../service/httpApi/xiaohei')
 
 module.exports = class PriceHandler {
     async handle(ctx) {
@@ -27,7 +27,7 @@ module.exports = class PriceHandler {
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 1800);
         }
-        return Cq.ImageCQCode(`file://${result}`);
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {

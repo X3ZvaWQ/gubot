@@ -43,7 +43,7 @@ module.exports = class TravelHandler {
                 await redis.expire(redis_key, 86400);
             }
         }
-        return result.map(x => Cq.ImageCQCode(`file://${x}`)).join('\n');
+        return result.map(x => `[CQ:image,file=file://${x}]`).join('\n');
     }
 
     static argsList() {

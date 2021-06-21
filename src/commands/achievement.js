@@ -25,7 +25,7 @@ module.exports = class AchievementHandler {
             let updated_at = moment(post.updated * 1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
             let image = await Image.generateFromHtml(html);
             result = `咕Bot - 成就攻略 - ${name}
-            ${Cq.ImageCQCode('file://' + image)}
+            [CQ:image,file=file://${image}]
             以上内容来源于jx3box用户[${post.user_nickname}]。
             上次更新时间：[${updated_at}]`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
             await redis.set(redis_key, result);

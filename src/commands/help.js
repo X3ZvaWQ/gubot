@@ -6,10 +6,10 @@ module.exports = class HelpHandler {
         let args = ctx.args;
         if (args['command'] != null && await Image.MarkdownFileExist(`help/${args['command']}`)) {
             let image = await Image.generateFromMarkdownFile(`help/${args['command']}`);
-            return Cq.ImageCQCode('file://' + image);
+            return `[CQ:image,file=file://${image}]`;
         }
         let image = await Image.generateFromMarkdownFile('help/help');
-        return Cq.ImageCQCode('file://' + image);
+        return `[CQ:image,file=file://${image}]`;
     }
 
     static argsList() {

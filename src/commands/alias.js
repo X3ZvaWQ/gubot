@@ -4,7 +4,6 @@ const Cq = require('../service/cqhttp');
 const Image = require('../service/image');
 
 module.exports = class AliasHandler {
-    
     static demandPermission = true;
     
     async handle(ctx) {
@@ -105,8 +104,7 @@ module.exports = class AliasHandler {
                 array.push([alias.scope, alias.alias, alias.real]);
             }
             result = `查询的别名列表:
-            ${Cq.ImageCQCode('file://' + await Image.generateFromArrayTable(array))}
-            `.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
+            [CQ:image,file=file://${await Image.generateFromArrayTable(array)}]`;
             await redis.set(redis_key, result);
             await redis.expire(redis_key, 86400);
         }
