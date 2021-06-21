@@ -286,7 +286,7 @@ module.exports = class TeamHandler {
                 cells[i].color = allschool.color[allxf[xf]['school']];
             }
         }
-        let image = await Image.generateFromTemplateFile('team', {
+        let image = await bot.imageGenerator.generateFromTemplateFile('team', {
             team_id: team.id,
             team_name: team.name,
             time: team.time,

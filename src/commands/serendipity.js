@@ -11,7 +11,7 @@ module.exports = class SerendipityHandler {
         let args = ctx.args;
         let key = JSON.stringify('Serendipity:' + JSON.stringify(args));
         //get data from redis
-        let data = await redis.get(key);
+        let data = await bot.redis.get(key);
         //check data is empty?
         if (data != undefined && data != null) {
             data = JSON.parse(data);
@@ -42,8 +42,8 @@ module.exports = class SerendipityHandler {
             } else {
                 throw '错误: 接口炸了，不关机器人的事儿';
             }
-            await redis.set(key, JSON.stringify(data));
-            await redis.expire(key, 300);
+            await bot.redis.set(key, JSON.stringify(data));
+            await bot.redis.expire(key, 300);
         }
         //combine datas to string reply.
         let array = [
@@ -51,10 +51,10 @@ module.exports = class SerendipityHandler {
         ];
         if (data != null && data != 'null' && data.length > 0) {
             for (let i in data) {
-                let type = await redis.get('SerendipityTypeOf:' + data[i].serendipity);
+                let type = await bot.redis.get('SerendipityTypeOf:' + data[i].serendipity);
                 if (type == null) {
                     type = allSerendipity.filter(x => x.name == data[i].serendipity)[0].type;
-                    await redis.set('SerendipityTypeOf:' + data[i].serendipity, type);
+                    await bot.redis.set('SerendipityTypeOf:' + data[i].serendipity, type);
                 }
                 array.push([type, data[i].serendipity, moment(data[i].dwTime * 1000).format('YYYY-MM-DD HH:mm:ss')]);
             }

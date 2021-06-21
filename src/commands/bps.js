@@ -8,11 +8,11 @@ module.exports = class BpsHandler {
     async handle(ctx) {
         let args = ctx.args;
         let redis_key = `BpsGuide:${args.xf}`;
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if (!result || !await fs.exists(result)) {
             
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 600);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 600);
         }
         return `[CQ:image,file=file://${result}]`;
     }

@@ -13,7 +13,7 @@ module.exports = class FlowerPriceHandler {
             type: args.flower
         }
         let key = JSON.stringify('FlowerPrice:' + JSON.stringify(parms));
-        let result = await redis.get(key);
+        let result = await bot.redis.get(key);
         //get data from redis
         //check data is empty?
         if (result == null || args['update'] || await fs.exists(result)) {
@@ -25,11 +25,11 @@ module.exports = class FlowerPriceHandler {
             if(flowerPrice == undefined || flowerPrice.length < 1) {
                 throw 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
             }
-            result = await Image.generateFromTemplateFile('flowerPrice', {
+            result = await bot.imageGenerator.generateFromTemplateFile('flowerPrice', {
                 price: flowerPrice
             });
-            await redis.set(key, result);
-            await redis.expire(key, 300);
+            await bot.redis.set(key, result);
+            await bot.redis.expire(key, 300);
         }
         return `[CQ:image,file=file://${result}]`;
     }

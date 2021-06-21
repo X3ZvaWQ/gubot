@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 var DataTypes = Sequelize.DataTypes;
 var Model = Sequelize.Model;
 
-let sequelize = global.sequelize;
+let sequelize = bot.sequelize;
 
 class Alias extends Model {
     static async get(alias,scope,group){
@@ -16,7 +16,7 @@ class Alias extends Model {
                 group: group || '*'
             };
             let where_string = 'Alias:'+JSON.stringify(where);
-            let redis_alias = await redis.get(where_string);
+            let redis_alias = await bot.redis.get(where_string);
             if(redis_alias != null && redis_alias != undefined){
                 return redis_alias;
             }else{
@@ -30,14 +30,14 @@ class Alias extends Model {
                         let real_scope = await Alias.get(scope, 'scope');
                         if(real_scope != null) {
                             let result = await Alias.get(alias, real_scope);
-                            await redis.set(where_string, result);
+                            await bot.redis.set(where_string, result);
                             return result;
                         }
-                        await redis.set(where_string, alias);
+                        await bot.redis.set(where_string, alias);
                         return alias;
                     }
                 }else{
-                    await redis.set(where_string, alias_instance.real);
+                    await bot.redis.set(where_string, alias_instance.real);
                     return alias_instance.real;
                 }
             }

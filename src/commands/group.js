@@ -26,7 +26,7 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             let group_id = ctx.data.group_id;
             let redis_key = `GroupInfo:${group_id}`;
-            let result = await redis.get(redis_key);
+            let result = await bot.redis.get(redis_key);
             if (result == null) {
                 let group = await Group.findOne({
                     where: {
@@ -47,7 +47,7 @@ module.exports = class GroupHandler {
                 便捷命令开关：${group.convenient}
                 机器人入群时间：${moment(group.created_at).format('YYYY-MM-DD hh:mm:ss')}
                 `
-                await redis.set(redis_key, result);
+                await bot.redis.set(redis_key, result);
             }
             return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
         } else if (ctx.data.message_type == 'private') {
@@ -80,7 +80,7 @@ module.exports = class GroupHandler {
                     group.save();
                 }
                 let redis_key = `GroupInfo:${group_id}`;
-                await redis.del(redis_key);
+                await bot.redis.del(redis_key);
                 return '本群默认服务器已被修改为：' + server;
             } else {
                 return this.info(ctx);
@@ -115,9 +115,9 @@ module.exports = class GroupHandler {
                     group.save();
                 }
                 let redis_key = `GroupInfo:${group_id}`;
-                await redis.del(redis_key);
+                await bot.redis.del(redis_key);
                 redis_key = `GroupNickname:${group_id}`;
-                await redis.set(redis_key, nickname);
+                await bot.redis.set(redis_key, nickname);
                 return '本群咕咕的称呼已被修改为：' + nickname;
             } else {
                 return this.info(ctx);
@@ -153,7 +153,7 @@ module.exports = class GroupHandler {
                     group.save();
                 }
                 let redis_key = `GroupInfo:${group_id}`;
-                await redis.del(redis_key);
+                await bot.redis.del(redis_key);
                 return '本群称呼已被修改为：' + groupname;
             } else {
                 return this.info(ctx);
@@ -194,9 +194,9 @@ module.exports = class GroupHandler {
                 group[func] = swi;
                 group.save();
                 let redis_key = `GroupFunc:${func}:${group_id}`;
-                await redis.set(redis_key, swi=='true'? true : false);
+                await bot.redis.set(redis_key, swi=='true'? true : false);
                 redis_key = `GroupInfo:${group_id}`;
-                await redis.del(redis_key);
+                await bot.redis.del(redis_key);
                 return `本群${func}功能开关已被修改为：${swi}`;
             } else {
                 return this.info(ctx);

@@ -7,7 +7,7 @@ module.exports = class SandBoxHandler {
         let args = ctx.args;
         let redis_key = `SandBox:${args.server}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if (result == null) {
             try {
                 let [area, server, updated_at, sandbox_image] = await Api.getSandBox(args.server);
@@ -16,8 +16,8 @@ module.exports = class SandBoxHandler {
                 --------------
                 服务器：${area}·${server}
                 上次更新时间：${updated_at}`;
-                await redis.set(redis_key, result);
-                await redis.expire(redis_key, 21600);
+                await bot.redis.set(redis_key, result);
+                await bot.redis.expire(redis_key, 21600);
             } catch (e) {
                 result = `ERROR: Get Sandbox Image Error.\n 错误：无法获取数据.`
             }

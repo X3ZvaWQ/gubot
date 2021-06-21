@@ -45,7 +45,7 @@ module.exports = class AliasHandler {
         alias = await Alias.create(where)
         let result = `成功：别名已成功创建,现在[${where.scope}]作用域下的[${where.alias}]会被认为是[${where.real}]`;
         delete where.real;
-        await redis.del('Alias:'+JSON.stringify(where));
+        await bot.redis.del('Alias:'+JSON.stringify(where));
         return result;
     }
 
@@ -72,7 +72,7 @@ module.exports = class AliasHandler {
             alias.destroy();
             let result = `成功：[${where.scope}]作用域下[${where.real}]的别名[${where.alias}]已删除`;
             delete where.real;
-            await redis.del('Alias:'+JSON.stringify(where));
+            await bot.redis.del('Alias:'+JSON.stringify(where));
             return result;
         }else{
             throw '错误：该别名不存在';
@@ -93,7 +93,7 @@ module.exports = class AliasHandler {
             if(where[k] == null) delete where[k];
         }
         let redis_key = `AliasList:${JSON.stringify(where)}`;
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if(result == null) {
             let alias_all = await Alias.findAll({where:where, logging: console.log});
             let array = [
@@ -104,9 +104,9 @@ module.exports = class AliasHandler {
                 array.push([alias.scope, alias.alias, alias.real]);
             }
             result = `查询的别名列表:
-            [CQ:image,file=file://${await Image.generateFromArrayTable(array)}]`;
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 86400);
+            [CQ:image,file=file://${await bot.imageGenerator.generateFromArrayTable(array)}]`;
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 86400);
         }
         return result;
     }

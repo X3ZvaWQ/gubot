@@ -48,7 +48,7 @@ class ImageGenerator {
             selector: options['selector'] || undefined
         }
         let redis_key = `HtmlImage:${md5(html)}`;
-        let imagename = await redis.get(redis_key);
+        let imagename = await bot.redis.get(redis_key);
         if(imagename != null && await fs.exists(imagename)) {
             return imagename;
         }
@@ -58,7 +58,7 @@ class ImageGenerator {
         let htmlname = `${process.cwd()}/storage/htmls/${uuid()}.html`;
         await fs.outputFile(htmlname, html);
         imagename = await this.generateFromHtmlFile(htmlname, configs);
-        await redis.set(redis_key, imagename);
+        await bot.redis.set(redis_key, imagename);
         return imagename;
     }
 

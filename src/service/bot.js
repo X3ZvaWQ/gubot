@@ -1,7 +1,6 @@
 class Bot{
     constructor(ENV) {
         this.ENV = ENV;
-        /* this.route = commandsRoute; */
     }
     
     async initRedis(env) {
@@ -62,16 +61,69 @@ class Bot{
         }
     }
 
+    async initCommands() {
+        this.route = require('../commands/index');
+    }
+
     async start() {
         global.bot = this;
     }
 
     async handleRequest(request) {
         if(request.post_type == 'message') {
-
+            let result;
+            if(request.message.split('')[0] == '/'){
+                result = await this.handleCommand(request);
+            }else{
+                result = await this.handleMessage(request);
+            }
+            if(result != null && result != undefined && result != ''){
+                return result;
+            }
         }
         if(request.post_type == 'request') {
-            
+            //加好友申请
+            if(request.request_type == 'friend') {
+                if(!this.ENV.agree_friend_invite) {
+                    return false;
+                }
+                //接受申请
+                return {
+                    action: "set_friend_add_request",
+                    params: {
+                        flag: request.flag,
+                        approve: true
+                    }
+                }
+            }
+            //邀请入群
+            if(request.request_type == 'group' && request.sub_type == 'invite') {
+                if(!this.ENV.agree_group_invite) {
+                    return false;
+                }
+                const Group = require('../model/group');
+                let group = await Group.findOne({
+                    where: {
+                        group_id: request.group_id
+                    }
+                });
+                if(group == null) {
+                    group = await Group.create({
+                        group_id: request.group_id,
+                        groupname: request.group_id,
+                        server: '唯我独尊'
+                    });
+                }
+                //接受申请
+                return {
+                    action: "set_group_add_request",
+                    params: {
+                        flag: request.flag,
+                        sub_type: 'invite',
+                        approve: true
+                    }
+                };
+            }
         }
     }
 

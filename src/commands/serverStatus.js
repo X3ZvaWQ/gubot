@@ -10,7 +10,7 @@ module.exports = class ServerStatusHandler {
         let args = ctx.args;
         let redis_key = `ServerStatus:${args.server}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if (result == null || !await fs.exists(result) || args['update']) {
             let server;
             try{
@@ -22,9 +22,9 @@ module.exports = class ServerStatusHandler {
             }catch(e) {
                 throw e;
             }
-            result = await Image.generateFromTemplateFile('serverStatus', server);
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 30);
+            result = await bot.imageGenerator.generateFromTemplateFile('serverStatus', server);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 30);
         }
         return `[CQ:image,file=file://${result}]`;
     }

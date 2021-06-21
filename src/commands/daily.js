@@ -9,7 +9,7 @@ module.exports = class ServerStatusHandler {
         let args = ctx.args;
         let redis_key = 'Daily';
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
 
         //check data is empty?
         if (!result || !await fs.exists(result) || args.update) {
@@ -19,12 +19,12 @@ module.exports = class ServerStatusHandler {
                 if(i != '时间' && i != '星期')
                 table.push([i, result[i]]);
             }
-            result = await Image.generateFromArrayTable(table, {
+            result = await bot.imageGenerator.generateFromArrayTable(table, {
                 title: '咕Bot - 日常查询',
                 tail: `数据有效日期：${result.时间} 周${result.星期}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/\)`
             });
-            await redis.set('Daily', result);
-            await redis.expire('Daily', 600);
+            await bot.redis.set('Daily', result);
+            await bot.redis.expire('Daily', 600);
         }
 
         return `[CQ:image,file=file://${result}]`;

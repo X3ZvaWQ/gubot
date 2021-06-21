@@ -10,7 +10,7 @@ module.exports = class PriceHandler {
         let args = ctx.args;
         let redis_key = `OutwardPrice:${args.name}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         //check data is empty?
         if (result == null || args['update'] || !await fs.access(result)) {
             let xiaohei = new XiaoHei();
@@ -21,11 +21,11 @@ module.exports = class PriceHandler {
                 info: outwardInfo,
                 data: outwardSeconds
             };
-            result = await Image.generateFromTemplateFile('outward', templateData, {
+            result = await bot.imageGenerator.generateFromTemplateFile('outward', templateData, {
                 selector: 'body'
             });
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 1800);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 1800);
         }
         return `[CQ:image,file=file://${result}]`;
     }

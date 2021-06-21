@@ -7,8 +7,8 @@ class CqHttp{
     name;
 
     constructor(config, bot) {
-        this.wsApi = new Websocket(`${config.url}/api/${config.access_token ? '?access_token='+config.access_token : ''}`, `WsApi:${config.url}`);
-        this.wsEvent = new Websocket(`${config.url}/event/${config.access_token ? '?access_token='+config.access_token : ''}`, `WsEvent:${config.url}`);
+        this.wsApi = new Websocket(`${config.url}/api/${config.access_token ? '?access_token='+config.access_token : ''}`, `WsApi:${config.name}`);
+        this.wsEvent = new Websocket(`${config.url}/event/${config.access_token ? '?access_token='+config.access_token : ''}`, `WsEvent:${config.name}`);
         this.name = config.url;
         this.bot = bot;
         let cqhttp = this;

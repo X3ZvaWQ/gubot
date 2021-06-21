@@ -8,7 +8,7 @@ module.exports = class MacroHandler {
     async handle(ctx) {
         let args = ctx.args;
         let redis_key = `Macro:${JSON.stringify(args)}`;
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if (result == null) {
             let kungfuid = xfs[args.xf];
             if (kungfuid == undefined) {
@@ -26,15 +26,15 @@ module.exports = class MacroHandler {
             }
             post = post.data.post;
             let macro_qixues = post.post_subtype;
-            let qixue_xf = await redis.get(`QiXues:${macro_qixues}`);
+            let qixue_xf = await bot.redis.get(`QiXues:${macro_qixues}`);
             if (qixue_xf == null) {
                 qixue_xf = await Api.getQiXue();
                 if (qixue_xf == null) {
                     throw 'ERROR: Spide QiXue Content Error.\n错误：抓取奇穴内容时出现错误';
                 }
                 qixue_xf = qixue_xf[macro_qixues];
-                await redis.set(`QiXues:${macro_qixues}`, JSON.stringify(qixue_xf));
-                await redis.expire(`QiXues:${macro_qixues}`, 604800);
+                await bot.redis.set(`QiXues:${macro_qixues}`, JSON.stringify(qixue_xf));
+                await bot.redis.expire(`QiXues:${macro_qixues}`, 604800);
             } else {
                 qixue_xf = JSON.parse(qixue_xf);
             }
@@ -70,11 +70,11 @@ module.exports = class MacroHandler {
                 macro: macros
             }
             let macro_sync = macros.map((x) => x.name);
-            result = `[CQ:image,file=file://${await Image.generateFromTemplateFile('macro', data)}]
+            result = `[CQ:image,file=file://${await bot.imageGenerator.generateFromTemplateFile('macro', data)}]
                 云端宏:
                 ${macro_sync.join('\n')}`;
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 86400);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 86400);
         }
         return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
     }

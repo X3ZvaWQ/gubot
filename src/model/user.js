@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 var DataTypes = Sequelize.DataTypes;
 var Model = Sequelize.Model;
 
-let sequelize = global.sequelize;
+let sequelize = bot.sequelize;
 
 class User extends Model {
     

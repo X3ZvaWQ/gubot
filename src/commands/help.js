@@ -4,11 +4,11 @@ const Image = require("../service/image");
 module.exports = class HelpHandler {
     async handle(ctx) {
         let args = ctx.args;
-        if (args['command'] != null && await Image.MarkdownFileExist(`help/${args['command']}`)) {
-            let image = await Image.generateFromMarkdownFile(`help/${args['command']}`);
+        if (args['command'] != null && await bot.imageGenerator.MarkdownFileExist(`help/${args['command']}`)) {
+            let image = await bot.imageGenerator.generateFromMarkdownFile(`help/${args['command']}`);
             return `[CQ:image,file=file://${image}]`;
         }
-        let image = await Image.generateFromMarkdownFile('help/help');
+        let image = await bot.imageGenerator.generateFromMarkdownFile('help/help');
         return `[CQ:image,file=file://${image}]`;
     }
 

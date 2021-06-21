@@ -1,6 +1,7 @@
 require('colors');
 const ENV = require('./env.json');
 const Bot = require('./src/service/bot');
+global.bot = null;
 
 (async () => {
     const bot = new Bot(ENV);

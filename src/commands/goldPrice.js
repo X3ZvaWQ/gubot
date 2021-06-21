@@ -11,7 +11,7 @@ module.exports = class GoldPriceHandler {
         let args = ctx.args;
         let redis_key = `GoldPrice_${args.server}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         //check data is empty?
         if (result == null || !await fs.exists(result) || args['update']) {
             let table = [];
@@ -37,12 +37,12 @@ module.exports = class GoldPriceHandler {
 
             table.sort((a, b) => a[1]- b[1]);
             table = [['渠道', '价格'], ...table];
-            result = await Image.generateFromArrayTable(table, {
+            result = await bot.imageGenerator.generateFromArrayTable(table, {
                 title: `咕Bot - 金价查询 - ${data.server}`,
                 tail: `数据获取时间：${moment(data.time).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/gold/\) 仅供参考`
             })
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 600);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 600);
         } 
         
         return `[CQ:image,file=file://${result}]`;

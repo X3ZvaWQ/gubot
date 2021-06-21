@@ -10,21 +10,21 @@ module.exports = class FurnitureHandler {
         let args = ctx.args;    
         let redis_key = `Furniture:${args.name}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         //check data is empty?
         const getResult = async (name) => {
             let data = await Api.getFurnitureFromJx3box(name);
             let furnitures = data.data;
             let images = [];
             for(let i in furnitures){
-                images.push(await Image.generateFromTemplateFile('furniture', furnitures[i]));
+                images.push(await bot.imageGenerator.generateFromTemplateFile('furniture', furnitures[i]));
             }
             return images;
         }
         if (result == null || args['update'] || result == 'null') {
             result = await getResult(args.name);
-            await redis.set(redis_key, JSON.stringify(result));
-            await redis.expire(redis_key, 86400);
+            await bot.redis.set(redis_key, JSON.stringify(result));
+            await bot.redis.expire(redis_key, 86400);
         }else{
             let cache_valid = true;
             result = JSON.parse(result);
@@ -39,8 +39,8 @@ module.exports = class FurnitureHandler {
             }
             if(!cache_valid) {
                 result = await getResult(args.name);
-                await redis.set(redis_key, JSON.stringify(result));
-                await redis.expire(redis_key, 86400);
+                await bot.redis.set(redis_key, JSON.stringify(result));
+                await bot.redis.expire(redis_key, 86400);
             }
         }
         return result.map(x => `[CQ:image,file=file://${x}]`).join('\n');

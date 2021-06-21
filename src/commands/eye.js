@@ -8,7 +8,7 @@ module.exports = class ReinforcementHandler {
     async handle(ctx) {
         let args = ctx.args;
         let redis_key = `Eye:${args.xf}`;
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if (!result || !await fs.exists(result)) {
             let data = await Api.getEyeFromJx3Api(args.xf);
             let table = [['重数', '效果']];
@@ -16,12 +16,12 @@ module.exports = class ReinforcementHandler {
                 if(i!='time' && i!='name' && i!= 'eye')
                 table.push([i, data[i]]);
             }
-            result = await Image.generateFromArrayTable(table, {
+            result = await bot.imageGenerator.generateFromArrayTable(table, {
                 title: `咕Bot - 阵眼查询 - ${args.xf} - ${data.eye}`,
                 tail: `数据获取时间：${moment(data.time).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}  \n数据来源:\[jx3api.com\]\(https://jx3api.com/api/eye\) 仅供参考`
             })
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 600);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 600);
         }
         return `[CQ:image,file=file://${result}]`;
     }
