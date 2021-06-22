@@ -1,6 +1,3 @@
-const Cq = require("../service/cqhttp");
-const Image = require("../service/image");
-
 module.exports = class HelpHandler {
     async handle(ctx) {
         let args = ctx.args;

@@ -1,6 +1,3 @@
-const Api = require('../service/api');
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
 const fs = require('fs-extra')
 const XiaoHei = require('../service/httpApi/xiaohei')
 

@@ -1,14 +1,9 @@
-const { fromString } = require('html-to-text');
-const Api = require('../service/api');
-const Cq = require('../service/cqhttp');
-const Image = require('../service/image');
 const fs = require('fs-extra')
 const fonts = require('../../env.json').image_fonts;
 
 module.exports = class ServerStatusHandler {
     async handle(ctx) {
         //get args from state
-        let args = ctx.args;
         let redis_key = 'GameUpdate';
         //get data from redis
         let result = await bot.redis.get(redis_key);

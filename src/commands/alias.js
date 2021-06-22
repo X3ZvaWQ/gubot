@@ -1,7 +1,5 @@
 const Alias = require('../model/alias');
 const { Op } = require("sequelize");
-const Cq = require('../service/cqhttp');
-const Image = require('../service/image');
 
 module.exports = class AliasHandler {
     static demandPermission = true;

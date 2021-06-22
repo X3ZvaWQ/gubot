@@ -1,7 +1,5 @@
 const { htmlToText } = require('html-to-text');
 const Api = require('../service/api');
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
 const moment = require('moment');
 
 module.exports = class AchievementHandler {

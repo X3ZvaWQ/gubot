@@ -7,26 +7,27 @@ class CqHttp{
     name;
 
     constructor(config, bot) {
-        this.wsApi = new Websocket(`${config.url}/api/${config.access_token ? '?access_token='+config.access_token : ''}`, `WsApi:${config.name}`);
-        this.wsEvent = new Websocket(`${config.url}/event/${config.access_token ? '?access_token='+config.access_token : ''}`, `WsEvent:${config.name}`);
-        this.name = config.url;
+        this.ws = new Websocket(`${config.url}/${config.access_token ? '?access_token='+config.access_token : ''}`, `Ws:${config.name}`);
+        this.name = config.name;
         this.bot = bot;
         let cqhttp = this;
-        this.wsEvent.handleMessageStack.push(function(message) {
+        this.ws.handleMessageStack.push(async function(message) {
             let request = JSON.parse(message);
-            let result = cqhttp.bot.handleRequest(request);
+            let result = await cqhttp.bot.handleRequest(request);
             //object
             if(typeof result == 'object') {
                 cqhttp.send(result);
             }
             //string
-            if(request.message_type == 'group') {
-                let group_id = request.group_id;
-                this.sendGroupMessage(result, group_id);
-            }
-            if(request.message_type == 'private') {
-                let user_id = request.user_id;
-                this.sendPrivateMessage(result, user_id)
+            if(typeof result == 'string') {
+                if(request.message_type == 'group') {
+                    let group_id = request.group_id;
+                    cqhttp.sendGroupMessage(result, group_id);
+                }
+                if(request.message_type == 'private') {
+                    let user_id = request.user_id;
+                    cqhttp.sendPrivateMessage(result, user_id)
+                }
             }
         });
     }
@@ -52,7 +53,7 @@ class CqHttp{
     }
 
     send(object){
-        this.wsApi.sendJSON(object);
+        this.ws.sendJSON(object);
     }
 }
 

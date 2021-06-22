@@ -1,7 +1,5 @@
 const Group = require("../model/group");
 const User = require("../model/user");
-const Cq = require("../service/cqhttp");
-const Image = require("../service/imageGenerator");
 
 module.exports = class PermissionHandler {
     static demandPermission = true;

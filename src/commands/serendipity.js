@@ -1,9 +1,6 @@
 const Api = require('../service/api');
 const allSerendipity = require('@jx3box/jx3box-data/data/serendipity/serendipity.json')
 const moment = require('moment');
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
-const { generateFromArrayTable } = require('../service/image');
 
 module.exports = class SerendipityHandler {
     async handle(ctx) {
@@ -61,7 +58,7 @@ module.exports = class SerendipityHandler {
         }
 
         return (`${args.player} 的奇遇记录
-            ${array.length > 1 ? `[CQ:image,file=file://${await generateFromArrayTable(array)}]` : '这位侠士这里光秃秃的，什么也没有。'}
+            ${array.length > 1 ? `[CQ:image,file=file://${await bot.imageGenerator.generateFromArrayTable(array)}]` : '这位侠士这里光秃秃的，什么也没有。'}
             -----
             服务器：${args.server}
             数据来源于jx3box仅供参考。`).replace(/[ ]{2,}/g, "");

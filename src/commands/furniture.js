@@ -1,7 +1,4 @@
-const _ = require('lodash');
 const Api = require('../service/api');
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
 const fs = require('fs-extra')
 
 module.exports = class FurnitureHandler {

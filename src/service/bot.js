@@ -1,3 +1,5 @@
+const yargs_parser = require('yargs-parser');
+
 class Bot{
     constructor(ENV) {
         this.ENV = ENV;
@@ -19,7 +21,7 @@ class Bot{
                 get: () => (async () => null),
             });
         }
-        console.log('Redis: init success'.yellow);
+        console.log('Redis: init successed'.yellow);
     }
 
     async initSequelize(env) {
@@ -31,7 +33,7 @@ class Bot{
             port: env.port
         });
         this.sequelize = sequelize;
-        console.log('Sequelize: init success'.yellow);
+        console.log('Sequelize: init successed'.yellow);
     }
 
     async initImageGenerator(enable) {
@@ -45,7 +47,7 @@ class Bot{
                 get: () => (async () => 'ImageGenerator has been closed. Please check env.json/enable_puppeteer'),
             });
         }
-        console.log('ImageGenerator: init success'.yellow);
+        console.log('ImageGenerator: init successed'.yellow);
     }
 
     async initCqhttps(env) {
@@ -57,16 +59,17 @@ class Bot{
 
             }
             this.cqhttps.push(cqhttp);
-            console.log(`Cqhttp: [${cqhttp.name}] init success`.yellow);
+            console.log(`Cqhttp: [${cqhttp.name}] init successed`.yellow);
         }
     }
 
     async initCommands() {
         this.route = require('../commands/index');
+        console.log(`Bot: command list init successed`.yellow);
     }
 
     async start() {
-        global.bot = this;
+        console.log(`Bot: all init successed.`.yellow);
     }
 
     async handleRequest(request) {
@@ -143,6 +146,9 @@ class Bot{
                 return await handler.handle(ctx);
             }
         }catch(e) {
+            if(typeof e == 'object') {
+                console.log(e.stack || e);
+            }
             return e + '\n' + data.message;
         }
     }
@@ -215,11 +221,12 @@ class Bot{
             '^删除别名\\s([\\S\\s]+)': '/alias delete $1'
         };
         if(data.group_id && data.switchs.chat) {
-            let nickname = await redis.get(`GroupNickname:${data.group_id}`);
+            let nickname = await this.redis.get(`GroupNickname:${data.group_id}`);
             if(nickname == null) {
-                nickname = (await Group.findOne({where: {group_id: data.group_id}}));
+                const Group = require('../model/group');
+                nickname = (await Group.findOne({where: {group_id: data.group_id}})).nickname;
                 nickname = nickname ?? '咕咕';
-                await redis.set(`GroupNickname:${data.group_id}`, nickname);
+                await this.redis.set(`GroupNickname:${data.group_id}`, nickname);
             }
             nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
             regex_map[`^(${nickname})\\s?([\\S\\s]+)$`] = '/chat $2';
@@ -236,6 +243,8 @@ class Bot{
     }
 
     async parseArgs(data) {
+        const Alias = require('../model/alias');
+        const Group = require('../model/group');
         if(data.post_type == 'message' && data.message.split('')[0] == '/'){
             let allArgs = yargs_parser(data.message);
             let defaultArgs = allArgs['_'];
@@ -281,17 +290,17 @@ class Bot{
                 }
                 if(arg.limit instanceof Object && arg.type == 'integer'){
                     if(value < arg.limit.min || value > arg.limit.max){
-                        throw `Error: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值范围[${arg.limit.min}, ${arg.limit.max}](闭区间)\n请使用/help 命令查看命令用法`;
+                        throw `错误: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值范围[${arg.limit.min}, ${arg.limit.max}](闭区间)\n请使用/help 命令查看命令用法`;
                     }
                 }
                 if(arg.limit instanceof Array && arg.type == 'string'){
-                    if(arg.limit.indexOf(value) == -1){
-                        throw `Error: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值为{${arg.limit.join(',')}}中的一个\n请使用/help 命令查看命令用法`;
+                    if(arg.limit.indexOf(`${value}`) == -1){
+                        throw `错误: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值为{${arg.limit.join(',')}}中的一个, 你输入了[${value}]\n请使用/help 命令查看命令用法`;
                     }
                 }
                 if(arg.limit && arg.limit.min != undefined && arg.limit.max != undefined && arg.type == 'string'){
                     if(typeof value != 'string' || value.length < arg.limit.min || value.length > arg.limit.max){
-                        throw `Error: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求字符串长度在[${arg.limit.min},${arg.limit.max}](闭区间)之间\n请使用/help 命令查看命令用法`;
+                        throw `错误: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求字符串长度在[${arg.limit.min},${arg.limit.max}](闭区间)之间\n请使用/help 命令查看命令用法`;
                     }
                 }
                 return value;
@@ -328,6 +337,7 @@ class Bot{
     }
 
     async checkPermission(data) {
+        const User = require('../model/user');
         if(data.message_type == 'private') {
             let user = await User.findOne({
                 where: {
@@ -366,6 +376,7 @@ class Bot{
     }
 
     async checkFunctionSwitch(data) {
+        const Group = require('../model/group');
         let funcs = ['convenient', 'chat', 'server_broadcast', 'serendipity_broadcast', 'meme'];
         if(data.group_id) {
             let group = null;
@@ -373,7 +384,7 @@ class Bot{
             for(let i in funcs) {
                 let func = funcs[i];
                 let redis_key = `GroupFunc:${func}:${data.group_id}`;
-                let boolean = await redis.get(redis_key);
+                let boolean = await this.redis.get(redis_key);
                 if(boolean == null){
                     if(group == null) {
                         group = await Group.findOne({

@@ -1,5 +1,4 @@
 const Api = require('../service/api');
-const Cq = require('../service/cqhttp');
 
 module.exports = class SandBoxHandler {
     async handle(ctx) {
@@ -12,7 +11,7 @@ module.exports = class SandBoxHandler {
             try {
                 let [area, server, updated_at, sandbox_image] = await Api.getSandBox(args.server);
                 result = `------沙盘查询------
-                [CQ:image,file=file://${sandbox_image}]
+                [CQ:image,file=${sandbox_image}]
                 --------------
                 服务器：${area}·${server}
                 上次更新时间：${updated_at}`;

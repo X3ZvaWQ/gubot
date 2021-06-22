@@ -1,7 +1,6 @@
 require('colors');
 const ENV = require('./env.json');
 const Bot = require('./src/service/bot');
-global.bot = null;
 
 (async () => {
     const bot = new Bot(ENV);
@@ -9,5 +8,7 @@ global.bot = null;
     await bot.initSequelize(ENV.database);
     await bot.initImageGenerator(ENV.enable_puppeteer);
     await bot.initCqhttps(ENV.cqhttp_websockets);
+    global.bot = bot;
+    await bot.initCommands();
     await bot.start();
 })();

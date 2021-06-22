@@ -1,8 +1,6 @@
 const Api = require('../service/api');
 const xfs = require('@jx3box/jx3box-data/data/xf/xf.json');
 const xfids = require('@jx3box/jx3box-data/data/xf/xfid.json')
-const Image = require('../service/imageGenerator');
-const Cq = require('../service/cqhttp');
 
 module.exports = class MacroHandler {
     async handle(ctx) {

@@ -1,8 +1,8 @@
-const { Axios } = require('axios');
+const axios = require('axios');
 
 class XiaoHei{
     constructor() {
-        this.axiosInstance = Axios.create({
+        this.axiosInstance = axios.create({
             baseURL: 'https://www.j3price.top:8088/black-api/api',
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
@@ -13,8 +13,8 @@ class XiaoHei{
     }
 
     async search(outwardName) {
-        let response = await this.axiosInstance.post('/outward/search', {
-            data: {
+        let response = await this.axiosInstance.post('/outward/search', {}, {
+            params: {
                 step: 0,
                 page: 1,
                 size: 1,
@@ -56,8 +56,8 @@ class XiaoHei{
     }
 
     async second(outwardId, regionId) {
-        let response = await this.axiosInstance.post('/common/search/index/outward/second', {
-            data: {
+        let response = await this.axiosInstance.post('/common/search/index/outward/second', {}, {
+            params: {
                 page: 1,
                 limit: 5,
                 regionId: regionId,
@@ -74,8 +74,8 @@ class XiaoHei{
     }
 
     async info(outwardId) {
-        let response = await this.axiosInstance.post('/common/search/index/outward', {
-            data: {
+        let response = await this.axiosInstance.post('/common/search/index/outward', {}, {
+            params: {
                 imageLimit: 1,
                 regionId: 1,
                 outwardId: outwardId

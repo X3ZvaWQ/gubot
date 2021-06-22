@@ -1,6 +1,4 @@
 const Api = require('../service/api');
-const Cq = require('../service/cqhttp');
-const Image = require('../service/image');
 const fs = require('fs-extra')
 
 module.exports = class ServerStatusHandler {
