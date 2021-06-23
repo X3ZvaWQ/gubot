@@ -1,17 +1,14 @@
-const Api = require('../service/api');
+const Jx3box = require('../service/httpApi/jx3box');
 
 module.exports = class ExamHandler {
     async handle(ctx) {
         let args = ctx.args;
-        let qa = await Api.getExamAnswer(args['key']);
-        let text = '------------------\n';
+        let qa = await Jx3box.exam(args['key']);
+        let qa_texts = []
         for (let i in qa) {
-            text = text + `Q: ${i}
-            A: ${qa[i]}
-            ------------------
-            `
+            qa_texts.push(`Q: ${i}\nA: ${qa[i]}\n`);
         }
-        return text.replace(/[ ]{2,}/g, "");;
+        return qa_texts.join('------\n');
     }
 
     static argsList() {

@@ -1,4 +1,4 @@
-const Api = require('../service/api');
+const Jx3box = require('../service/httpApi/jx3box');
 const fs = require('fs-extra')
 
 module.exports = class FlowerPriceHandler {
@@ -15,14 +15,7 @@ module.exports = class FlowerPriceHandler {
         //get data from redis
         //check data is empty?
         if (result == null || args['update'] || await fs.exists(result)) {
-            let response = await Api.getFlowerPriceFromSpider(parms);
-            if (JSON.stringify(response.data) == '{}') {
-                throw 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
-            }
-            let flowerPrice = response.data
-            if(flowerPrice == undefined || flowerPrice.length < 1) {
-                throw 'ERROR: Empty Response.\n错误: 花价查询接口返回为空，请检查参数是否正确'
-            }
+            let flowerPrice = await Jx3box.flower(parms);
             result = await bot.imageGenerator.generateFromTemplateFile('flowerPrice', {
                 price: flowerPrice
             });

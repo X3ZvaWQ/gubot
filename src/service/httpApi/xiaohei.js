@@ -1,21 +1,10 @@
-const axios = require('axios');
+const { $xiaohei } = require('./axios');
 
 class XiaoHei{
-    constructor() {
-        this.apiDisplayName = '剑网3物价小黑API';
-        this.baseURL = 'https://www.j3price.top:8088/black-api/api'
-        this.axiosInstance = axios.create({
-            baseURL: this.baseURL,
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*',
-                'X-Token': ''
-            }
-        });
-    }
+    static apiDisplayName = '剑网3物价小黑API';
 
-    async search(outwardName) {
-        let response = await this.axiosInstance.post('/outward/search', {}, {
+    static async search(outwardName) {
+        let response = await $xiaohei.post('/outward/search', {}, {
             params: {
                 step: 0,
                 page: 1,
@@ -39,7 +28,7 @@ class XiaoHei{
         throw `提示：${outWardList.map((outward) => outward.outwardName).join('|')}`
     }
 
-    async seconds(outwardId){
+    static async seconds(outwardId){
         const regions = {
             1: '电信点卡区',
             2: '双线一区',
@@ -51,14 +40,14 @@ class XiaoHei{
         for(let i in regions) {
             datas.push({
                 region: regions[i],
-                data: await this.second(outwardId, parseInt(i))
+                data: await XiaoHei.second(outwardId, parseInt(i))
             })
         }
         return datas;
     }
 
-    async second(outwardId, regionId) {
-        let response = await this.axiosInstance.post('/common/search/index/outward/second', {}, {
+    static async second(outwardId, regionId) {
+        let response = await $xiaohei.post('/common/search/index/outward/second', {}, {
             params: {
                 page: 1,
                 limit: 5,
@@ -75,8 +64,8 @@ class XiaoHei{
         }));
     }
 
-    async info(outwardId) {
-        let response = await this.axiosInstance.post('/common/search/index/outward', {}, {
+    static async info(outwardId) {
+        let response = await $xiaohei.post('/common/search/index/outward', {}, {
             params: {
                 imageLimit: 1,
                 regionId: 1,

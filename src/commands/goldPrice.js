@@ -12,8 +12,7 @@ module.exports = class GoldPriceHandler {
         //check data is empty?
         if (result == null || !await fs.exists(result) || args['update']) {
             let table = [];
-            let jx3api = new Jx3Api();
-            let data = await jx3api.gold(args.server);
+            let data = await Jx3Api.gold(args.server);
             for(let i in data){
                 if(i != 'server' && i != 'time') {
                     table.push([i, data[i]]);

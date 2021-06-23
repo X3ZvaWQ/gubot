@@ -8,8 +8,7 @@ module.exports = class ReinforcementHandler {
         let redis_key = `Reinforcement:${args.xf}`;
         let result = await bot.redis.get(redis_key);
         if (!result || !await fs.exists(result)) {
-            let jx3api = new Jx3Api();
-            let data = await jx3api.strengthen(args.xf);
+            let data = await Jx3Api.strengthen(args.xf);
             let table = [['小药类型', '小药名']];
             for(let i in data) {
                 table.push([i, data[i]]);

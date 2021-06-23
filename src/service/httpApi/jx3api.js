@@ -1,20 +1,10 @@
-const axios = require('axios');
+const { $jx3api } = require('./axios');
 
 class Jx3api{
-    constructor() {
-        this.apiDisplayName = 'JX3API';
-        this.baseURL = bot.ENV.jx3api_baseurl || 'https://jx3api.com/app';
-        this.axiosInstance = axios.create({
-            baseURL: this.baseURL,
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*',
-            }
-        });
-    }
+    static apiDisplayName = 'JX3API';
 
-    async strengthen(xf) {
-        let response = await this.axiosInstance.get('/strengthen', {
+    static async strengthen(xf) {
+        let response = await $jx3api.get('/strengthen', {
             name: xf || "冰心诀"
         });
         if(response.data.code == 200) {
@@ -26,12 +16,12 @@ class Jx3api{
                 辅助小吃: data.auxiliaryFood
             }
         }else{
-            throw `错误：[${this.apiDisplayName}]的接口[strengthen]返回值异常，请检查参数。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[strengthen]返回值异常，请检查参数。`;
         }
     }
 
-    async gest(xf) {
-        let response = await this.axiosInstance.get('/gest', {
+    static async gest(xf) {
+        let response = await $jx3api.get('/gest', {
             name: xf || "冰心诀"
         });
         if(response.data.code == 200) {
@@ -49,12 +39,12 @@ class Jx3api{
                 七重归一: '空'
             }
         }else{
-            throw `错误：[${this.apiDisplayName}]的接口[gest]返回值异常，请检查参数。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[gest]返回值异常，请检查参数。`;
         }
     }
 
-    async travel(map) {
-        let response = await this.axiosInstance.get('/travel', {
+    static async travel(map) {
+        let response = await $jx3api.get('/travel', {
             name: map || "七秀"
         });
         if(response.data.code == 200) {
@@ -81,22 +71,22 @@ class Jx3api{
             }
             return result;
         }else{
-            throw `错误：[${this.apiDisplayName}]的接口[travel]返回值异常，请检查参数。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[travel]返回值异常，请检查参数。`;
         }
     }
 
-    async saohua() {
-        let response = await this.axiosInstance.get('/random');
+    static async saohua() {
+        let response = await $jx3api.get('/random');
         if(response.data.code == 200) {
             let result = response.data.data.text;
             return result;
         }else{
-            throw `错误：[${this.apiDisplayName}]的接口[random]返回值异常。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[random]返回值异常。`;
         }
     }
 
-    async daily(server) {
-        let response = await this.axiosInstance.get('/daily', {
+    static async daily(server) {
+        let response = await $jx3api.get('/daily', {
             server: server || "唯我独尊",
         });
         if(response.data.code == 200) {
@@ -115,12 +105,12 @@ class Jx3api{
             };
             return result; 
         }else{
-            throw `错误：[${this.apiDisplayName}]的接口[daily]返回值异常，请检查参数。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[daily]返回值异常，请检查参数。`;
         }
     }
 
-    async gold(server){
-        let response = await this.axiosInstance.get('/gold', {
+    static async gold(server){
+        let response = await $jx3api.get('/gold', {
             server: server || "唯我独尊",
         });
         if(response.data.code == 200) {
@@ -136,7 +126,7 @@ class Jx3api{
                 游募: data.data['youmu']
             }
         }else{
-            throw `错误：[${this.apiDisplayName}]的接口[gold]返回值异常，请检查参数。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[gold]返回值异常，请检查参数。`;
         }
     }
 }

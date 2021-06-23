@@ -11,8 +11,7 @@ module.exports = class ServerStatusHandler {
 
         //check data is empty?
         if (!result || !await fs.exists(result) || args.update) {
-            let jx3api = new Jx3Api();
-            result = await jx3api.daily(args.server || null);
+            result = await Jx3Api.daily(args.server || null);
             let table = [['日常类型', '日常内容']];
             for(let i in result) {
                 if(i != '时间' && i != '星期')

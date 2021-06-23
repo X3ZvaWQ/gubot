@@ -8,8 +8,7 @@ module.exports = class ReinforcementHandler {
         let redis_key = `Eye:${args.xf}`;
         let result = await bot.redis.get(redis_key);
         if (!result || !await fs.exists(result)) {
-            let jx3api = new Jx3Api();
-            let data = await jx3api.gest(args.xf);
+            let data = await Jx3Api.gest(args.xf);
             let table = [['重数', '效果']];
             for(let i in data) {
                 if(i!='time' && i!='name' && i!= 'eye')

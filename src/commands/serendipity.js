@@ -44,7 +44,7 @@ module.exports = class SerendipityHandler {
         }
         //combine datas to string reply.
         let array = [
-            ['奇遇类型', '奇遇', '触发时间']
+            ['角色', '奇遇类型', '奇遇', '触发时间']
         ];
         if (data != null && data != 'null' && data.length > 0) {
             for (let i in data) {
@@ -53,7 +53,7 @@ module.exports = class SerendipityHandler {
                     type = allSerendipity.filter(x => x.name == data[i].serendipity)[0].type;
                     await bot.redis.set('SerendipityTypeOf:' + data[i].serendipity, type);
                 }
-                array.push([type, data[i].serendipity, moment(data[i].dwTime * 1000).format('YYYY-MM-DD HH:mm:ss')]);
+                array.push([args.player, type, data[i].serendipity, moment(data[i].dwTime * 1000).format('YYYY-MM-DD HH:mm:ss')]);
             }
         }
 

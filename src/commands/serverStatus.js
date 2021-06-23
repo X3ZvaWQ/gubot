@@ -1,4 +1,3 @@
-const Api = require('../service/api');
 const fs = require('fs-extra');
 const Game = require('../service/game');
 
@@ -16,7 +15,7 @@ module.exports = class ServerStatusHandler {
                 if(server == null) {
                     throw '错误：该服务器不存在。';
                 }
-                server = await Api.getServerStatus(server);
+                server = await Game.serverTest(server);
             }catch(e) {
                 throw e;
             }

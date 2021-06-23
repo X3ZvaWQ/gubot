@@ -10,8 +10,7 @@ module.exports = class TravelHandler {
         let result = await bot.redis.get(redis_key);
         //check data is empty?
         const getResult = async (map) => {
-            let jx3api = new Jx3Api();
-            let data = await jx3api.travel(map);
+            let data = await Jx3Api.travel(map);
             let furnitures = data.data;
             let images = [];
             for (let i in furnitures) {

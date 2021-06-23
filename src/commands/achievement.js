@@ -1,4 +1,4 @@
-const { htmlToText } = require('html-to-text');
+const Jx3box = require('../service/httpApi/jx3box');
 const Api = require('../service/api');
 const moment = require('moment');
 
@@ -8,17 +8,9 @@ module.exports = class AchievementHandler {
         let redis_key = `Achievement:${args.achievement}`;
         let result = await bot.redis.get(redis_key);
         if (result == null) {
-            let search = await Api.getAchievementSearch(args.achievement);
-            let achievementID;
-
-            if (search.code == 200 && search.data.achievements.length > 0) {
-                achievementID = search.data.achievements[0].ID;
-            } else {
-                throw 'ERROR: Unknown Achievement!\n错误：没找到这个成就的数据。';
-            }
-            let id = achievementID;
+            let id = Jx3box.achievementSearch(args.achievement);
             let name = search.data.achievements[0].Name;
-            let post = (await Api.getAchievementPost(id)).data.post;
+            let post = (await Jx3box.achievementPost(id)).data.post;
             let html = post.content;
             let updated_at = moment(post.updated * 1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
             let image = await bot.imageGenerator.generateFromHtml(html);

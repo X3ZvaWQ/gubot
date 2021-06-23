@@ -10,10 +10,9 @@ module.exports = class PriceHandler {
         let result = await bot.redis.get(redis_key);
         //check data is empty?
         if (result == null || args['update'] || !await fs.access(result)) {
-            let xiaohei = new XiaoHei();
-            let outwardId = await xiaohei.search(args.name);
-            let outwardInfo = await xiaohei.info(outwardId);
-            let outwardSeconds = await xiaohei.seconds(outwardId);
+            let outwardId = await XiaoHei.search(args.name);
+            let outwardInfo = await XiaoHei.info(outwardId);
+            let outwardSeconds = await XiaoHei.seconds(outwardId);
             let templateData = {
                 info: outwardInfo,
                 data: outwardSeconds
