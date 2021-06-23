@@ -4,11 +4,12 @@ const Bot = require('./src/service/bot');
 
 (async () => {
     const bot = new Bot(ENV);
-    await bot.initRedis(ENV.redis);
-    await bot.initSequelize(ENV.database);
-    await bot.initImageGenerator(ENV.enable_puppeteer);
-    await bot.initCqhttps(ENV.cqhttp_websockets);
+    await bot.initRedis();
+    await bot.initSequelize();
+    await bot.initImageGenerator();
+    await bot.initCqhttps();
     global.bot = bot;
     await bot.initCommands();
     await bot.start();
 })();
+

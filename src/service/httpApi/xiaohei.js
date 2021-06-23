@@ -2,8 +2,10 @@ const axios = require('axios');
 
 class XiaoHei{
     constructor() {
+        this.apiDisplayName = '剑网3物价小黑API';
+        this.baseURL = 'https://www.j3price.top:8088/black-api/api'
         this.axiosInstance = axios.create({
-            baseURL: 'https://www.j3price.top:8088/black-api/api',
+            baseURL: this.baseURL,
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
                 'Accept': 'application/json, text/plain, */*',

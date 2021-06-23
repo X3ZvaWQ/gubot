@@ -5,7 +5,8 @@ class Bot{
         this.ENV = ENV;
     }
     
-    async initRedis(env) {
+    async initRedis() {
+        let env = this.ENV.redis;
         if(env.enable){
             const redis = require('async-redis');
             const client = redis.createClient({
@@ -24,7 +25,8 @@ class Bot{
         console.log('Redis: init successed'.yellow);
     }
 
-    async initSequelize(env) {
+    async initSequelize() {
+        let env = this.ENV.database;
         const Sequelize = require('sequelize');
         const sequelize = new Sequelize(env.database, env.username, env.password, {
             logging: env.logging || false,
@@ -36,7 +38,8 @@ class Bot{
         console.log('Sequelize: init successed'.yellow);
     }
 
-    async initImageGenerator(enable) {
+    async initImageGenerator() {
+        let enable = this.ENV.enable_puppeteer;
         if(enable) {
             const ImageGenerator = require('./imageGenerator');
             const puppeteer = require('puppeteer');
@@ -50,7 +53,8 @@ class Bot{
         console.log('ImageGenerator: init successed'.yellow);
     }
 
-    async initCqhttps(env) {
+    async initCqhttps() {
+        let env = this.ENV.cqhttp_websockets;
         this.cqhttps = [];
         const Cqhttp = require('./cqhttp');
         for(let cqhttp_config of env){

@@ -35,55 +35,6 @@ class Api{
         return qa;
     }
     
-    static async getGoldPriceFromJx3Api(server) {
-        let priceUrl = `${jx3api_baseurl}app/gold`;
-        let response = await axios.get(priceUrl,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            },
-            params: {
-                server: server
-            }
-        });
-        if(response.data.code == 200) {
-            let data = response.data;
-            return {
-                time: data.time * 1000,
-                server: data.data.server,
-                5173: data.data['5173'],
-                7881: data.data['7881'],
-                dd373: data.data['dd373'],
-                uu898: data.data['uu898'],
-                万宝楼: data.data['wanbaolou'],
-                游募: data.data['youmu']
-            }
-        }else{
-            console.log(response);
-            throw `调用jx3api.getGold返回值错误，请检查参数是否正确。`;
-        }
-    }
-
-    static async getGoldPriceFromArkwish() {
-        let priceUrl = "https://box.arkwish.com/api/gold";
-        // 准备参数
-        let ts = Math.round(new Date().getTime() / 1000);
-        let access_token = md5(`${ts}secret`);
-        let params = {
-            ts: ts,
-            access_token: access_token,
-        };
-        let response = await axios.get(priceUrl,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            },
-            params: params
-        });
-        let data = response.data;
-        return data;
-    }
-    
     static async getServerListFromJx3Box() {
         let url = 'https://spider.jx3box.com/jx3servers';
         let response = await axios.get(url,{
@@ -245,130 +196,6 @@ class Api{
         return [area, server, updated_at, sandbox_image];
     }
 
-    static async getDailyFromJx3Api(server){
-        let url = `${jx3api_baseurl}app/daily`;
-        let response = await axios.get(url,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            },
-            params: {
-                server: server || "唯我独尊",
-            }
-        });
-        if(response.data.code == 200) {
-            let data = response.data.data;
-            let result = {
-                时间: data.DateTime,
-                星期: data.Week,
-                秘境日常: data.DayWar,
-                驰援任务: data.DayCommon,
-                阵营日常: data.DayCamp,
-                美人图: data.DayDraw || '（今天不画）',
-                战场首胜: data.DayBattle,
-                周常五人本: data.WeekFive,
-                周常十人本: data.WeekTeam,
-                周公共日常: data.WeekCommon
-            };
-            return result; 
-        }else{
-            throw `调用jx3api.getDaily返回值错误`;
-        }
-    }
-
-    static async getReinforcementFromJx3Api(xf){
-        let url = `${jx3api_baseurl}app/strengthen`;
-        let response = await axios.get(url,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            },
-            params: {
-                name: xf || "冰心诀"
-            }   
-        });
-        if(response.data.code == 200) {
-            let data = response.data.data;
-            return {
-                增强小药: data.heightenDrug,
-                增强小吃: data.heightenFood,
-                辅助小药: data.auxiliaryDrug,
-                辅助小吃: data.auxiliaryFood
-            }
-        }else{
-            throw `调用jx3api.getHeighten返回值错误，请检查参数是否正确。`;
-        }
-    }
-    
-    static async getEyeFromJx3Api(xf){
-        let url = `${jx3api_baseurl}app/gest`;
-        let response = await axios.get(url,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            },
-            params: {
-                name: xf || "冰心诀"
-            }   
-        });
-        if(response.data.code == 200) {
-            let data = response.data.data;
-            return {
-                name: data.name,
-                time: response.data.time * 1000,
-                eye: data.skillName,
-                一重粗识: data.descs[0].desc,
-                二重略懂: data.descs[1].desc,
-                三重巧熟: data.descs[2].desc,
-                四重精妙: data.descs[3].desc,
-                五重游刃: data.descs[4].desc, 
-                六重忘我: data.descs[5].desc,
-                七重归一: '空'
-            }
-        }else{
-            throw `调用jx3api.eye返回值错误，请检查参数是否正确。`;
-        }
-    }
-
-    static async getTravelFromJx3Api(map){
-        let url = `${jx3api_baseurl}app/travel`;
-        let response = await axios.get(url,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            },
-            params: {
-                map: map || "七秀"
-            }   
-        });
-        if(response.data.code == 200) {
-            let data = response.data.data;
-            let result =  {
-                time: response.data.time * 1000,
-                data: []
-            }
-            for(let i in data){
-                let cur = data[i];
-                result.data.push({
-                    name: cur.name,
-                    geomantic: cur.geomanticScore,
-                    hard: cur.hardScore,
-                    view: cur.viewScore,
-                    practical: cur.practicalScore,
-                    interesting: cur.interestingScore,
-                    source: cur.source,
-                    quality: cur.qualityLevel,
-                    levelLimit: cur.levelLimit,
-                    image_url: cur.imagePath,
-                    tip: cur.tip.replace(/\n/g, '<br />')
-                });
-            }
-            return result;
-        }else{
-            throw `调用jx3api.getTravel返回值错误，请检查参数是否正确。比如输入的地图是否存在`;
-        }
-    }
-
     static async getFurnitureFromJx3box(name){
         let url = "https://www.j3pz.com/api/furniture?size=3&page=1"
         let response = await axios.get(url,{
@@ -452,22 +279,6 @@ class Api{
             return data;
         }
         throw '错误：无法在剑三魔盒上找到该文章'
-    }
-
-    static async getSaoHuaFromJx3Api() {
-        let url = `${jx3api_baseurl}app/random`;
-        let response = await axios.get(url,{
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-            }
-        });
-        if(response.data.code == 200) {
-            let result = response.data.data.text;
-            return result;
-        }else{
-            throw '你看，你也缺情缘，我也缺情缘，你密我，我们就都不缺情缘了';
-        }
     }
 
     static async getChatAnswer(message, session, nickname) {

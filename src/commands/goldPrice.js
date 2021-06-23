@@ -1,4 +1,4 @@
-const Api = require('../service/api');
+const Jx3Api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 const moment = require('moment');
 
@@ -12,20 +12,8 @@ module.exports = class GoldPriceHandler {
         //check data is empty?
         if (result == null || !await fs.exists(result) || args['update']) {
             let table = [];
-
-            try{
-                let ark_data = (await Api.getGoldPriceFromArkwish()).data;
-                if (ark_data[args.server] == undefined) {
-                    throw (`ERROR: Unknown Server!\n错误：没找到这个服务器的数据。`);
-                }   
-                let tieba_gold = _.mean(ark_data[args.server]['today']['post']).toFixed(2);
-                table.push(['贴吧', tieba_gold]);
-            }
-            catch(e) {
-                table.push(['贴吧', '接口报错无返回值']);
-            }
-
-            let data = await Api.getGoldPriceFromJx3Api(args.server);
+            let jx3api = new Jx3Api();
+            let data = await jx3api.gold(args.server);
             for(let i in data){
                 if(i != 'server' && i != 'time') {
                     table.push([i, data[i]]);

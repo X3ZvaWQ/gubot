@@ -1,4 +1,4 @@
-const Api = require('../service/api');
+const Jx3Api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 const moment = require('moment');
 
@@ -8,7 +8,8 @@ module.exports = class ReinforcementHandler {
         let redis_key = `Reinforcement:${args.xf}`;
         let result = await bot.redis.get(redis_key);
         if (!result || !await fs.exists(result)) {
-            let data = await Api.getReinforcementFromJx3Api(args.xf);
+            let jx3api = new Jx3Api();
+            let data = await jx3api.strengthen(args.xf);
             let table = [['小药类型', '小药名']];
             for(let i in data) {
                 table.push([i, data[i]]);

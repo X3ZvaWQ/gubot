@@ -1,8 +1,9 @@
-const Api = require('../service/api');
+const Jx3Api = require('../service/httpApi/jx3api');
 
 module.exports = class SaoHuaHandler {
     async handle() {
-        return await Api.getSaoHuaFromJx3Api();
+        let jx3api = new Jx3Api();
+        return await jx3api.saohua();
     }
 
     static argsList() {

@@ -1,3 +1,11 @@
+class A{
+    hahaha() {
+        console.log(arguments.callee);
+    }
+}
+let a = new A();
+a.hahaha();
+
 /* (async () => {
     let {default: redis} = await import('async-redis');
     const client = redis.createClient({
