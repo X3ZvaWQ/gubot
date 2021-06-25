@@ -73,8 +73,17 @@ class Jx3box{
         return data;
     }
 
-    static async serendipity() {
-        
+    static async serendipity(params) {
+        let response = $next.get(`/api/serendipity`, Object.assign({
+            start: 0,
+            pageIndex: 1,
+            pageSize: 10
+        }, params));
+        if (response.data.code == 0) {
+            return response.data.data.data;
+        } else {
+            throw `错误：[${Jx3box.apiDisplayName}]的接口[next/serendipity]返回异常，请检查参数`;
+        }
     }
 }
 
