@@ -4,8 +4,8 @@ class Jx3box {
     static apiDisplayName = 'JX3BOX';
 
     static async flower(params) {
-        let response = await $spider.get('/flower', params);
-        if (response.data.code == 200) {
+        let response = await $spider.get('/flower', {params: params});
+        if (response.data.code == 0) {
             if (JSON.stringify(response.data.data) == '{}') {
                 throw `错误：[${Jx3box.apiDisplayName}]的接口[spider/flower]返回值异常，请检查参数。`;
             }
@@ -20,9 +20,9 @@ class Jx3box {
     }
 
     static async exam(key) {
-        let response = await $next.get('/api/exam', {
+        let response = await $next.get('/api/exam', {params:{
             search: key
-        })
+        }})
         let hits = response.data['hits'];
         let qa = {}
         for (let i in hits) {
@@ -31,7 +31,6 @@ class Jx3box {
                 let answer = JSON.parse(hits[i]['_source']['answer']);
                 qa[hits[i]['_source']['title']] = answer.map(x => options[x]).join(',');
             }
-            break;
         }
         return qa;
     }
@@ -56,10 +55,10 @@ class Jx3box {
     }
 
     static async achievementSearch(keyword) {
-        let response = await $helper.get('/api/achievement/search', {
+        let response = await $helper.get('/api/achievement/search', {params:{
             limit: 3,
             keyword: keyword
-        })
+        }})
         if (response.data.code == 200 && response.data.data.achievements.length > 0) {
             return response.data.data.achievements[0].ID;
         } else {
@@ -74,11 +73,12 @@ class Jx3box {
     }
 
     static async serendipity(params) {
-        let response = await $next.get(`/api/serendipity`, Object.assign({
+        params = Object.assign({
             start: 0,
             pageIndex: 1,
-            pageSize: 10
-        }, params));
+            pageSize: 50
+        }, params);
+        let response = await $next.get(`/api/serendipity`, {params: params});
         if (response.data.code == 0) {
             return response.data.data.data;
         } else {
@@ -96,10 +96,10 @@ class Jx3box {
     }
 
     static async macroTops(xfid) {
-        let response = await $next.get(`/api/macro/tops`, {
+        let response = await $next.get(`/api/macro/tops`, {params:{
             kungfu: xfid,
             size: 10
-        });
+        }});
         let data = response.data;
         if (data == null || data == 'null' || data.length == 0) {
             throw `错误：[${Jx3box.apiDisplayName}] 抓取该心法宏排行时出现错误`;
@@ -108,9 +108,9 @@ class Jx3box {
     }
 
     static async macroContent(pid) {
-        let response = await $server.get(`/post/find`, {
+        let response = await $server.get(`/post/find`, {params :{
             id: pid
-        })
+        }})
         let data = response.data;
         if (data.code != 10064) {
             throw `错误：[${Jx3box.apiDisplayName}] 抓取宏内容时出现错误`;

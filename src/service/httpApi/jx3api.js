@@ -4,9 +4,9 @@ class Jx3api{
     static apiDisplayName = 'JX3API';
 
     static async strengthen(xf) {
-        let response = await $jx3api.get('/strengthen', {
+        let response = await $jx3api.get('/strengthen', {params:{
             name: xf || "冰心诀"
-        });
+        }});
         if(response.data.code == 200) {
             let data = response.data.data;
             return {
@@ -21,9 +21,9 @@ class Jx3api{
     }
 
     static async gest(xf) {
-        let response = await $jx3api.get('/gest', {
+        let response = await $jx3api.get('/gest', {params:{
             name: xf || "冰心诀"
-        });
+        }});
         if(response.data.code == 200) {
             let data = response.data.data;
             return {
@@ -44,9 +44,9 @@ class Jx3api{
     }
 
     static async travel(map) {
-        let response = await $jx3api.get('/travel', {
-            name: map || "七秀"
-        });
+        let response = await $jx3api.get('/travel', {params:{
+            map: map || "七秀"
+        }});
         if(response.data.code == 200) {
             let data = response.data.data;
             let result =  {
@@ -86,9 +86,9 @@ class Jx3api{
     }
 
     static async daily(server) {
-        let response = await $jx3api.get('/daily', {
+        let response = await $jx3api.get('/daily', {params:{
             server: server || "唯我独尊",
-        });
+        }});
         if(response.data.code == 200) {
             let data = response.data.data;
             let result = {
@@ -110,9 +110,9 @@ class Jx3api{
     }
 
     static async gold(server){
-        let response = await $jx3api.get('/gold', {
+        let response = await $jx3api.get('/gold', {params:{
             server: server || "唯我独尊",
-        });
+        }});
         if(response.data.code == 200) {
             let data = response.data;
             return {
@@ -122,8 +122,7 @@ class Jx3api{
                 7881: data.data['7881'],
                 dd373: data.data['dd373'],
                 uu898: data.data['uu898'],
-                万宝楼: data.data['wanbaolou'],
-                游募: data.data['youmu']
+                万宝楼: data.data['wanbaolou']
             }
         }else{
             throw `错误：[${Jx3api.apiDisplayName}]的接口[gold]返回值异常，请检查参数。`;
@@ -131,9 +130,9 @@ class Jx3api{
     }
 
     static async furniture(name) {
-        let response = await $jx3api.get(`/furniture`, {
+        let response = await $jx3api.get(`/furniture`, {params:{
             name: name
-        });
+        }});
         if (response.data.code == 200) {
             let data = response.data.data;
             return {
@@ -155,9 +154,9 @@ class Jx3api{
     }
 
     static async macro(name) {
-        let response = await $jx3api.get('/macro', {
+        let response = await $jx3api.get('/macro', {params:{
             name: name
-        });
+        }});
         let data = response.data;
         if(data.code != 200) {
             throw `错误：[${Jx3api.apiDisplayName}]的接口[macro]返回异常，请检查参数`;

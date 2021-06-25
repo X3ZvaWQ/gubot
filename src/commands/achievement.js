@@ -7,13 +7,11 @@ module.exports = class AchievementHandler {
         let redis_key = `Achievement:${args.achievement}`;
         let result = await bot.redis.get(redis_key);
         if (result == null) {
-            let id = Jx3box.achievementSearch(args.achievement);
-            let name = search.data.achievements[0].Name;
+            let id = await Jx3box.achievementSearch(args.achievement);
             let post = (await Jx3box.achievementPost(id)).data.post;
-            let html = post.content;
             let updated_at = moment(post.updated * 1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
-            let image = await bot.imageGenerator.generateFromHtml(html);
-            result = `咕Bot - 成就攻略 - ${name}
+            let image = await bot.imageGenerator.generateFromHtml(post.content);
+            result = `咕Bot - 成就攻略 - ${post.title}
             [CQ:image,file=file://${image}]
             以上内容来源于jx3box用户[${post.user_nickname}]。
             上次更新时间：[${updated_at}]`.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");

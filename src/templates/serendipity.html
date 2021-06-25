@@ -1,7 +1,7 @@
 <style>
     body{
         background-color: cornsilk;
-        width: 600px;
+        width: 800px;
         color:dodgerblue;
         font-family: 'Noto Sans SC', sans-serif, 'consolas';
         text-align: center;
@@ -14,13 +14,23 @@
         display: inline-block;
         font-size: 1rem;
     }
-    td:first-of-type{
-        text-align: right;
-        padding-right: 0.65rem;
+    td{
+        text-align: center;
     }
-    td:last-of-type{
-        text-align: left;
-        padding-left: 2rem;
+    td:nth-of-type(1) {
+        width: 6rem;
+    }
+    td:nth-of-type(2) {
+        width: 12rem;
+    }
+    td:nth-of-type(3) {
+        width: 6rem;
+    }
+    td:nth-of-type(4) {
+        width: 8rem;
+    }
+    td:nth-of-type(5) {
+        width: 14rem;
     }
     p.note{
         font-size: 0.8rem;
@@ -28,8 +38,8 @@
     }
 </style>
 <div>
-    <h3>Gubot <span class="stress">Gubot</span> 奇遇查询</h3>
-    <p>查询条件：<span class="stress">{{search.server}}</span> <span class="stress">{{search.player}}</span> <span class="stress">{{search.serendipity}}}</span></p>
+    <h3>Gubot 奇遇查询</h3>
+    <p>查询条件：<span class="stress">{{search.server}}</span> <span class="stress">{{search.player}}</span> <span class="stress">{{search.serendipity}}</span></p>
     <table>
         <thead>
             <tr>

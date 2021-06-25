@@ -18,28 +18,38 @@ module.exports = class SerendipityHandler {
                     .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
                     .map(x => x.name).join(',');
             } else {
-                serendipity = serendipityMap
+                serendipity = ''
+                /*serendipityMap
                     .filter(s => s.languages[0] == 'zhcn')
-                    .map(x => x.name).join(',');
+                    .map(x => x.name).join(',')*/;
             }
-            if(serendipity == '') {
-                throw `错误: 未知的奇遇类型 [${serendipity}]`
+            let player = args.player;
+            if(player == '全部玩家') {
+                player = '';
             }
             let searchKey = {
                 server: args.server,
-                role: args.player,
+                role: player,
                 serendipity: serendipity
             }
             let datas = await Jx3box.serendipity(searchKey);
+            datas = datas.map((data) => ({
+                server: data.server,
+                player: data.name,
+                type: (serendipityMap.filter((s) => (s.name == data.serendipity))[0] || {type: '未知奇遇'}).type,
+                name: data.serendipity,
+                time: moment(data.dwTime*1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')
+            }));
             searchKey.serendipity = args.serendipity;
+            searchKey.player = args.player;
             let renderData = {
                 dataSource: 'JX3BOX',
                 search: searchKey,
                 time: moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss'),
                 datas: datas
             };
-            result = bot.imageGenerator.generateFromTemplateFile('serendipity', renderData, {
-                selector: 'body'
+            result = await bot.imageGenerator.generateFromTemplateFile('serendipity', renderData, {
+                selector: 'body > div'
             });
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 300);

@@ -17,7 +17,7 @@ module.exports = class MacroHandler {
             rank = rank[args.rank - 1];
             let post = await Jx3box.macroContent(rank.pid);
             post = post.post;
-            let macros = post.post_meta.data.map((macro) => {
+            let macros = post.post_meta.data.map(async (macro) => {
                 let talents;
                 if (macro.talent != '' && macro.talent != null) {
                     try {
@@ -49,6 +49,9 @@ module.exports = class MacroHandler {
                     content: macro.macro
                 };
             });
+            for(let m in macros) {
+                macros[m] = await macros[m];
+            }
             let data = {
                 rank: args.rank,
                 author: post.author,
