@@ -1,4 +1,4 @@
-const Jx3Api = require('../service/httpApi/jx3api');
+const Jx3api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 
 module.exports = class ServerStatusHandler {
@@ -11,7 +11,7 @@ module.exports = class ServerStatusHandler {
 
         //check data is empty?
         if (!result || !await fs.exists(result) || args.update) {
-            result = await Jx3Api.daily(args.server || null);
+            result = await Jx3api.daily(args.server || null);
             let table = [['日常类型', '日常内容']];
             for(let i in result) {
                 if(i != '时间' && i != '星期')

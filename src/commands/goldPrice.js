@@ -1,4 +1,4 @@
-const Jx3Api = require('../service/httpApi/jx3api');
+const Jx3api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 const moment = require('moment');
 
@@ -12,7 +12,7 @@ module.exports = class GoldPriceHandler {
         //check data is empty?
         if (result == null || !await fs.exists(result) || args['update']) {
             let table = [];
-            let data = await Jx3Api.gold(args.server);
+            let data = await Jx3api.gold(args.server);
             for(let i in data){
                 if(i != 'server' && i != 'time') {
                     table.push([i, data[i]]);

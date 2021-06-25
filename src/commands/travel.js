@@ -1,4 +1,4 @@
-const Jx3Api = require('../service/httpApi/jx3api');
+const Jx3api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 
 module.exports = class TravelHandler {
@@ -10,7 +10,7 @@ module.exports = class TravelHandler {
         let result = await bot.redis.get(redis_key);
         //check data is empty?
         const getResult = async (map) => {
-            let data = await Jx3Api.travel(map);
+            let data = await Jx3api.travel(map);
             let furnitures = data.data;
             let images = [];
             for (let i in furnitures) {

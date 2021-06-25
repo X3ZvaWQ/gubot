@@ -1,5 +1,4 @@
 const Jx3box = require('../service/httpApi/jx3box');
-const Api = require('../service/api');
 const moment = require('moment');
 
 module.exports = class AchievementHandler {
