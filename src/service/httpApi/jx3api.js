@@ -129,6 +129,47 @@ class Jx3api{
             throw `错误：[${Jx3api.apiDisplayName}]的接口[gold]返回值异常，请检查参数。`;
         }
     }
+
+    static async furniture(name) {
+        let response = await $jx3api.get(`/furniture`, {
+            name: name
+        });
+        if (response.data.code == 200) {
+            let data = response.data.data;
+            return {
+                name: data.name,
+                geomantic: data.geomanticScore,
+                hard: data.hardScore,
+                view: data.viewScore,
+                practical: data.practicalScore,
+                interesting: data.interestingScore,
+                source: data.source,
+                quality: data.quality,
+                levelLimit: data.levelLimit,
+                image_url: data.imagePath,
+                tip: data.tip.replace(/\n/g, '<br />')
+            };
+        } else {
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[serendipity]返回异常，请检查参数`;
+        }
+    }
+
+    static async macro(name) {
+        let response = await $jx3api.get('/macro', {
+            name: name
+        });
+        let data = response.data;
+        if(data.code != 200) {
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[macro]返回异常，请检查参数`;
+        }
+        data = data.data;
+        return {
+            name: data.name,
+            talents: data.plan,
+            content: data.command,
+            time: response.data.time
+        }
+    }
 }
 
 module.exports = Jx3api;

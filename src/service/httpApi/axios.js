@@ -1,8 +1,17 @@
 const axios = require('axios');
 
-const {__next, __spider, __helperUrl, __ossRoot} = require('@jx3box/jx3box-common/js/jx3box.json')
+const {__next, __spider, __helperUrl, __ossRoot, __server} = require('@jx3box/jx3box-common/js/jx3box.json')
 const jx3api_baseurl = bot.ENV.jx3api_baseurl || 'https://jx3api.com/app';
 const xiaohei_url = 'https://www.j3price.top:8088/black-api/api';
+
+const $server = axios.create({
+    baseURL: `${__server}`,
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+    }
+});
+exports.$server = $server;
 
 const $oss = axios.create({
     baseURL: `${__ossRoot}`,
