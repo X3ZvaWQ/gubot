@@ -1,8 +1,5 @@
-const _ = require('lodash');
-const Api = require('../service/api');
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
 const fs = require('fs-extra')
+const XiaoHei = require('../service/httpApi/xiaohei')
 
 module.exports = class PriceHandler {
     async handle(ctx) {
@@ -10,19 +7,23 @@ module.exports = class PriceHandler {
         let args = ctx.args;
         let redis_key = `OutwardPrice:${args.name}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         //check data is empty?
-        if (result == null || args['update'] || !await fs.exists(result)) {
-            let id = await Api.searchOutwardFromXiaoHei(args.name);
-            let data = await Api.getOutwardFromXiaoHei(id);
-            let image = await Image.generateFromTemplateFile('outward', data, {
+        if (result == null || args['update'] || !await fs.access(result)) {
+            let outwardId = await XiaoHei.search(args.name);
+            let outwardInfo = await XiaoHei.info(outwardId);
+            let outwardSeconds = await XiaoHei.seconds(outwardId);
+            let templateData = {
+                info: outwardInfo,
+                data: outwardSeconds
+            };
+            result = await bot.imageGenerator.generateFromTemplateFile('outward', templateData, {
                 selector: 'body'
             });
-            result = image;
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 1800);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 1800);
         }
-        return Cq.ImageCQCode(`file://${result}`);
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {

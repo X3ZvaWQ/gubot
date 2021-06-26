@@ -1,66 +1,57 @@
-const Api = require('../service/api');
+const Jx3box = require('../service/httpApi/jx3box');
 const xfs = require('@jx3box/jx3box-data/data/xf/xf.json');
 const xfids = require('@jx3box/jx3box-data/data/xf/xfid.json')
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
 
 module.exports = class MacroHandler {
     async handle(ctx) {
         let args = ctx.args;
         let redis_key = `Macro:${JSON.stringify(args)}`;
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if (result == null) {
             let kungfuid = xfs[args.xf];
             if (kungfuid == undefined) {
-                throw 'ERROR: Unknown xf.\n错误：未知的心法';
+                throw `\n错误：未知的心法 ${args.xf}`;
             }
             kungfuid = kungfuid.id;
-            let rank = await Api.getMacroTops(kungfuid);
-            if (rank == null || rank.length == 0) {
-                throw 'ERROR: Spide Macro Rank Error.\n错误：抓取该心法宏排行时出现错误';
-            }
+            let rank = await Jx3box.macroTops(kungfuid);
             rank = rank[args.rank - 1];
-            let post = await Api.getMacroContent(rank.pid);
-            if (post.code != 10064) {
-                throw 'ERROR: Spide Macro Content Error.\n错误：抓取宏内容时出现错误';
-            }
-            post = post.data.post;
-            let macro_qixues = post.post_subtype;
-            let qixue_xf = await redis.get(`QiXues:${macro_qixues}`);
-            if (qixue_xf == null) {
-                qixue_xf = await Api.getQiXue();
-                if (qixue_xf == null) {
-                    throw 'ERROR: Spide QiXue Content Error.\n错误：抓取奇穴内容时出现错误';
-                }
-                qixue_xf = qixue_xf[macro_qixues];
-                await redis.set(`QiXues:${macro_qixues}`, JSON.stringify(qixue_xf));
-                await redis.expire(`QiXues:${macro_qixues}`, 604800);
-            } else {
-                qixue_xf = JSON.parse(qixue_xf);
-            }
-            let macros = post.post_meta.data.map((macro) => {
-                let qixues;
+            let post = await Jx3box.macroContent(rank.pid);
+            post = post.post;
+            let macros = post.post_meta.data.map(async (macro) => {
+                let talents;
                 if (macro.talent != '' && macro.talent != null) {
                     try {
-                        let macro_qixue = JSON.parse(macro.talent);
-                        qixues = macro_qixue.sq.split(',');
-                        for (let i in qixues) {
-                            qixues[i] = qixue_xf[`${parseInt(i) + 1}`][qixues[i]]['name'];
+                        let talent = JSON.parse(macro.talent);
+                        let redis_talent_key = `Talent:${talent.xf}_${talent.version}`
+                        let talentList = await bot.redis.get(redis_talent_key);
+                        if(talentList == null) {
+                            talentList = await Jx3box.talentsList(talent.version || 'v20201030');
+                            talentList = talentList[talent.xf];
+                            await bot.redis.set(redis_talent_key, JSON.stringify(talentList));
+                        }else{
+                            talentList = JSON.parse(talentList);
+                        }
+                        talents = talent.sq.split(',');
+                        for (let i in talents) {
+                            talents[i] = talentList[`${parseInt(i) + 1}`][talents[i]]['name'];
                         }
                     } catch (e) {
-                        qixues = ['作者上传的奇穴方案有误，无法解析'];
+                        talents = ['作者上传的奇穴方案有误，无法解析'];
                     }
                 } else {
-                    qixues = ['无奇穴方案'];
+                    talents = ['无奇穴方案'];
                 }
                 return {
                     name: `${post.author}#${macro.name}`,
-                    qixue: qixues.join(','),
+                    qixue: talents.join(','),
                     speed: macro.speed != '' ? macro.speed : null,
                     remark: macro.desc != '' ? macro.desc : null,
                     content: macro.macro
                 };
             });
+            for(let m in macros) {
+                macros[m] = await macros[m];
+            }
             let data = {
                 rank: args.rank,
                 author: post.author,
@@ -70,11 +61,11 @@ module.exports = class MacroHandler {
                 macro: macros
             }
             let macro_sync = macros.map((x) => x.name);
-            result = `${Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('macro', data))}
+            result = `[CQ:image,file=file://${await bot.imageGenerator.generateFromTemplateFile('macro', data)}]
                 云端宏:
                 ${macro_sync.join('\n')}`;
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 86400);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 86400);
         }
         return result.replace(/[ ]{2,}/g, "").replace(/\n[\s\n]+/g, "\n");
     }

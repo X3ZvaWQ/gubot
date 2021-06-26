@@ -1,7 +1,5 @@
 const Group = require("../model/group");
 const User = require("../model/user");
-const Cq = require("../service/cqhttp");
-const Image = require("../service/image");
 
 module.exports = class PermissionHandler {
     static demandPermission = true;
@@ -51,7 +49,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('permissionList', data));
+            return `[CQ:image,file=file://${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
         } else if (ctx.data.message_type == 'private') {
             let users = await User.findAll({
                 where: {
@@ -70,7 +68,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return Cq.ImageCQCode('file://' + await Image.generateFromTemplateFile('permissionList', data));
+            return `[CQ:image,file=file://${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
         }
     }
 
@@ -80,7 +78,7 @@ module.exports = class PermissionHandler {
             throw '权限不足。'
         }
         let args = ctx.args;
-        let targetQQ = Cq.AtCQCodeParse(args.user);
+        let [_, targetQQ] = /qq=(\d+)/.exec(args.user);
         let level = args.level;
         if (ctx.data.message_type == 'group') {
             let group_id = ctx.data.group_id;

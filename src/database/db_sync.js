@@ -1,11 +1,12 @@
-const ENV = require('../../env.json');
+const ENV = require('../../env.json').database;
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(ENV.db_database, ENV.db_username, ENV.db_password, {
-  dialect: ENV.db_dialect,
-  host: ENV.db_host,
-  port: ENV.db_port
+const sequelize = new Sequelize(ENV.database, ENV.username, ENV.password, {
+  dialect: ENV.dialect,
+  host: ENV.host,
+  port: ENV.port
 });
-global.sequelize = sequelize;
+global.bot = {};
+bot.sequelize = sequelize;
 
 const models = {
   alias : require("../model/alias"),

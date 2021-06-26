@@ -1,11 +1,45 @@
-const WebSocket = require('ws');
+
+/* require('colors');
+(async () => {
+    const ws = require('../src/service/websocket');
+    let w = new ws('ws://192.168.1.139:8890?access_token=pi3.14159')
+    setTimeout(async () => {
+        let r = await w.request({
+            action: 'get_group_list'
+        }, (m) => (m.data[0] && m.data[0].group_id != undefined));
+        console.log(r);
+    }, 1000)
+})(); */
+/* class A{
+    hahaha() {
+        console.log(arguments.callee);
+    }
+}
+let a = new A();
+a.hahaha(); */
+
+/* (async () => {
+    let {default: redis} = await import('async-redis');
+    const client = redis.createClient({
+        host: 'localhost',
+        port: 6379
+    });
+    client.on("error", function (err) {
+        console.log("Redis Error: " + err);
+    });
+})(); */
+
+/* import ENV from '../env.json';
+console.log(ENV);
+ */
+/* const WebSocket = require('ws');
 const wsApi = new WebSocket(`wss://socket.nicemoe.cn`);
 wsApi.on('open', () => {
     console.log('INFO: Api WebSocket Server connected.');
 });
 wsApi.on('message', (message) => {
     console.log(message);
-});
+}); */
 
 /* const moment = require('moment');
 console.log(moment().locale('zhcn').format('YYYY-MM-DD HH:mm:ss')); */
@@ -46,6 +80,6 @@ console.log(params);
 axios.post('http://nls-meta.cn-shanghai.aliyuncs.com/', params).then(x => {
     console.log(x.data);
 }).catch((x) => {
-  
+
     console.log(x);
 }) */

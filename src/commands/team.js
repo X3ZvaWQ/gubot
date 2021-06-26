@@ -3,8 +3,6 @@ const Group = require('../model/group');
 const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
 const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json');
 const allschool = require('@jx3box/jx3box-data/data/xf//school.json')
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
 
 module.exports = class TeamHandler {
     static demandPermission = true;
@@ -286,14 +284,14 @@ module.exports = class TeamHandler {
                 cells[i].color = allschool.color[allxf[xf]['school']];
             }
         }
-        let image = await Image.generateFromTemplateFile('team', {
+        let image = await bot.imageGenerator.generateFromTemplateFile('team', {
             team_id: team.id,
             team_name: team.name,
             time: team.time,
             remarks: team.remarks,
             cells: cells,
         });
-        return `${Cq.ImageCQCode('file://' + image)}`;
+        return `[CQ:image,file=file://${image}]`;
     }
 
     static argsList(ctx) {

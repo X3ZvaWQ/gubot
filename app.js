@@ -1,9 +1,16 @@
-const gubot = require('./src/main');
+require('colors');
+const ENV = require('./env.json');
+const Bot = require('./src/service/bot');
 
-const koaApp = gubot.koaApp;
-if(gubot.koaApp) {
-    console.log('INFO: Http Post Server Koa Init Success.');
-}
-if(gubot.websocketClient) {
-    console.log('INFO: Websocket Client Init Success.');
-}
+(async () => {
+    const bot = new Bot(ENV);
+    await bot.initRedis();
+    await bot.initSequelize();
+    await bot.initImageGenerator();
+    await bot.initCqhttps();
+    global.bot = bot;
+    await bot.initWebsocketApi();
+    await bot.initCommands();
+    await bot.start();
+})();
+

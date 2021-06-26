@@ -1,7 +1,4 @@
-const _ = require('lodash');
-const Api = require('../service/api');
-const Image = require('../service/image');
-const Cq = require('../service/cqhttp');
+const Jx3api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 
 module.exports = class TravelHandler {
@@ -10,21 +7,21 @@ module.exports = class TravelHandler {
         let args = ctx.args;
         let redis_key = `Travel:${args.map}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         //check data is empty?
         const getResult = async (map) => {
-            let data = await Api.getTravelFromJx3Api(map);
+            let data = await Jx3api.travel(map);
             let furnitures = data.data;
             let images = [];
             for (let i in furnitures) {
-                images.push(await Image.generateFromTemplateFile('furniture', furnitures[i]));
+                images.push(await bot.imageGenerator.generateFromTemplateFile('furniture', furnitures[i]));
             }
             return images;
         }
         if (result == null || args['update'] || result == 'null') {
             result = await getResult(args.map);
-            await redis.set(redis_key, JSON.stringify(result));
-            await redis.expire(redis_key, 86400);
+            await bot.redis.set(redis_key, JSON.stringify(result));
+            await bot.redis.expire(redis_key, 86400);
         } else {
             let cache_valid = true;
             result = JSON.parse(result);
@@ -39,11 +36,11 @@ module.exports = class TravelHandler {
             }
             if (!cache_valid) {
                 result = await getResult(args.map);
-                await redis.set(redis_key, JSON.stringify(result));
-                await redis.expire(redis_key, 86400);
+                await bot.redis.set(redis_key, JSON.stringify(result));
+                await bot.redis.expire(redis_key, 86400);
             }
         }
-        return result.map(x => Cq.ImageCQCode(`file://${x}`)).join('\n');
+        return result.map(x => `[CQ:image,file=file://${x}]`).join('\n');
     }
 
     static argsList() {

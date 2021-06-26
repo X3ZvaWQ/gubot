@@ -2,13 +2,16 @@ var Sequelize = require('sequelize');
 var DataTypes = Sequelize.DataTypes;
 var Model = Sequelize.Model;
 
-let sequelize = global.sequelize;
+let sequelize = bot.sequelize;
 
 class Group extends Model {
     
 }
 
 Group.init({
+    bot_id: {
+        type: DataTypes.STRING
+    },
     group_id: {
         type: DataTypes.STRING
     },
@@ -31,13 +34,17 @@ Group.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
+    news_broadcast:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
     server_broadcast:{
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
     serendipity_broadcast:{
         type: DataTypes.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
     },
     meme:{
         type: DataTypes.BOOLEAN,

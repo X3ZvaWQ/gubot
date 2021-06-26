@@ -6,7 +6,7 @@ const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json');
 const allschool = require('@jx3box/jx3box-data/data/xf/school.json');
 const allxftype = require('../assets/json/xftype.json');
 const Alias = require('./alias');
-const sequelize = global.sequelize;
+const sequelize = bot.sequelize;
 
 class Team extends Model {
     static async generateEmptyData(squad, group) {

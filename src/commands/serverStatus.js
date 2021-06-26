@@ -1,6 +1,3 @@
-const Api = require('../service/api');
-const Cq = require('../service/cqhttp');
-const Image = require('../service/image');
 const fs = require('fs-extra');
 const Game = require('../service/game');
 
@@ -10,7 +7,7 @@ module.exports = class ServerStatusHandler {
         let args = ctx.args;
         let redis_key = `ServerStatus:${args.server}`;
         //get data from redis
-        let result = await redis.get(redis_key);
+        let result = await bot.redis.get(redis_key);
         if (result == null || !await fs.exists(result) || args['update']) {
             let server;
             try{
@@ -18,15 +15,15 @@ module.exports = class ServerStatusHandler {
                 if(server == null) {
                     throw '错误：该服务器不存在。';
                 }
-                server = await Api.getServerStatus(server);
+                server = await Game.serverTest(server);
             }catch(e) {
                 throw e;
             }
-            result = await Image.generateFromTemplateFile('serverStatus', server);
-            await redis.set(redis_key, result);
-            await redis.expire(redis_key, 30);
+            result = await bot.imageGenerator.generateFromTemplateFile('serverStatus', server);
+            await bot.redis.set(redis_key, result);
+            await bot.redis.expire(redis_key, 30);
         }
-        return Cq.ImageCQCode('file://' + result);
+        return `[CQ:image,file=file://${result}]`;
     }
 
     static argsList() {
