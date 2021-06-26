@@ -33,13 +33,25 @@ module.exports = class SerendipityHandler {
                 serendipity: serendipity
             }
             let datas = await Jx3box.serendipity(searchKey);
-            datas = datas.map((data) => ({
-                server: data.server,
-                player: data.name,
-                type: (serendipityMap.filter((s) => (s.name == data.serendipity))[0] || {type: '未知奇遇'}).type,
-                name: data.serendipity,
-                time: moment(data.dwTime*1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')
-            }));
+            if(datas != null) {
+                datas = datas.map((data) => ({
+                    server: data.server,
+                    player: data.name,
+                    type: (serendipityMap.filter((s) => (s.name == data.serendipity))[0] || {type: '未知奇遇'}).type,
+                    name: data.serendipity,
+                    time: moment(data.dwTime*1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')
+                }));
+            }else{
+                datas = [
+                    {
+                        server: '',
+                        player: '',
+                        type: '',
+                        name: '',
+                        time: ''
+                    }
+                ]
+            }
             searchKey.serendipity = args.serendipity;
             searchKey.player = args.player;
             let renderData = {
