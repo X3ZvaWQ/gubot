@@ -44,7 +44,7 @@ Group.init({
     },
     serendipity_broadcast:{
         type: DataTypes.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
     },
     meme:{
         type: DataTypes.BOOLEAN,

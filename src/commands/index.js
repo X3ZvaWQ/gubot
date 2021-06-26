@@ -20,5 +20,5 @@ module.exports = {
     furniture: require('./furniture'),
     saohua: require('./saohua'),
     price: require('./price'),
-    /* chat: require('./chat') */
+    chat: require('./chat')
 }
