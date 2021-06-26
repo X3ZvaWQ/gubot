@@ -14,21 +14,28 @@ class CqHttp{
         this.bot = bot;
         let cqhttp = this;
         this.ws.handleMessageStack.push(async function(message) {
-            let request = JSON.parse(message);
-            let result = await cqhttp.bot.handleRequest(request);
-            //object
-            if(typeof result == 'object') {
-                cqhttp.send(result);
-            }
-            //string
-            if(typeof result == 'string') {
-                if(request.message_type == 'group') {
-                    let group_id = request.group_id;
-                    cqhttp.sendGroupMessage(result, group_id);
+            try{
+                let request = JSON.parse(message);
+                let result = await cqhttp.bot.handleRequest(request);
+                //object
+                if(typeof result == 'object') {
+                    cqhttp.send(result);
                 }
-                if(request.message_type == 'private') {
-                    let user_id = request.user_id;
-                    cqhttp.sendPrivateMessage(result, user_id)
+                //string
+                if(typeof result == 'string') {
+                    if(request.message_type == 'group') {
+                        let group_id = request.group_id;
+                        cqhttp.sendGroupMessage(result, group_id);
+                    }
+                    if(request.message_type == 'private') {
+                        let user_id = request.user_id;
+                        cqhttp.sendPrivateMessage(result, user_id)
+                    }
+                }
+            }catch(e) {
+                if(typeof e == 'object') {
+                    console.log(message);
+                    console.log(e.stack || e);
                 }
             }
         });

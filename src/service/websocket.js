@@ -40,15 +40,22 @@ class Websocket{
     onMessage(message) {
         for(let id in this.requestWaiting){
             let waiting = this.requestWaiting[id];
-            message = JSON.parse(message);
-            if(!waiting.status && waiting.judge(message)) {
+            let _message = JSON.parse(message);
+            if(!waiting.status && waiting.judge(_message)) {
                 this.requestWaiting[id].status = true;
-                this.requestWaiting[id].value = message;
+                this.requestWaiting[id].value = _message;
                 return;
             }
         }
         for(let handle of this.handleMessageStack) {
-            handle(message);
+            try{
+                handle(message);
+            }catch(e){
+                if(typeof e == 'object') {
+                    console.log(message);
+                    console.log(e.stack || e);
+                }
+            }
         }
     }
 

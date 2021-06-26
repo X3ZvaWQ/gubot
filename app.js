@@ -9,6 +9,7 @@ const Bot = require('./src/service/bot');
     await bot.initImageGenerator();
     await bot.initCqhttps();
     global.bot = bot;
+    await bot.initWebsocketApi();
     await bot.initCommands();
     await bot.start();
 })();
