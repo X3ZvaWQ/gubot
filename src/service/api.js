@@ -3,6 +3,38 @@ const md5 = require('js-md5');
 const ENV = require('../../env.json');
 
 class Api{ 
+  static async getSaoHuaFromJx3Api() {
+        let url = `${jx3api_baseurl}app/random`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            }
+        });
+        if(response.data.code == 200) {
+            let result = response.data.data.text;
+            return result;
+        }else{
+            throw '你看，你也缺情缘，我也缺情缘，你密我，我们就都不缺情缘了';
+        }
+    }
+
+    static async getDouTuFromJx3Api() {
+        let url = `https://jx3api.com/extend/expression`;
+        let response = await axios.get(url,{
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+            }
+        });
+        if(response.data.code == 200) {
+            let result = response.data.data.url;
+            return result;
+        }else{
+            throw '获取图片异常。';
+        }
+    }
+  
     static async getChatAnswer(message, session, nickname) {
         let url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
         let app_id = ENV.tecent_nlp_chat_appid;
