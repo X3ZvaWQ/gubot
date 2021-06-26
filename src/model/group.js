@@ -34,6 +34,10 @@ Group.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
+    news_broadcast:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
     server_broadcast:{
         type: DataTypes.BOOLEAN,
         defaultValue: true

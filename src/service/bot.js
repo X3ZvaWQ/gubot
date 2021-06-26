@@ -76,10 +76,43 @@ class Bot{
         const Jx3api = require('./wsApi/jx3api');
         this.jx3api_ws = new Jx3api(this.ENV.jx3api_websocket_url, 'JX3API_Websocket');
         let bot = this;
-        this.jx3api_ws.handleMessageStack.push((message) => {
+        this.jx3api_ws.handleMessageStack.push(async (message) => {
             message = JSON.parse(message);
-            if(message.type == 1001) {
-
+            if(message.type == 2001 && message.data.status == 1) {
+                let broadcast_msg = `咕咕咕！[${message.data.server}]开服啦！`;
+                for(let cqhttp of bot.cqhttps){
+                    let groups = await cqhttp.getGroupList();
+                    for(let group of groups) {
+                        if(group.server_broadcast && group.server == message.data.server){
+                            cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
+                        }
+                    }
+                }
+                console.log(`[INFO][${message.data.server}] server_broadcast successed.`.green);
+            }
+            if(message.type == 2002) {
+                let broadcast_msg = `咕咕咕！[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
+                for(let cqhttp of bot.cqhttps){
+                    let groups = await cqhttp.getGroupList();
+                    for(let group of groups) {
+                        if(group.news_broadcast){
+                            cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
+                        }
+                    }
+                }
+                console.log(`[INFO]${message.data.title} news_broadcast successed.`.green);
+            }
+            if(message.type == 2003) {
+                let broadcast_msg = `咕咕咕！${message.data.serendipity} 被 ${message.data.name} 抱回家啦~`;
+                for(let cqhttp of bot.cqhttps){
+                    let groups = await cqhttp.getGroupList();
+                    for(let group of groups) {
+                        if(group.serendipity_broadcast && group.server == message.data.server){
+                            cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
+                        }
+                    }
+                }
+                console.log(`[INFO][${message.data.server}][${message.data.name}][${message.data.serendipity}] serendipity_broadcast successed.`.green);
             }
         })
     }
@@ -225,7 +258,7 @@ class Bot{
             '^群昵称\\s([\\S\\s]+)': '/group groupname $1',
             '^咕咕称呼\\s([\\S\\s]+)': '/group nickname $1',
             '^群服务器\\s([\\S\\s]+)': '/group server $1',
-            '^(打开|关闭|开|关)\\s(奇遇播报|开服播报|间便命令|智障对话|斗图)': '/group set $2 $1',
+            '^(打开|关闭|开|关)\\s(奇遇播报|开服播报|新闻播报|简便命令|智障对话|斗图)': '/group set $2 $1',
 
             '^(开团|创建团队)\\s?([\\S\\s]*)': '/team create $2',
             '^(删除团队)\\s?([\\S\s]*)': '/team delete $2',
