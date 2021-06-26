@@ -72,6 +72,18 @@ class Bot{
         console.log(`Bot: command list init successed`.yellow);
     }
 
+    async initWebsocketApi() {
+        const Jx3api = require('./wsApi/jx3api');
+        this.jx3api_ws = new Jx3api(this.ENV.jx3api_websocket_url, 'JX3API_Websocket');
+        let bot = this;
+        this.jx3api_ws.handleMessageStack.push((message) => {
+            message = JSON.parse(message);
+            if(message.type == 1001) {
+
+            }
+        })
+    }
+
     async start() {
         console.log(`Bot: all init successed.`.yellow);
     }
@@ -116,6 +128,7 @@ class Bot{
                 });
                 if(group == null) {
                     group = await Group.create({
+                        bot_id: request.self_id,
                         group_id: request.group_id,
                         groupname: request.group_id,
                         server: '唯我独尊'
@@ -159,7 +172,7 @@ class Bot{
 
     async handleMessage(data) {
         if(data.group_id) {
-            data.switchs = await this.checkFunctionSwitch(data);
+            data.switchs = await this.checkFunctionSwitch(data.group_id);
             if(!data.switchs.convenient) {
                 return null;
             }
@@ -379,33 +392,34 @@ class Bot{
         }
     }
 
-    async checkFunctionSwitch(data) {
+    async checkFunctionSwitch(group_id) {
         const Group = require('../model/group');
         let funcs = ['convenient', 'chat', 'server_broadcast', 'serendipity_broadcast', 'meme'];
-        if(data.group_id) {
+        if(group_id) {
             let group = null;
             let result = {};
             for(let i in funcs) {
                 let func = funcs[i];
-                let redis_key = `GroupFunc:${func}:${data.group_id}`;
+                let redis_key = `GroupFunc:${func}:${group_id}`;
                 let boolean = await this.redis.get(redis_key);
                 if(boolean == null){
                     if(group == null) {
                         group = await Group.findOne({
                             where: {
-                                group_id: data.group_id
+                                group_id: group_id
                             }
                         });
                         if(group == null) {
                             group = await Group.create({
-                                group_id: data.group_id,
+                                group_id: group_id,
                                 server: '唯我独尊',
                                 nickname: '咕咕',
-                                groupname: data.group_id
+                                groupname: group_id
                             });
                         }
                     }
                     boolean = `${group[func]}`;
+                    await this.redis.set(redis_key, boolean);
                 };
                 result[func] = boolean == 'true';
             }

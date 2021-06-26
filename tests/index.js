@@ -1,10 +1,22 @@
-class A{
+
+/* require('colors');
+(async () => {
+    const ws = require('../src/service/websocket');
+    let w = new ws('ws://192.168.1.139:8890?access_token=pi3.14159')
+    setTimeout(async () => {
+        let r = await w.request({
+            action: 'get_group_list'
+        }, (m) => (m.data[0] && m.data[0].group_id != undefined));
+        console.log(r);
+    }, 1000)
+})(); */
+/* class A{
     hahaha() {
         console.log(arguments.callee);
     }
 }
 let a = new A();
-a.hahaha();
+a.hahaha(); */
 
 /* (async () => {
     let {default: redis} = await import('async-redis');

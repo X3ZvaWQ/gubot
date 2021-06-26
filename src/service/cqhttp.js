@@ -4,11 +4,13 @@ class CqHttp{
     wsApi;
     wsEvent;
     bot;
+    qq;
     name;
 
     constructor(config, bot) {
         this.ws = new Websocket(`${config.url}/${config.access_token ? '?access_token='+config.access_token : ''}`, `Ws:${config.name}`);
         this.name = config.name;
+        this.qq = config.qq;
         this.bot = bot;
         let cqhttp = this;
         this.ws.handleMessageStack.push(async function(message) {
@@ -50,6 +52,22 @@ class CqHttp{
                 message: message
             }
         });
+    }
+
+    async getGroupList() {
+        const Group = require('../model/group');
+        let cqhttp = this;
+        let groupList = await this.ws.request({
+            action: 'get_group_list'
+        }, (m) => (m.data[0] && m.data[0].group_id != undefined));
+        groupList = groupList.data;
+        let groups = Group.findAll({
+            where: {
+                bot_id: cqhttp.qq,
+                group_id: groupList.map(group => `${group.group_id}`)
+            }
+        });
+        return groups;
     }
 
     send(object){

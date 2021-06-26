@@ -9,6 +9,9 @@ class Group extends Model {
 }
 
 Group.init({
+    bot_id: {
+        type: DataTypes.STRING
+    },
     group_id: {
         type: DataTypes.STRING
     },

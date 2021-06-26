@@ -1,8 +1,9 @@
 const Ws = require('ws');
+const uuid = require('uuid').v4;
 
 class Websocket{
-    handleMessageStack = []
-    requestWaiting = []
+    handleMessageStack = [];
+    requestWaiting = {};
 
     constructor(url, name) {
         this.name = name;
@@ -37,8 +38,14 @@ class Websocket{
         console.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`.red);
     }
     onMessage(message) {
-        for(let waiting of this.requestWaiting){
-            //TODO
+        for(let id in this.requestWaiting){
+            let waiting = this.requestWaiting[id];
+            message = JSON.parse(message);
+            if(!waiting.status && waiting.judge(message)) {
+                this.requestWaiting[id].status = true;
+                this.requestWaiting[id].value = message;
+                return;
+            }
         }
         for(let handle of this.handleMessageStack) {
             handle(message);
@@ -53,8 +60,30 @@ class Websocket{
         this.send(JSON.stringify(object));
     }
 
-    async request(object) {
-        //TODO
+    async request(object, judgeFunction) {
+        this.sendJSON(object);
+        return await this.getResponse(judgeFunction);
+    }
+
+    async getResponse(judgeFunction) {
+        let id = uuid();
+        this.requestWaiting[id] = {
+            judge: judgeFunction,
+            status: false,
+            value: null
+        };
+        let ws = this;
+        await new Promise(function(resolve) {
+            let timer = setInterval(function() {
+                if(ws.requestWaiting[id].status) {
+                    resolve(true);
+                    clearInterval(timer);
+                }
+            }, 10)
+        })
+        let value = this.requestWaiting[id].value;
+        delete this.requestWaiting[id];
+        return value;
     }
 }
 
