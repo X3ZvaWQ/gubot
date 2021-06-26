@@ -172,10 +172,9 @@ module.exports = class GroupHandler {
                     throw '权限不足。'
                 }
                 let group_id = ctx.data.group_id;
-                let func = Alias.get(args.function, 'function', group_id);
                 let swi = args.switch == 'true';
                 let whilelist = ['convenient', 'chat', 'server_broadcast', 'news_broadcast', 'serendipity_broadcast', 'meme'];
-                if(whilelist.indexOf(func) == -1) {
+                if(whilelist.indexOf(args.function) == -1) {
                     throw `错误：功能 ${args.function} 不存在`;
                 }
                 let group = await Group.findOne({
