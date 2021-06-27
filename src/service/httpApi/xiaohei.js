@@ -8,23 +8,23 @@ class XiaoHei{
             params: {
                 step: 0,
                 page: 1,
-                size: 1,
+                size: 10,
                 name: outwardName
             }
         });
         if(response.data.state != 0){
-            throw `错误: API未能找到${outwardName}的数据`;
+            throw `错误: API未能找到 ${outwardName} 的数据`;
         }
         let outWardList = response.data.data.list;
         //只返回一个结果
         if(outWardList.length == 0) {
-            throw `错误: API未能找到${outwardName}的数据`;
+            throw `错误: API未能找到 ${outwardName} 的数据`;
         }
         if(outWardList.length == 1) {
             return outWardList[0].id;
         }
         //返回第一个结果但是完全符合
-        if(outWardList[0].outwardName == outwardName || outWardList[0].outwardAlias == outwardName) {
+        if(outWardList[0].outwardName == outwardName || outWardList[0].outwardAlias == outwardName || outWardList[0].outwardAlias1 == outwardName) {
             return outWardList[0].id;
         }
         //返回多个结果没有完全符合的
