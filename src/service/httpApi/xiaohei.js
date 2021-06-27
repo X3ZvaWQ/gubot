@@ -17,6 +17,9 @@ class XiaoHei{
         }
         let outWardList = response.data.data.list;
         //只返回一个结果
+        if(outWardList.length == 0) {
+            throw `错误: API未能找到${outwardName}的数据`;
+        }
         if(outWardList.length == 1) {
             return outWardList[0].id;
         }
