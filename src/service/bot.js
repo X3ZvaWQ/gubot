@@ -88,7 +88,7 @@ class Bot{
                         }
                     }
                 }
-                console.log(`[INFO][${message.data.server}] server_broadcast successed.`.green);
+                //console.log(`[INFO][${message.data.server}] server_broadcast successed.`.green);
             }
             if(message.type == 2002) {
                 let broadcast_msg = `咕咕咕！[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
@@ -100,7 +100,7 @@ class Bot{
                         }
                     }
                 }
-                console.log(`[INFO]${message.data.title} news_broadcast successed.`.green);
+                //console.log(`[INFO]${message.data.title} news_broadcast successed.`.green);
             }
             if(message.type == 2003) {
                 let broadcast_msg = `咕咕咕！${message.data.serendipity} 被 ${message.data.name} 抱回家啦~`;
@@ -112,7 +112,7 @@ class Bot{
                         }
                     }
                 }
-                console.log(`[INFO][${message.data.server}][${message.data.name}][${message.data.serendipity}] serendipity_broadcast successed.`.green);
+                //console.log(`[INFO][${message.data.server}][${message.data.name}][${message.data.serendipity}] serendipity_broadcast successed.`.green);
             }
         })
     }
