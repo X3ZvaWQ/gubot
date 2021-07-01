@@ -22,5 +22,5 @@ module.exports = {
     saohuav: require('./saohuav'),
     doutu: require('./doutu'),
     price: require('./price'),
-    chat: require('./chat')
+    //chat: require('./chat')
 }
