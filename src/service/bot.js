@@ -1,12 +1,36 @@
 const yargs_parser = require('yargs-parser');
+const moment = require('moment');
 
 class Bot{
     constructor(ENV) {
         this.ENV = ENV;
     }
     
+    
+    log(message, type) {
+        type = type || 'info';
+        let msg = `[${moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}][${type.toUpperCase().padStart(7)}]${message}`;
+        if(type == 'verbose') {
+            msg = msg.gray;
+        }
+        if(type == 'info') {
+            msg = msg.white
+        }
+        if(type == 'success') {
+            msg = msg.green;
+        }
+        if(type == 'warn') {
+            msg = msg.yellow;
+        }
+        if(type == 'error') {
+            msg = msg.red;
+        }
+        console.log(msg);
+    }
+
     async initRedis() {
         let env = this.ENV.redis;
+        let bot = this;
         if(env.enable){
             const redis = require('async-redis');
             const client = redis.createClient({
@@ -14,7 +38,7 @@ class Bot{
                 port: env.port || 6379
             });
             client.on("error", function (err) {
-                console.log("Redis Error: " + err);
+                bot.log("Redis Error: " + err);
             });
             this.redis = client;
         }else{
@@ -22,7 +46,7 @@ class Bot{
                 get: () => (async () => null),
             });
         }
-        console.log('Redis: init successed'.yellow);
+        bot.log('Redis: init successed', 'success');
     }
 
     async initSequelize() {
@@ -35,7 +59,7 @@ class Bot{
             port: env.port
         });
         this.sequelize = sequelize;
-        console.log('Sequelize: init successed'.yellow);
+        this.log('Sequelize: init successed', 'success');
     }
 
     async initImageGenerator() {
@@ -50,7 +74,7 @@ class Bot{
                 get: () => (async () => 'ImageGenerator has been closed. Please check env.json/enable_puppeteer'),
             });
         }
-        console.log('ImageGenerator: init successed'.yellow);
+        this.log('ImageGenerator: init successed', 'success');
     }
 
     async initCqhttps() {
@@ -63,13 +87,13 @@ class Bot{
 
             }
             this.cqhttps.push(cqhttp);
-            console.log(`Cqhttp: [${cqhttp.name}] init successed`.yellow);
+            this.log(`Cqhttp: [${cqhttp.name}] init successed`, 'success');
         }
     }
 
     async initCommands() {
         this.route = require('../commands/index');
-        console.log(`Bot: command list init successed`.yellow);
+        this.log(`Bot: command list init successed`, 'success');
     }
 
     async initWebsocketApi() {
@@ -88,7 +112,6 @@ class Bot{
                         }
                     }
                 }
-                //console.log(`[INFO][${message.data.server}] server_broadcast successed.`.green);
             }
             if(message.type == 2002) {
                 let broadcast_msg = `咕咕咕！[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
@@ -100,7 +123,6 @@ class Bot{
                         }
                     }
                 }
-                //console.log(`[INFO]${message.data.title} news_broadcast successed.`.green);
             }
             if(message.type == 2003) {
                 let broadcast_msg = `咕咕咕！${message.data.serendipity} 被 ${message.data.name} 抱回家啦~`;
@@ -112,13 +134,12 @@ class Bot{
                         }
                     }
                 }
-                //console.log(`[INFO][${message.data.server}][${message.data.name}][${message.data.serendipity}] serendipity_broadcast successed.`.green);
             }
         })
     }
 
     async start() {
-        console.log(`Bot: all init successed.`.yellow);
+        this.log(`Bot: all init successed.`, 'success');
     }
 
     async handleRequest(request) {
@@ -139,6 +160,7 @@ class Bot{
                 if(!this.ENV.agree_friend_invite) {
                     return false;
                 }
+                this.log(`接受了 ${request.user_id} 的加好友请求`, 'info')
                 //接受申请
                 return {
                     action: "set_friend_add_request",
@@ -153,6 +175,7 @@ class Bot{
                 if(!this.ENV.agree_group_invite) {
                     return false;
                 }
+                this.log(`接受了 ${request.user_id} 的邀请加入群 ${request.group_id} 的请求`, 'info')
                 const Group = require('../model/group');
                 let group = await Group.findOne({
                     where: {
@@ -197,9 +220,9 @@ class Bot{
             }
         }catch(e) {
             if(typeof e == 'object') {
-                console.log(e.stack || e);
+                this.log(e.stack || e, 'error');
             }
-            return e + '\n' + data.message;
+            return e;
         }
     }
 

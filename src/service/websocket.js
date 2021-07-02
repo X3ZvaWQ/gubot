@@ -29,13 +29,13 @@ class Websocket{
     }
 
     onOpen() {
-        console.log(`Websocket: ws [${this.name}] connected.`.yellow);
+        bot.log(`Websocket: ws [${this.name}] connected.`, 'success');
     }
     onClose(code, reason) {
-        console.log(`Websocket: ws [${this.name}] closed. \n    code: ${code}\n    reason: ${reason}`.red);
+        bot.log(`Websocket: ws [${this.name}] closed. \n    code: ${code}\n    reason: ${reason}`, 'error');
     }
     onError(error) {
-        console.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`.red);
+        bot.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`, 'error');
     }
     onMessage(message) {
         for(let id in this.requestWaiting){
@@ -52,8 +52,8 @@ class Websocket{
                 handle(message);
             }catch(e){
                 if(typeof e == 'object') {
-                    console.log(message);
-                    console.log(e.stack || e);
+                    bot.log(message, 'error');
+                    bot.log(e.stack || e, 'error');
                 }
             }
         }

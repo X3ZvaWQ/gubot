@@ -93,7 +93,7 @@ module.exports = class AliasHandler {
         let redis_key = `AliasList:${JSON.stringify(where)}`;
         let result = await bot.redis.get(redis_key);
         if(result == null) {
-            let alias_all = await Alias.findAll({where:where, logging: console.log});
+            let alias_all = await Alias.findAll({where:where});
             let array = [
                 ['作用域', '别名', '指向']
             ];

@@ -34,8 +34,8 @@ class CqHttp{
                 }
             }catch(e) {
                 if(typeof e == 'object') {
-                    console.log(message);
-                    console.log(e.stack || e);
+                    this.bot.log(message, 'error');
+                    this.bot.log(e.stack || e, 'error');
                 }
             }
         });
@@ -66,7 +66,7 @@ class CqHttp{
         let cqhttp = this;
         let groupList = await this.ws.request({
             action: 'get_group_list'
-        }, (m) => (m.data[0] && m.data[0].group_id != undefined));
+        }, (m) => (m && m.data && m.data[0] && m.data[0].group_id != undefined));
         groupList = groupList.data;
         let groups = Group.findAll({
             where: {
