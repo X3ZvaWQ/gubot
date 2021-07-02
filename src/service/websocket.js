@@ -32,11 +32,13 @@ class Websocket{
         bot.log(`Websocket: ws [${this.name}] connected.`, 'success');
     }
     onClose(code, reason) {
-        bot.log(`Websocket: ws [${this.name}] closed. \n    code: ${code}\n    reason: ${reason}`, 'error');
+        this.init();
+        bot.log(`Websocket: ws [${this.name}] closed. Try to reconnect. \n    code: ${code}\n    reason: ${reason}`, 'error');
     }
     onError(error) {
         bot.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`, 'error');
     }
+    
     onMessage(message) {
         for(let id in this.requestWaiting){
             let waiting = this.requestWaiting[id];
