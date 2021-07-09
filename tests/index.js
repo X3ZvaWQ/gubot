@@ -1,3 +1,49 @@
+const art = require('art-template');
+const fs = require('fs-extra');
+
+fs.readFile('/d/workspace/gubot/src/templates/jjc.html').then((source) => {
+    fs.readFile('/d/workspace/gubot/tests/data.json').then((data) => {
+        data = JSON.parse(data.toString());
+        source = source.toString();
+
+        console.log(data);
+        let a = art.render(source, {data: data});
+        fs.outputFile('./aaaa.html', a);
+    });
+});
+
+/* const ENV = require('../env.json');
+const tencentcloud = require("tencentcloud-sdk-nodejs-nlp")
+const NlpClient = tencentcloud.nlp.v20190408.Client;
+const uuid = require('uuid').v4;
+
+const clientConfig = {
+    credential: {
+        secretId: ENV.tecentcloud_secretid,
+        secretKey: ENV.tecentcloud_secretkey,
+    },
+    region: "ap-nanjing",
+    profile: {
+        signMethod: "HmacSHA256",
+        httpProfile: {
+            reqMethod: "POST", // 请求方法
+            reqTimeout: 30, // 请求超时时间，默认60s
+        },
+    },
+}
+const client = new NlpClient(clientConfig);
+client.apiVersion = '2019-08-23';
+client.TextToVoice = function (text) {
+    this.request('TextToVoice', {
+        Text: text,
+        SessionId: uuid(),
+        VoiceType: 101016,
+        Codec: 'mp3'
+    }, function(x){
+        console.log(x);
+    })
+}
+client.TextToVoice("咕咕咕，鸽子飞走啦"); */
 
 /* require('colors');
 (async () => {

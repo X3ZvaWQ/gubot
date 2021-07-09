@@ -29,6 +29,7 @@
     "puppeteer": "^5.5.0",
     "redis": "^3.0.2",
     "sequelize": "^6.3.4",
+    "tencentcloud-sdk-nodejs-nlp": "^4.0.156",
     "uuid": "^8.3.2",
     "ws": "^7.4.2",
     "yargs-parser": "^20.2.5"
