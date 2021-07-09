@@ -1,0 +1,620 @@
+{
+    "player": "111",
+    "time": "hahaha",
+    "performance": {
+        "5c": {
+            "performance": null,
+            "metrics": null
+        },
+        "3c": {
+            "performance": {
+                "mmr": 2140,
+                "grade": 10,
+                "ranking": "73%",
+                "win_count": 40,
+                "total_count": 72,
+                "mvp_count": 26,
+                "pvpType": ""
+            },
+            "metrics": [
+                {
+                    "pvp_type": 3,
+                    "kungfu": "butian",
+                    "level": 95,
+                    "win_count": 40,
+                    "total_count": 72,
+                    "mvp_count": 26,
+                    "items": [
+                        {
+                            "id": 1,
+                            "name": "战斗效率",
+                            "value": 0.6516014,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 4,
+                            "name": "控制成功率",
+                            "value": 0.0032467532,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 13,
+                            "name": "躲控成功率",
+                            "value": 0.5950174,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 7,
+                            "name": "每分钟位移",
+                            "value": 226.96295,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 8,
+                            "name": "场均击杀",
+                            "value": 0,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 9,
+                            "name": "场均死亡",
+                            "value": 0.4861111,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 5,
+                            "name": "关键伤害",
+                            "value": 0.16666667,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 6,
+                            "name": "关键治疗",
+                            "value": 94270.78,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 2,
+                            "name": "每秒伤害",
+                            "value": 3.7100472,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 3,
+                            "name": "每秒治疗",
+                            "value": 6979.985,
+                            "grade": "S",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 11,
+                            "name": "每秒承疗",
+                            "value": 5697.9106,
+                            "grade": "",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 10,
+                            "name": "每秒承伤",
+                            "value": 4958.761,
+                            "grade": "",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 14,
+                            "name": "场均濒危",
+                            "value": 3.0277777,
+                            "grade": "",
+                            "ranking": 0
+                        }
+                    ]
+                },
+                {
+                    "pvp_type": 3,
+                    "kungfu": "dujing",
+                    "level": 0,
+                    "win_count": 0,
+                    "total_count": 0,
+                    "mvp_count": 0,
+                    "items": null
+                }
+            ]
+        },
+        "2c": {
+            "performance": {
+                "mmr": 1989,
+                "grade": 9,
+                "ranking": "-",
+                "win_count": 38,
+                "total_count": 71,
+                "mvp_count": 5,
+                "pvpType": ""
+            },
+            "metrics": [
+                {
+                    "pvp_type": 2,
+                    "kungfu": "dujing",
+                    "level": 95,
+                    "win_count": 21,
+                    "total_count": 49,
+                    "mvp_count": 4,
+                    "items": [
+                        {
+                            "id": 1,
+                            "name": "战斗效率",
+                            "value": 0.38892308,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 4,
+                            "name": "控制成功率",
+                            "value": 0.29558012,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 13,
+                            "name": "躲控成功率",
+                            "value": 0.593361,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 7,
+                            "name": "每分钟位移",
+                            "value": 346.5554,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 8,
+                            "name": "场均击杀",
+                            "value": 0.2244898,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 9,
+                            "name": "场均死亡",
+                            "value": 0.7755102,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 5,
+                            "name": "关键伤害",
+                            "value": 33310.98,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 6,
+                            "name": "关键治疗",
+                            "value": 330.83673,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 2,
+                            "name": "每秒伤害",
+                            "value": 3330.6875,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 3,
+                            "name": "每秒治疗",
+                            "value": 16.174154,
+                            "grade": "S",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 11,
+                            "name": "每秒承疗",
+                            "value": 148.05846,
+                            "grade": "",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 10,
+                            "name": "每秒承伤",
+                            "value": 3219.9597,
+                            "grade": "",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 14,
+                            "name": "场均濒危",
+                            "value": 6.3469386,
+                            "grade": "",
+                            "ranking": 0
+                        }
+                    ]
+                },
+                {
+                    "pvp_type": 2,
+                    "kungfu": "butian",
+                    "level": 95,
+                    "win_count": 17,
+                    "total_count": 22,
+                    "mvp_count": 1,
+                    "items": [
+                        {
+                            "id": 1,
+                            "name": "战斗效率",
+                            "value": 0.530646,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 4,
+                            "name": "控制成功率",
+                            "value": 0.031578947,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 13,
+                            "name": "躲控成功率",
+                            "value": 0.53333336,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 7,
+                            "name": "每分钟位移",
+                            "value": 210.31557,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 8,
+                            "name": "场均击杀",
+                            "value": 0,
+                            "grade": "C",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 9,
+                            "name": "场均死亡",
+                            "value": 0.22727273,
+                            "grade": "A",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 5,
+                            "name": "关键伤害",
+                            "value": 65.22727,
+                            "grade": "A",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 6,
+                            "name": "关键治疗",
+                            "value": 41519.637,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 2,
+                            "name": "每秒伤害",
+                            "value": 5.7854776,
+                            "grade": "B",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 3,
+                            "name": "每秒治疗",
+                            "value": 4219.188,
+                            "grade": "S",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 11,
+                            "name": "每秒承疗",
+                            "value": 5149.2954,
+                            "grade": "",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 10,
+                            "name": "每秒承伤",
+                            "value": 3506.513,
+                            "grade": "",
+                            "ranking": 0
+                        },
+                        {
+                            "id": 14,
+                            "name": "场均濒危",
+                            "value": 0.72727275,
+                            "grade": "",
+                            "ranking": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "skills": {
+        "22": {
+            "dujing": [
+                {
+                    "name": "灵蛊",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2",
+                    "success_times": 13,
+                    "times": 145,
+                    "accuracy": true
+                },
+                {
+                    "name": "蟾啸",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_wxtl_2.png?v=2",
+                    "success_times": 23,
+                    "times": 44,
+                    "accuracy": true
+                },
+                {
+                    "name": "百足",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_wxtl_4.png?v=2",
+                    "success_times": 47,
+                    "times": 118,
+                    "accuracy": true
+                },
+                {
+                    "name": "幻蛊",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_5.png?v=2",
+                    "success_times": 24,
+                    "times": 55,
+                    "accuracy": true
+                },
+                {
+                    "name": "蛊虫献祭",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_dhyl_6.png?v=2",
+                    "success_times": 0,
+                    "times": 54,
+                    "accuracy": false
+                },
+                {
+                    "name": "蛊虫狂暴",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_dhyl_7.png?v=2",
+                    "success_times": 0,
+                    "times": 45,
+                    "accuracy": false
+                },
+                {
+                    "name": "化蝶",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/extend_back_30.png?v=2",
+                    "success_times": 0,
+                    "times": 33,
+                    "accuracy": false
+                },
+                {
+                    "name": "玄水蛊",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/tf_wudu_ZhiLiao.png?v=2",
+                    "success_times": 0,
+                    "times": 31,
+                    "accuracy": false
+                },
+                {
+                    "name": "扶摇直上",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu04.png?v=2",
+                    "success_times": 0,
+                    "times": 22,
+                    "accuracy": false
+                },
+                {
+                    "name": "蹑云逐月",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu09.png?v=2",
+                    "success_times": 0,
+                    "times": 34,
+                    "accuracy": false
+                },
+                {
+                    "name": "迎风回浪",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu10.png?v=2",
+                    "success_times": 0,
+                    "times": 2,
+                    "accuracy": false
+                },
+                {
+                    "name": "瑶台枕鹤",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu08.png?v=2",
+                    "success_times": 0,
+                    "times": 3,
+                    "accuracy": false
+                },
+                {
+                    "name": "后撤",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/JNLXG_19_11_28_16.png?v=2",
+                    "success_times": 0,
+                    "times": 24,
+                    "accuracy": false
+                }
+            ],
+            "butian": [
+                {
+                    "name": "灵蛊",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2",
+                    "success_times": 3,
+                    "times": 95,
+                    "accuracy": true
+                },
+                {
+                    "name": "蛊虫献祭",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_dhyl_6.png?v=2",
+                    "success_times": 0,
+                    "times": 30,
+                    "accuracy": false
+                },
+                {
+                    "name": "化蝶",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/extend_back_30.png?v=2",
+                    "success_times": 0,
+                    "times": 34,
+                    "accuracy": false
+                },
+                {
+                    "name": "女娲补天",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_btxj_1.png?v=2",
+                    "success_times": 0,
+                    "times": 46,
+                    "accuracy": false
+                },
+                {
+                    "name": "千蝶吐瑞",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_btxj_6.png?v=2",
+                    "success_times": 0,
+                    "times": 33,
+                    "accuracy": false
+                },
+                {
+                    "name": "圣手织天",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/tf_wudu_ShenShou.png?v=2",
+                    "success_times": 0,
+                    "times": 87,
+                    "accuracy": false
+                },
+                {
+                    "name": "玄水蛊",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/tf_wudu_ZhiLiao.png?v=2",
+                    "success_times": 0,
+                    "times": 20,
+                    "accuracy": false
+                },
+                {
+                    "name": "扶摇直上",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu04.png?v=2",
+                    "success_times": 0,
+                    "times": 1,
+                    "accuracy": false
+                },
+                {
+                    "name": "蹑云逐月",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu09.png?v=2",
+                    "success_times": 0,
+                    "times": 9,
+                    "accuracy": false
+                },
+                {
+                    "name": "凌霄揽胜",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu01.png?v=2",
+                    "success_times": 0,
+                    "times": 3,
+                    "accuracy": false
+                },
+                {
+                    "name": "后撤",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/JNLXG_19_11_28_16.png?v=2",
+                    "success_times": 0,
+                    "times": 41,
+                    "accuracy": false
+                }
+            ]
+        },
+        "33": {
+            "butian": [
+                {
+                    "name": "灵蛊",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2",
+                    "success_times": 1,
+                    "times": 308,
+                    "accuracy": true
+                },
+                {
+                    "name": "蛊虫献祭",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_dhyl_6.png?v=2",
+                    "success_times": 0,
+                    "times": 164,
+                    "accuracy": false
+                },
+                {
+                    "name": "化蝶",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/extend_back_30.png?v=2",
+                    "success_times": 0,
+                    "times": 153,
+                    "accuracy": false
+                },
+                {
+                    "name": "女娲补天",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_btxj_1.png?v=2",
+                    "success_times": 0,
+                    "times": 168,
+                    "accuracy": false
+                },
+                {
+                    "name": "蛊惑众生",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_btxj_2.png?v=2",
+                    "success_times": 0,
+                    "times": 42,
+                    "accuracy": false
+                },
+                {
+                    "name": "千蝶吐瑞",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/wudu_btxj_6.png?v=2",
+                    "success_times": 0,
+                    "times": 144,
+                    "accuracy": false
+                },
+                {
+                    "name": "圣手织天",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/tf_wudu_ShenShou.png?v=2",
+                    "success_times": 0,
+                    "times": 421,
+                    "accuracy": false
+                },
+                {
+                    "name": "玄水蛊",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/tf_wudu_ZhiLiao.png?v=2",
+                    "success_times": 0,
+                    "times": 97,
+                    "accuracy": false
+                },
+                {
+                    "name": "扶摇直上",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu04.png?v=2",
+                    "success_times": 0,
+                    "times": 18,
+                    "accuracy": false
+                },
+                {
+                    "name": "蹑云逐月",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu09.png?v=2",
+                    "success_times": 0,
+                    "times": 59,
+                    "accuracy": false
+                },
+                {
+                    "name": "凌霄揽胜",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu01.png?v=2",
+                    "success_times": 0,
+                    "times": 10,
+                    "accuracy": false
+                },
+                {
+                    "name": "瑶台枕鹤",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/skill_jianghu08.png?v=2",
+                    "success_times": 0,
+                    "times": 2,
+                    "accuracy": false
+                },
+                {
+                    "name": "后撤",
+                    "icon": "https://dl.pvp.xoyo.com/prod/icons/JNLXG_19_11_28_16.png?v=2",
+                    "success_times": 0,
+                    "times": 32,
+                    "accuracy": false
+                }
+            ]
+        },
+        "55": {}
+    }
+}

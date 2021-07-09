@@ -37,10 +37,11 @@
         font-size: 16px;
     }
     skill-card{
-        text-align: center;
+        text-align: left;
         background-color: #eee7cb;
         margin: 0.1rem 0.1rem;
-        padding: 0.6rem;
+        padding: 0.4rem;
+        width: 10.5rem;
         display: inline-block;
         height: 3rem;
         font-size: 16px;
@@ -82,7 +83,7 @@
         height: 5rem;
         width: 5rem;
         font-size: 16px;
-        padding: 0.4rem;
+        padding: 0.1rem;
         margin: 0.1rem;
     } 
     data-card p:nth-of-type(1){
@@ -99,7 +100,7 @@
         font-size: 14px;
     }
     div.skill-list{
-        padding: 0 2.8rem;
+        padding: 0 3.8rem;
     }
     div.data-list{
         padding: 0 2.3rem;
@@ -113,185 +114,86 @@
     <h3>查询玩家：{{ data.player }}</h3>
     <div>
         <% for(let mode in data.performance) { %>
-        <h4>22</h4>
-        <h5>战斗数据</h5>
-        <p class="xf">心法：补天</p>
-        <div class="data-list">
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-            <data-card>
-                <p>S</p>
-                <p>65%</p>
-                <p>战斗效率</p>
-            </data-card>
-        </div>
+            <% let key = mode.substr(0,1) + mode.substr(0,1) %>
+            <h4>{{key}}</h4>
+            <% if(data.performance[mode].performance != null) { %>
+                <h5>战斗数据</h5>
+                <div class="data-list">
+                    <data-card>
+                        <p>&nbsp;</p>
+                        <p>{{data.performance[mode].performance.grade}}</p>
+                        <p>段位</p>
+                    </data-card>
+                    <data-card>
+                        <p>&nbsp;</p>
+                        <p>{{data.performance[mode].performance.mmr}}</p>
+                        <p>分数</p>
+                    </data-card>
+                    <data-card>
+                        <p>&nbsp;</p>
+                        <p>{{data.performance[mode].performance.mvp_count}}</p>
+                        <p>MVP次数</p>
+                    </data-card>
+                    <data-card>
+                        <p>&nbsp;</p>
+                        <p>{{data.performance[mode].performance.total_count}}</p>
+                        <p>总场数</p>
+                    </data-card>
+                    <data-card>
+                        <p>&nbsp;</p>
+                        <p>{{data.performance[mode].performance.win_count}}</p>
+                        <p>胜场数</p>
+                    </data-card>
+                    <data-card>
+                        <p>&nbsp;</p>
+                        <p>{{data.performance[mode].performance.ranking}}</p>
+                        <p>周排名</p>
+                    </data-card>
+                </div>
+                <% for(let xfid in data.performance[mode].metrics) { if(data.performance[mode].metrics[xfid].items != null) {%>
+                <p class="xf">心法：{{data.performance[mode].metrics[xfid].kungfu}}</p>
+                <div class="data-list">
+                    <% for(let item in data.performance[mode].metrics[xfid].items) { %>
+                        <data-card>
+                            <p>&nbsp;{{data.performance[mode].metrics[xfid].items[item].grade}}</p>
+                            <p>
+                                {{if data.performance[mode].metrics[xfid].items[item].name.substr(data.performance[mode].metrics[xfid].items[item].name.length - 1, 1) == '率'}}
+                                    {{(data.performance[mode].metrics[xfid].items[item].value * 100).toFixed(2)}}%
+                                {{else}}
+                                    {{data.performance[mode].metrics[xfid].items[item].value.toFixed(2)}}
+                                {{/if}}
+                            </p>
+                            <p>{{data.performance[mode].metrics[xfid].items[item].name}}</p>
+                        </data-card>
+                    <% } %>
+                </div>
+                <% }} %>
+                <h5>常用技能</h5>
+                <% for(let xfid in data.skills[key]) { %>
+                <p class="xf">心法：{{xfid}}</p>
+                    <div class="skill-list">
+                        <% for(let item in data.skills[key][xfid]) {%>
+                        <skill-card>
+                            <div>
+                                <img src="{{data.skills[key][xfid][item].icon}}">
+                            </div>
+                            <div>
+                                <p class="skill-name">{{data.skills[key][xfid][item].name}}</p>
+                                <p class="skill-times">{{data.skills[key][xfid][item].times}} 次
+                                {{if data.skills[key][xfid][item].success_times != 0}}/{{data.skills[key][xfid][item].success_times}} 有效{{/if}}</p>
+                            </div>
+                        </skill-card>
+                        <% } %>
+                    </div>
+                <% } %>
+            <% } %>
         <% } %>
-        <h5>常用技能</h5>
-        <p class="xf">心法：补天</p>
-        <div class="skill-list">
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-            <skill-card>
-                <div>
-                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
-                </div>
-                <div>
-                    <p class="skill-name">灵蛊</p>
-                    <p class="skill-times">100 次/20 有效</p>
-                </div>
-            </skill-card>
-        </div>
     </div>
     
-    <!-- <p class="tips">
-        数据获取时间：2021-03-08 17:36
+    <p class="tips">
+        数据获取时间：{{data.time}}
     </p>
     <p class="tips">
         数据来源：<span class="b">推栏APP</span>
-    </p> -->
+    </p>
 </div>
