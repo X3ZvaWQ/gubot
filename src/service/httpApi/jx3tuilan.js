@@ -8,8 +8,9 @@ class Jx3tuilan{
     }
 
     static async jjc_info(name, server) {
+        console.log(name, server);
         try {
-            let response = $tuilan.get('/get_role_jjc_info_by_name', {
+            let response = await $tuilan.get('/get_role_jjc_info_by_name', {
                 params: {
                     name: name,
                     server: server
@@ -20,7 +21,7 @@ class Jx3tuilan{
             }
             return response.data;
         } catch (error) {
-            throw error.response.data.msg;
+            throw error;
         }
     }
 }

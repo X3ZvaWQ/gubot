@@ -10,7 +10,7 @@ module.exports = class ReinforcementHandler {
         if (!result || !await fs.exists(result) || args.update) {
             let data = await Jx3tuilan.jjc_info(args.player, args.server);
             data['time'] = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
-            data['player'] = `${args.player} - ${server}`;
+            data['player'] = `${args.player} - ${args.server}`;
             result = bot.imageGenerator.generateFromTemplateFile('jjc', {
                 data: data
             }, {
@@ -29,7 +29,7 @@ module.exports = class ReinforcementHandler {
             displayName: '角色姓名',
             type: 'string',
             defaultIndex: 1,
-            shortArgs: 'rolename',
+            shortArgs: 'player',
             longArgs: null,
             limit: null,
             nullable: false,
@@ -39,7 +39,7 @@ module.exports = class ReinforcementHandler {
             alias: 'server',
             displayName: '服务器',
             type: 'string',
-            defaultIndex: 1,
+            defaultIndex: 2,
             shortArgs: 'server',
             longArgs: null,
             limit: null,
@@ -50,7 +50,7 @@ module.exports = class ReinforcementHandler {
             alias: 'boolean',
             displayName: '刷新缓存',
             type: 'boolean',
-            defaultIndex: 4,
+            defaultIndex: 3,
             shortArgs: 'u',
             longArgs: 'update',
             limit: null,
