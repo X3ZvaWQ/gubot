@@ -38,6 +38,7 @@
     }
     skill-card{
         text-align: left;
+        white-space: nowrap;
         background-color: #eee7cb;
         margin: 0.1rem 0.1rem;
         padding: 0.4rem;
@@ -179,8 +180,7 @@
                             </div>
                             <div>
                                 <p class="skill-name">{{data.skills[key][xfid][item].name}}</p>
-                                <p class="skill-times">{{data.skills[key][xfid][item].times}} 次
-                                {{if data.skills[key][xfid][item].success_times != 0}}/{{data.skills[key][xfid][item].success_times}} 有效{{/if}}</p>
+                                <p class="skill-times">{{data.skills[key][xfid][item].times}}次{{if data.skills[key][xfid][item].success_times != 0}}/{{data.skills[key][xfid][item].success_times}}有效{{/if}}</p>
                             </div>
                         </skill-card>
                         <% } %>
