@@ -20,7 +20,7 @@ class Jx3tuilan{
             }
             return response.data.data;
         } catch (error) {
-            throw error;
+            throw `错误：找不到该角色数据，请在世界频道发言。`;
         }
     }
 }

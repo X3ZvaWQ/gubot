@@ -38,7 +38,7 @@ module.exports = class ReinforcementHandler {
             name: 'server',
             alias: 'server',
             displayName: '服务器',
-            type: 'string',
+            type: 'server',
             defaultIndex: 2,
             shortArgs: 'server',
             longArgs: null,
