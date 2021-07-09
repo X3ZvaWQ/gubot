@@ -1,0 +1,297 @@
+<style>
+    body{
+        background-color: cornsilk;
+        color: dodgerblue;
+        font-family: 'Noto Sans SC', sans-serif;
+        width: 680px;
+        padding: 2rem;
+        font-size: 0;
+    }
+    h2{
+        text-align: center;
+        font-size: 24px;
+    }
+    h3{
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 0.25rem;
+    }
+    h4{
+        text-align: center;
+        font-size: 18px;
+        margin-top: 0.2rem;
+        margin-bottom: 0.15rem;
+    }
+    h5{
+        font-size: 16px;
+        margin-top: 0rem;
+        margin-bottom: 0.15rem;
+    }
+    span.b{
+        font-weight: bold;
+    }
+    p.tips{
+        margin-top: 0.5rem;
+        margin-bottom: 0.25rem;
+        text-align: left;
+        font-size: 16px;
+    }
+    skill-card{
+        text-align: center;
+        background-color: #eee7cb;
+        margin: 0.1rem 0.1rem;
+        padding: 0.6rem;
+        display: inline-block;
+        height: 3rem;
+        font-size: 16px;
+    }
+    skill-card > div:first-of-type{
+        line-height: 3rem;
+        height: 3rem;
+        width: 3rem;
+        display: inline-block;
+    }
+    skill-card > div:last-of-type{
+        padding-top: 0.2rem;
+        vertical-align:top;
+        padding-left: 1rem;
+        display: inline-block;
+    }
+    skill-card > div:last-of-type p.skill-name{
+        margin: 0 ;
+    }
+    skill-card > div:last-of-type p.skill-times{
+        color: deepskyblue;
+        font-size: 12px;
+        margin: 0;
+        margin-right: 1rem;
+        display: inline-block;
+    }
+    skill-card img{
+        border-radius: 3rem;
+        height: 3rem;
+        width: 3rem;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+    }
+    data-card{
+        display: inline-block;
+        background-color: #eee7cb;
+        display: inline-block;
+        height: 5rem;
+        width: 5rem;
+        font-size: 16px;
+        padding: 0.4rem;
+        margin: 0.1rem;
+    } 
+    data-card p:nth-of-type(1){
+        margin: 0;
+    }
+    data-card p:nth-of-type(2){
+        text-align: center;
+        margin: 0;
+    }
+    data-card p:nth-of-type(3){
+        text-align: center;
+        color: deepskyblue;
+        margin: 0;
+        font-size: 14px;
+    }
+    div.skill-list{
+        padding: 0 2.8rem;
+    }
+    div.data-list{
+        padding: 0 2.3rem;
+    }
+    p.xf{
+        font-size: 14px;
+    }
+</style>
+<div id="template">
+    <h2>咕Bot - JJC刑场</h2>
+    <h3>查询玩家：{{ data.player }}</h3>
+    <div>
+        <% for(let mode in data.performance) { %>
+        <h4>22</h4>
+        <h5>战斗数据</h5>
+        <p class="xf">心法：补天</p>
+        <div class="data-list">
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+            <data-card>
+                <p>S</p>
+                <p>65%</p>
+                <p>战斗效率</p>
+            </data-card>
+        </div>
+        <% } %>
+        <h5>常用技能</h5>
+        <p class="xf">心法：补天</p>
+        <div class="skill-list">
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+            <skill-card>
+                <div>
+                    <img src="https://dl.pvp.xoyo.com/prod/icons/wudu_wgzj_2.png?v=2">
+                </div>
+                <div>
+                    <p class="skill-name">灵蛊</p>
+                    <p class="skill-times">100 次/20 有效</p>
+                </div>
+            </skill-card>
+        </div>
+    </div>
+    
+    <!-- <p class="tips">
+        数据获取时间：2021-03-08 17:36
+    </p>
+    <p class="tips">
+        数据来源：<span class="b">推栏APP</span>
+    </p> -->
+</div>
