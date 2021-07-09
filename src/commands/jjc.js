@@ -11,7 +11,7 @@ module.exports = class ReinforcementHandler {
             let data = await Jx3tuilan.jjc_info(args.player, args.server);
             data['time'] = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
             data['player'] = `${args.player} - ${args.server}`;
-            result = bot.imageGenerator.generateFromTemplateFile('jjc', {
+            result = await bot.imageGenerator.generateFromTemplateFile('jjc', {
                 data: data
             }, {
                 selector: 'body > div'
