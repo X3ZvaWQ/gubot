@@ -8,7 +8,6 @@ class Jx3tuilan{
     }
 
     static async jjc_info(name, server) {
-        console.log(name, server);
         try {
             let response = await $tuilan.get('/get_role_jjc_info_by_name', {
                 params: {
@@ -19,7 +18,7 @@ class Jx3tuilan{
             if(!response.data || response.data.msg != '查询成功！'){
                 throw `错误：[${Jx3tuilan.apiDisplayName}]的接口[jjc_info]返回值异常，请检查参数。`;
             }
-            return response.data;
+            return response.data.data;
         } catch (error) {
             throw error;
         }
