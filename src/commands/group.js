@@ -45,6 +45,10 @@ module.exports = class GroupHandler {
                 群称呼：${group.groupname}
                 群默认服务器：${group.server}
                 便捷命令开关：${group.convenient}
+                新闻播报：${group.news_broadcast}
+                奇遇播报：${group.serendipity_broadcast}
+                开服播报：${group.server_broadcast}
+                加群验证：${group.accept_join_group}
                 机器人入群时间：${moment(group.created_at).format('YYYY-MM-DD hh:mm:ss')}
                 `
                 await bot.redis.set(redis_key, result);
