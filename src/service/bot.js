@@ -311,10 +311,14 @@ class Bot{
             '^物价\\s(\\S+)$': '/price $1',
             //'^(\\S+)\\s?物价$': '/price $1',
 
+            '^群信息$': '/group info',
             '^群昵称\\s([\\S\\s]+)': '/group groupname $1',
             '^咕咕称呼\\s([\\S\\s]+)': '/group nickname $1',
             '^群服务器\\s([\\S\\s]+)': '/group server $1',
             '^(打开|关闭|开|关)\\s(奇遇播报|开服播报|新闻播报|简便命令|智障对话|斗图)': '/group set $2 $1',
+
+            '^权限列表$': '/permission list',
+            '^权限设置\\s([\\S\\s]+)': '/permission set $1',
 
             '^(开团|创建团队)\\s?([\\S\\s]*)': '/team create $2',
             '^(删除团队)\\s?([\\S\s]*)': '/team delete $2',
