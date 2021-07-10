@@ -200,6 +200,36 @@ class Bot{
                     }
                 };
             }
+            //加群申请
+            if(request.request_type == 'group' && request.sub_type == 'add') {
+                const Group = require('../model/group');
+                let group = await Group.findOne({
+                    where: {
+                        group_id: request.group_id
+                    }
+                });
+                if(group == null) {
+                    group = await Group.create({
+                        bot_id: request.self_id,
+                        group_id: request.group_id,
+                        groupname: request.group_id,
+                        server: '唯我独尊'
+                    });
+                }
+                if(group.accept_join_group != null) {
+                    if(request.comment && request.comment.indexOf(group.accept_join_group) != -1) {
+                        this.log(`接受了 ${request.user_id} 的申请加入群 ${request.group_id} 的请求`, 'info');
+                        return {
+                            action: "set_group_add_request",
+                            params: {
+                                flag: request.flag,
+                                sub_type: 'add',
+                                approve: true
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

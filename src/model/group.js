@@ -50,6 +50,10 @@ Group.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
+    accept_join_group: {
+        type: DataTypes.STRING,
+        defaultValue: null
+    }
 }, {
     sequelize,
     modelName: 'Group',
