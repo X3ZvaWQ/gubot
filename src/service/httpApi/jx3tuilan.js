@@ -20,7 +20,11 @@ class Jx3tuilan{
             }
             return response.data.data;
         } catch (error) {
-            throw `错误：找不到该角色数据，请在世界频道发言。`;
+            if(error && error.response && error.response.status == 401) {
+                throw `错误：找不到该角色数据，请在世界频道发言。`;
+            }else{
+                throw `错误：[${Jx3tuilan.apiDisplayName}]的接口[jjc_info]炸了，请稍后再试！`;
+            }
         }
     }
 }
