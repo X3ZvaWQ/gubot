@@ -16,11 +16,11 @@ module.exports = class SeniorityHandler {
                 params.server = args.server;
             }
             if(args.school != '全部门派') {
-                params.school = args.school;
+                params.sect = args.school;
             }
             let datas = await Jx3api.seniority(params);
             params.server = args.server;
-            params.school = args.school;
+            params.sect = args.school;
             let renderData = {
                 dataSource: 'JX3API',
                 search: params,
@@ -42,7 +42,7 @@ module.exports = class SeniorityHandler {
             alias: 'server',
             displayName: '服务器',
             type: 'server',
-            defaultIndex: 2,
+            defaultIndex: 1,
             shortArgs: 'server',
             longArgs: null,
             limit: null,
@@ -53,7 +53,7 @@ module.exports = class SeniorityHandler {
             alias: 'school',
             displayName: '门派',
             type: 'string',
-            defaultIndex: 1,
+            defaultIndex: 2,
             shortArgs: 'school',
             longArgs: null,
             limit: null,
