@@ -38,27 +38,27 @@ module.exports = class SeniorityHandler {
 
     static argsList() {
         return [{
-            name: 'server',
-            alias: 'server',
-            displayName: '服务器',
-            type: 'server',
-            defaultIndex: 1,
-            shortArgs: 'server',
-            longArgs: null,
-            limit: null,
-            nullable: true,
-            default: '全部服务器'
-        }, {
             name: 'school',
             alias: 'school',
             displayName: '门派',
             type: 'string',
-            defaultIndex: 2,
+            defaultIndex: 1,
             shortArgs: 'school',
             longArgs: null,
             limit: null,
             nullable: true,
             default: '全部门派'
+        }, {
+            name: 'server',
+            alias: 'server',
+            displayName: '服务器',
+            type: 'server',
+            defaultIndex: 2,
+            shortArgs: 'server',
+            longArgs: null,
+            limit: null,
+            nullable: true,
+            default: '全部服务器'
         }, {
             name: 'update',
             alias: 'boolean',
