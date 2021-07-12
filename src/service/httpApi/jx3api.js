@@ -176,10 +176,11 @@ class Jx3api{
             pageIndex: 1,
             pageSize: 50
         }, params);
-        let response = await $next.get(`/seniority`, {params: params});
+        let response = await $jx3api.get(`/seniority`, {params: params});
         if (response.data.code == 200) {
             return response.data.data.map((data) => ({
                 avatar: `${__dirname}/../../assets/images/school/${data.sect}.png`,
+                school: data.sect,
                 role: data.role,
                 score: data.value,
                 server: data.server
