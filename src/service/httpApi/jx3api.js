@@ -183,7 +183,7 @@ class Jx3api{
                 role: data.role,
                 score: data.value,
                 server: data.server
-            }));
+            })).slice(0, 25);
         } else {
             throw `错误：[${Jx3api.apiDisplayName}]的接口[seniority]返回异常，请检查参数`;
         }
