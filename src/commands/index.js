@@ -23,5 +23,6 @@ module.exports = {
     doutu: require('./doutu'),
     price: require('./price'),
     jjc: require('./jjc'),
+    seniority: require('./seniority'),
     //chat: require('./chat')
 }

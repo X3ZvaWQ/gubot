@@ -169,6 +169,25 @@ class Jx3api{
             time: response.data.time
         }
     }
+
+    static async seniority(params) {
+        params = Object.assign({
+            start: 0,
+            pageIndex: 1,
+            pageSize: 50
+        }, params);
+        let response = await $next.get(`/seniority`, {params: params});
+        if (response.data.code == 200) {
+            return response.data.data.map((data) => ({
+                avatar: `${__dirname}/../../assets/images/school/${data.sect}.png`,
+                role: data.role,
+                score: data.value,
+                server: data.server
+            }));
+        } else {
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[seniority]返回异常，请检查参数`;
+        }
+    }
 }
 
 module.exports = Jx3api;

@@ -2,7 +2,7 @@ const Jx3tuilan = require('../service/httpApi/jx3tuilan');
 const fs = require('fs-extra')
 const moment = require('moment');
 
-module.exports = class ReinforcementHandler {
+module.exports = class JJCHandler {
     async handle(ctx) {
         let args = ctx.args;
         let redis_key = `JJC_Player:${args.player}_${args.server}`;

@@ -264,7 +264,6 @@ class Bot{
             }
         }
         let regex_map = {
-            //'^(\\S+)\\s?宏$': '/macro $1',
             '^宏\\s(\\S+)$': '/macro $1',
 
             '^骚话$': '/saohua',
@@ -273,28 +272,25 @@ class Bot{
 
             '^帮助$': '/help',
             '^帮助\\s(\\S*)$': '/help $1',
-            //'^(\\S*)\\s?帮助$': '/help $1',
 
             '^花价\\s([\\S\\s]*)$': '/flowerPrice $1',
             '^科举\\s([\\S\\s]+)$': '/exam $1',
 
             '^金价\\s(\\S*)$': '/goldPrice $1',
-            //'^(\\S*)\\s?金价$': '/goldPrice $1',
-
+            '^金价$': '/goldPrice',
             '^开服\\s([\\S\\s]*)$': '/serverStatus $1',
             '^开服$': '/serverStatus',
-            //'^([\\S\\s]*)\\s?开服$': '/serverStatus $1',
 
-            //'^(\\S+)\\s?(攻略|成就)$': '/achievement $1',
             '^(攻略|成就)\\s(\\S*)$': '/achievement $2',
+
+            '^资历排行\\s(\\S*)$': '/seniority $1',
+            '^资历排行$': '/seniority',
 
             '^更新|游戏更新$': '/gameUpdate',
             '^日常|游戏日常$': '/daily',
 
-            //'^(\\S*)\\s?小药$': '/reinforcement $1',
             '^小药\\s(\\S*)$': '/reinforcement $1',
 
-            //'^(\\S*)\\s?阵眼$': '/eye $1',
             '^阵眼\\s(\\S*)$': '/eye $1',
 
             '^(奇遇|查询)\\s([\\S\\s]*)$': '/serendipity $2',
@@ -302,14 +298,10 @@ class Bot{
 
             '^(沙盘|阵营沙盘)\\s(\\S*)$': '/sandbox $2',
             '^(沙盘|阵营沙盘)$': '/sandbox',
-            //'^(\\S*)\\s?(沙盘|阵营沙盘)$': '/sandbox $1',
 
             '^器物谱\\s(\\S*)$': '/travel $1',
-            //'^(\\S*)\\s?器物谱$': '/travel $1',
             '^家具\\s(\\S*)$': '/furniture $1',
-            //'^(\\S*)\\s?家具$': '/furniture $1',
             '^物价\\s(\\S+)$': '/price $1',
-            //'^(\\S+)\\s?物价$': '/price $1',
 
             '^群信息$': '/group info',
             '^群昵称\\s([\\S\\s]+)': '/group groupname $1',

@@ -1,4 +1,5 @@
-const art = require('art-template');
+console.log(__dirname);
+/* const art = require('art-template');
 const fs = require('fs-extra');
 
 fs.readFile('/d/workspace/gubot/src/templates/jjc.html').then((source) => {
@@ -11,7 +12,7 @@ fs.readFile('/d/workspace/gubot/src/templates/jjc.html').then((source) => {
         fs.outputFile('./aaaa.html', a);
     });
 });
-
+ */
 /* const ENV = require('../env.json');
 const tencentcloud = require("tencentcloud-sdk-nodejs-nlp")
 const NlpClient = tencentcloud.nlp.v20190408.Client;

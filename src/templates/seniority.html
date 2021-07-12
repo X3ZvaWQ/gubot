@@ -1,7 +1,7 @@
 <style>
     body{
         background-color: cornsilk;
-        width: 800px;
+        width: 640px;
         color:dodgerblue;
         font-family: 'Noto Sans SC', sans-serif, 'consolas';
         text-align: center;
@@ -18,19 +18,24 @@
         text-align: center;
     }
     td:nth-of-type(1) {
-        width: 6rem;
+        width: 40px;
+    }
+    td:nth-of-type(1) img{
+        width: 32px;
+        height: 32px;
+        border-radius: 32px;
     }
     td:nth-of-type(2) {
-        width: 12rem;
+        width: 4rem;
     }
     td:nth-of-type(3) {
-        width: 6rem;
+        width: 12rem;
     }
     td:nth-of-type(4) {
-        width: 8rem;
+        width: 6rem;
     }
     td:nth-of-type(5) {
-        width: 14rem;
+        width: 8rem;
     }
     p.note{
         font-size: 0.8rem;
@@ -38,26 +43,17 @@
     }
 </style>
 <div>
-    <h3>咕Bot - 奇遇查询</h3>
-    <p>查询条件：<span class="stress">{{search.server}}</span> <span class="stress">{{search.player}}</span> <span class="stress">{{search.serendipity}}</span></p>
+    <h3>咕Bot - 资历排名查询</h3>
+    <p>查询条件：<span class="stress">{{search.server}}</span> <span class="stress">{{search.sect}}</span></p>
     <table>
-        <thead>
-            <tr>
-                <th>服务器</th>
-                <th>触发角色</th>
-                <th>奇遇类型</th>
-                <th>奇遇名称</th>
-                <th>触发时间</th>
-            </tr>
-        </thead>
         <tbody>
             {{each datas}}
             <tr>
-                <td>{{ $value.server }}</td>
-                <td>{{ $value.player }}</td>
-                <td>{{ $value.type }}</td>
-                <td>{{ $value.name }}</td>
-                <td>{{ $value.time }}</td>
+                <td><img src="{{$value.avatar}}" alt="{{$value.school}}"></td>
+                <td>{{$value.school}}</td>
+                <td>{{$value.role}}</td>
+                <td>{{$value.score}}</td>
+                <td>{{$value.server}}</td>
             </tr>
             {{/each}}
         </tbody>
