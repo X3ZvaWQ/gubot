@@ -58,7 +58,7 @@ module.exports = class SeniorityHandler {
             longArgs: null,
             limit: null,
             nullable: true,
-            default: '全部服务器'
+            default: '-'
         }, {
             name: 'update',
             alias: 'boolean',
