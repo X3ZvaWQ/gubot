@@ -71,7 +71,7 @@ class Bot{
             this.imageGenerator = new ImageGenerator(browser);
         }else{
             this.imageGenerator = new Proxy({}, {
-                get: () => (async () => 'ImageGenerator has been closed. Please check env.json/enable_puppeteer'),
+                get: () => (async () => `${__dirname}/../assets/images/error/image_generator_disable.jpg`),
             });
         }
         this.log('ImageGenerator: init successed', 'success');
