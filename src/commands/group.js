@@ -197,7 +197,7 @@ module.exports = class GroupHandler {
                 group[args.function] = swi;
                 group.save();
                 let redis_key = `GroupFunc:${args.function}:${group_id}`;
-                await bot.redis.set(redis_key, swi=='true' ? true : false);
+                await bot.redis.set(redis_key, swi);
                 redis_key = `GroupInfo:${group_id}`;
                 await bot.redis.del(redis_key);
                 return `本群${args.function}功能开关已被修改为：${swi}`;
