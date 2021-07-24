@@ -213,7 +213,7 @@ module.exports = class ItemHandler {
         return [
             {
                 name: 'item',
-                alias: null,
+                alias: 'item',
                 displayName: '物品名',
                 type: 'string',
                 defaultIndex: 1,
