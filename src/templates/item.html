@@ -4,8 +4,11 @@
         color: dodgerblue;
         font-family: 'Noto Sans SC', sans-serif;
         width: 680px;
-        padding: 2rem;
         font-size: 0;
+    }
+
+    body > div{
+        padding: 1rem;
     }
 
     h2 {
@@ -19,11 +22,12 @@
         margin-bottom: 0.25rem;
     }
 
-    h4 {
+    h4.title {
         text-align: center;
         font-size: 18px;
-        margin-top: 0.2rem;
         margin-bottom: 0.15rem;
+        border-top: rgb(146, 188, 230) 1px solid;
+        margin-top: 1.6rem;
     }
 
     h5 {
@@ -171,7 +175,7 @@
     .price-list{
         display: flex; 
         justify-content: center;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .price-card{
@@ -181,15 +185,42 @@
         margin: 0 1rem;
     }
     .price-card span:first-of-type{
-        font-size: 16px;
+        font-size: 14px;
         opacity: 0.8;
     }
+    .search-result{
+        flex-wrap: wrap;
+        display: flex; 
+        justify-content: center;
+        font-size: 12px;
+    }
+    .search-card{
+        display: inline-block;
+        text-align: center;
+        width: 80px;
+        height: 90px;
+        padding: 0.2rem;
+        margin: 0.1rem 0.6rem;
+    }
+    .search-card img{
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+    }
+    .search-card p{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0.1rem;
+        margin: 0;
+    }
 </style>
-<div id="template">
+<div>
     <h2>咕Bot - 物品查询</h2>
     <h3>查询物品：{{ searchKey }}</h3>
     <div style="text-align:center">
-        <h4>物品详情</h4>
+        <img style="width: 60px; height: 60px;padding-top: 1rem;" src="{{filters.iconUrl(item.IconID)}}" alt="">
+        <h4 class="title">物品详情</h4>
         <div class="c-item">
             <div class="c-item-wrapper">
                 <!-- 精炼等级 -->
@@ -478,7 +509,7 @@
                 {{/if}}
             </div>
         </div>
-        <h4>其他属性</h4>
+        <h4 class="title">其他属性</h4>
         <div class="item-other">
             {{if item.Price}}
             <span>{{'回购价格 ' + filters.itemPrice(item.Price)}}</span>
@@ -543,9 +574,8 @@
             -->
         </div>
         {{if prices.today}}
-        <h4>交易行价格</h4>
+        <h4 class="title">交易行价格</h4>
         <div class="item-prices">
-            <h5>近期价格</h5>
             <div class="price-list">
                 <div class="price-card">
                     <span>今日均价</span><br/>
@@ -565,6 +595,19 @@
                 <div id="price-chart"></div> 
             -->
         </div>
+        {{/if}}
+        {{if searchResult}}
+        <h4 class="title">其他搜索结果</h4>
+        <div class="search-result">
+            {{each searchResult}}
+            <div class="search-card">
+                <img src="{{filters.iconUrl($value.IconID)}}">
+                <p>{{$value.Name}}</p>
+                <p>{{$value.id}}</p>
+            </div>
+            {{/each}}
+        </div>
+        <p class="tips">搜索结果有多个物品可以直接输入上面的形如"5_24428"的id进行查询</p>
         {{/if}}
     </div>
     <p class="tips">

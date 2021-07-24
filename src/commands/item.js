@@ -182,7 +182,7 @@ module.exports = class ItemHandler {
         //check data is empty?
         if (result == null || !await fs.exists(result) || args['update']) {
             //判断输入的物品是不是id，否则搜索
-            let searchResult = [];
+            let searchResult = null;
             let itemId;
             if(!/\d_[\d_]+/.exec(args.item)) {
                 searchResult = await Jx3box.itemSearch(args.item);
