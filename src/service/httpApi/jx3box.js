@@ -117,6 +117,46 @@ class Jx3box {
         }
         return data.data;
     }
+
+    static async itemSearch(name) {
+        let response = await $helper.get(`/api/item/search`, {
+            params: {
+                keyword: name,
+                page: NaN,
+                limit: 10
+            }
+        });
+        let data = response.data;
+        if (data.code != 200) {
+            throw `错误：[${Jx3box.apiDisplayName}] 搜索物品失败`;
+        }
+        if(data.data.data && data.data.data.length == 0) {
+            throw `错误：[${Jx3box.apiDisplayName}] 找不到物品 ${name}`;
+        }
+        return data.data.data;
+    }
+
+    static async itemInfo(id) {
+        let response = await $helper.get(`/api/item/${id}`);
+        let data = response.data;
+        if (data.code != 200) {
+            throw `错误：[${Jx3box.apiDisplayName}] 获取物品信息失败`;
+        }
+        return response.data.data.item;
+    }
+
+    static async itemPrices(id, server) {
+        let response = await $helper.get(`/api/item/${id}/price/logs`, {
+            params: {
+                server: server,
+            }
+        });
+        let data = response.data;
+        if (data.code != 200) {
+            throw `错误：[${Jx3box.apiDisplayName}] 获取物品价格失败`;
+        }
+        return response.data.data;
+    }
 }
 
 module.exports = Jx3box;

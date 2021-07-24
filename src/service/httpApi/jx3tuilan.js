@@ -4,7 +4,7 @@ class Jx3tuilan{
     static apiDisplayName = 'Jx3tuilan';
 
     static async role_equip(role_id, server, zone){
-
+        
     }
 
     static async jjc_info(name, server) {

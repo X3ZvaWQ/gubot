@@ -1,0 +1,555 @@
+<style>
+    body {
+        background-color: cornsilk;
+        color: dodgerblue;
+        font-family: 'Noto Sans SC', sans-serif;
+        width: 680px;
+        padding: 2rem;
+        font-size: 0;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 24px;
+    }
+
+    h3 {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 0.25rem;
+    }
+
+    h4 {
+        text-align: center;
+        font-size: 18px;
+        margin-top: 0.2rem;
+        margin-bottom: 0.15rem;
+    }
+
+    h5 {
+        font-size: 16px;
+        margin-top: 0rem;
+        margin-bottom: 0.15rem;
+    }
+
+    span.b {
+        font-weight: bold;
+    }
+
+    p.tips {
+        margin-top: 0.5rem;
+        margin-bottom: 0.25rem;
+        text-align: left;
+        font-size: 16px;
+    }
+
+    .c-item {
+        position: relative;
+        display: inline-block;
+        text-align: left;
+        padding: 2px;
+        font-family: SimHei, STHeiti, Microsoft YaHei;
+    }
+
+    .c-item .c-item-wrapper {
+        max-width: 345px;
+        padding: 9px 10px 10px;
+        background-color: rgba(15, 34, 34, .88);
+        color: #fff;
+        text-shadow: 1px 1px 1px #0f2222;
+        font-weight: 400;
+        font-size: 13.6px;
+        line-height: 1.5em;
+    }
+
+    .c-item .c-item-wrapper .u-title {
+        font-weight: normal;
+    }
+
+    .c-item .c-item-wrapper .u-desc,
+    .c-item .c-item-wrapper .u-title {
+        margin: 0;
+    }
+
+    .u-title,
+    .u-desc {
+        margin: 0;
+    }
+
+    .u-orange {
+        color: #ffa500;
+    }
+
+    .u-yellow {
+        color: #ffff00;
+    }
+
+    .u-green {
+        color: #00d24b;
+    }
+
+    .u-white {
+        color: #ffffff;
+    }
+
+    .u-gray {
+        color: #adadad;
+    }
+
+    .u-max-strength-level {
+        color: #7ee3a3;
+
+    }
+
+    .u-max-strength-level span {
+        top: 0;
+        right: 0;
+    }
+
+    .u-max-exist-time {
+        color: #cfcfcf;
+    }
+
+    .u-attributes .u-orange {
+        color: #ff9600;
+    }
+
+    .u-attributes .u-green {
+        color: #00c848;
+    }
+
+    .u-attributes .u-speed {
+        top: 0;
+        right: 0;
+    }
+
+    .u-attributes .u-horse-attribute .u-horse-icon{
+        float: left;
+    }
+
+    .item-other{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 14px;
+    }
+
+    .item-other span{
+        margin: 0.1rem 1.6rem;
+        padding: 0.2rem;
+        background-color: #eee7cb;
+    }
+    
+    .price-list{
+        display: flex; 
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .price-card{
+        display: inline-block;
+        text-align: center;
+        padding: 1rem;
+        margin: 0 2rem;
+    }
+    .price-card span:first-of-type{
+        font-size: 16px;
+        opacity: 0.8;
+    }
+    #price-chart{
+
+    }
+</style>
+<div id="template">
+    <h2>咕Bot - 物品查询</h2>
+    <h3>查询物品：{{ searchKey }}</h3>
+    <div style="text-align:center">
+        <h4>物品详情</h4>
+        <div class="c-item">
+            <div class="c-item-wrapper">
+                <!-- 精炼等级 -->
+                {{if item.MaxStrengthLevel}}
+                <div class="u-max-strength-level">
+                    <span>{{`精炼等级：0 / ${item.MaxStrengthLevel}`}}</span>
+                </div>
+                {{/if}}
+                <!-- 物品名称 -->
+                <h4 class="u-title" style="color: {{filters.color(item.Quality)}};">{{item.Name}}</h4>
+                <!-- 绑定类型 -->
+                {{if item.BindType > 1}}
+                <div class="u-bind">
+                    {{filters.bind(item.BindType)}}
+                </div>
+                {{/if}}
+                <!-- 唯一状态 -->
+                {{if parseInt(item.MaxExistAmount) === 1}}
+                <div class="unique">
+                    唯一
+                </div>
+                {{/if}}
+                <!-- 存在时间 -->
+                {{if parseInt(item.MaxExistTime) > 0}}
+                <div class="u-max-exist-time">
+                    {{`存在时间： ${filters.secondFormat(item.MaxExistTime)}`}}
+                </div>
+                {{/if}}
+                <!-- 最大拥有数 -->
+                {{if parseInt(item.MaxExistAmount) > 1}}
+                <div class="u-max-exist-amount">
+                    {{`最大拥有数： ${item.MaxExistAmount}`}}
+                </div>
+                {{/if}}
+                <!-- 武器类别 -->
+                {{if item.AucGenre == 1}}
+                <div  class="u-weapon-type-label">
+                    近身武器
+                </div>
+                {{else if item.AucGenre == 2}}
+                <div class="u-weapon-type-label">
+                    远程武器
+                </div>
+                {{/if}}
+                <!-- 物品类型文案 -->
+                {{if item.TypeLabel}}
+                <div class="u-type-label">
+                    {{item.TypeLabel}}
+                </div>
+                {{/if}}
+                <!-- 装备属性 -->
+                {{if item.attributes && item.attributes.length}}
+                <div class="u-attributes">
+                    {{each item.attributes}}
+                        <div class="u-field u-{{$value.color}}">
+                            {{if ($value.type == 'atMeleeWeaponAttackSpeedBase' || $value.type == 'atRangeWeaponAttackSpeedBase')}}
+                                <span class="u-value u-speed">
+                                    {{$value.label}}
+                                </span>
+                            {{else if $value.type == 'atHorseAttribute' }}
+                                <span class="u-value u-horse-attribute">
+                                    {{if $value.icon_id > 0}}
+                                        <img src="{{filters.iconUrl($value.icon_id)}}" class="u-horse-icon">
+                                        <div class="u-horse-desc">
+                                            {{@ $value.label }}
+                                        </div>
+                                    {{/if}}
+                                </span>
+                            {{else}}
+                                <span class="u-value">
+                                    <span>{{$value.label}}</span>
+                                    <span class="u-yellow">
+                                        {{filters.attributePercent($value.type, $value.value)}}
+                                    </span>
+                                </span>
+                            {{/if}}
+                        </div>
+                    {{/each}}
+                </div>
+                {{/if}}
+                <!-- 家具属性 -->
+                {{if item.furniture_attributes}}
+                <div class="u-furniture-attributes">
+                    {{if item.furniture_attributes.view}}
+                    <div class="u-field u-green">
+                        <span class="u-value">
+                            {{`观赏提高${item.furniture_attributes.view}`}}
+                        </span>
+                    </div>
+                    {{/if}}
+                    {{if item.furniture_attributes.practical}}
+                    <div class="u-field u-green">
+                        <span class="u-value">
+                            {{`实用提高${item.furniture_attributes.practical}`}}
+                        </span>
+                    </div>
+                    {{/if}}
+                    {{if item.furniture_attributes.hard}}
+                    <div class="u-field u-green">
+                        <span class="u-value">
+                            {{`坚固提高${item.furniture_attributes.hard}`}}
+                        </span>
+                    </div>
+                    {{/if}}
+                    {{if item.furniture_attributes.geomantic}}
+                    <div class="u-field u-green">
+                        <span class="u-value">
+                            {{`风水提高${item.furniture_attributes.geomantic}`}}
+                        </span>
+                    </div>
+                    {{/if}}
+                    {{if item.furniture_attributes.interesting}}
+                    <div class="u-field u-green">
+                        <span class="u-value">
+                            {{`趣味提高${item.furniture_attributes.interesting}`}}
+                        </span>
+                    </div>
+                    {{/if}}
+                </div>
+                {{/if}}
+                <!-- 镶嵌 -->
+                {{if item.Diamonds}}
+                <ul class="u-diamonds u-gray">
+                    <!-- 五行石 -->
+                    {{each item.Diamonds}}
+                    <li class="u-diamond">
+                        <span class="u-square"></span>
+                        <span class="u-text">
+                            {{`镶嵌孔：$value`}}
+                        </span>
+                    </li>
+                    {{/each}}
+                    <!-- 五彩石 -->
+                    {{if item.AucGenre == 1}}
+                    <li class="u-diamond">
+                        <span class="u-square"></span>
+                        <span class="u-text">&lt;只能镶嵌五彩石&gt;</span>
+                    </li>
+                    {{/if}}
+                </ul>   
+                {{/if}}
+                <!-- 仅性别可穿戴 -->
+                {{if item.Requires && item.Requires[7]}}
+                <div class="u-require-sex">
+                    {{item.Requires[7]}}
+                </div>
+                {{/if}}
+                <!-- 需要门派 -->
+                {{if item.Requires && item.Requires[6]}}
+                <div class="u-require-school">
+                    {{item.Requires[6]}}
+                </div>
+                {{/if}}
+                <!-- 需要等级 -->
+                {{if item.Requires && item.Requires[5]}}
+                <div class="u-require-level">
+                    {{item.Requires[5]}}
+                </div>
+                {{/if}}
+                <!-- 需要阵营 -->
+                {{if item.Requires && item.Requires[100]}}
+                <div class="u-require-camp">
+                    {{item.Requires[100]}}
+                </div>
+                {{/if}}
+                <!-- 需求宅邸等级 -->
+                {{if item.Requires && item.Requires[101]}}
+                <div class="u-require-homeland-level">
+                    {{item.Requires[101]}}
+                </div>
+                {{/if}}
+                <!-- 最大耐久度 -->
+                {{if item.AucGenre >= 1 && item.AucGenre <= 3}}
+                <div class="u-max-durability">
+                    {{'最大耐久度' + item.MaxDurability}}
+                </div>
+                {{/if}}
+                <!-- 套装信息 -->
+                {{if item.Set}}
+                <div class="u-set">
+                    <br />
+                    <div class="u-yellow">
+                        {{`${item.Set.name}(1/${item.Set.siblings.length})`}}
+                    </div>
+                    <ul class="u-set-siblings u-gray">
+                        {{each item.Set.siblings}}
+                            <li {{if item.Name == $value}}class="u-yellow"{{/if}}>
+                                {{$value}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <br />
+                    <ul class="u-set-attributes u-gray">
+                        {{each item.Set.attributes}}
+                        <li>
+                            [{{$index}}]{{$value}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                    <br />
+                </div>
+                {{/if}}
+                <!-- 图片 -->
+                {{if item.ImageUrl}}
+                <div class="u-image-url">
+                    <img src="{{item.ImageUrl}}">
+                </div>
+                {{/if}}
+                <!-- 描述 -->
+                {{if source.DescHtml}}
+                <p class="u-desc u-yellow">
+                    {{@ source.DescHtml}}
+                </p>
+                {{/if}}
+                <!-- 五彩石属性 -->
+                {{if source.WuCaiHtml}}
+                <p class="u-desc">
+                    {{@ source.WuCaiHtml}}
+                </p>
+                {{/if}}
+                <!-- 品质等级 -->
+                {{if source.Level}}
+                <div class="u-level u-yellow">
+                    {{'品质等级' + source.Level}}
+                </div>
+                {{/if}}
+                <!-- 装备分数 -->
+                {{if source.EquipmentRating}}
+                <div class="u-equipment-rating u-orange">
+                    {{'装备分数' + source.EquipmentRating}}
+                </div>
+                {{/if}}
+                <!-- 推荐门派心法 -->
+                {{if source.Recommend}}
+                <div class="u-equipment-recommend">
+                    {{'推荐门派：' + source.Recommend}}
+                </div>
+                {{/if}}
+                <!-- 冷却时间 -->
+                {{if source.CoolDown}}
+                <div class="u-equipment-cooldown">
+                    {{'使用间隔' + filters.second_format(source.CoolDown)}}
+                </div>
+                {{/if}}
+                <!-- 外观名称 -->
+                {{if source.Appearance}}
+                <div class="u-appearance">
+                    {{'外观名称：' + source.Appearance}}
+                </div>
+                {{/if}}
+                <!-- 可收集门派 -->
+                {{if source.CanExterior}}
+                <div class="u-can-exterior">
+                    {{'外观：' + source.CanExterior}}
+                </div>
+                {{/if}}
+                <!-- 储物箱共享 -->
+                {{if source.CanShared && !(source.AucGenre >= 1 && source.AucGenre <= 4)}}
+                <div class="u-can-shared">
+                    该物品可以放入账号储物箱共享。
+                </div>
+                {{/if}}
+                {{if source.CanShared && (source.AucGenre >= 1 && source.AucGenre <= 4)}}
+                <div class="u-can-shared">
+                    该装备未精炼、镶嵌、附魔、穿戴前可以放入账号储物箱共享。
+                </div>
+                {{/if}}
+                <!-- 家具可交互可缩放 -->
+                {{if source.furniture_attributes}}
+                <div class="u-furniture-can">
+                    {{if source.furniture_attributes.interact}}
+                        <span>可交互</span>
+                    {{/if}}
+                    {{if source.furniture_attributes.scale_range}}
+                        <span>
+                            {{`可缩放(${source.furniture_attributes.scale_range.replace(';',' - ')}倍)`}}
+                        </span>
+                    {{/if}}
+                </div>
+                {{/if}}
+                <!-- 物品来源 -->
+                {{if source.GetType}}
+                <div class="u-get-type">
+                    {{`物品来源：${source.GetType}`}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+        <h4>其他属性</h4>
+        <div class="item-other">
+            {{if item.Price}}
+            <span>{{'回购价格 ' + filters.itemPrice(item.Price)}}</span>
+            {{/if}}
+            {{if item.Level}}
+            <span>{{'品质等级 ' + item.Level}}</span>
+            {{/if}}
+            <span>{{filters.bind(item.BindType)}}</span>
+            {{if item.AucGenre >= 1 && item.AucGenre <= 3}}
+            <span>{{`耐久度 ${item.MaxDurability}/${item.MaxDurability}`}}</span>
+            {{/if}}
+            {{if item.MaxExistTime > 0}}
+            <span>{{'存放时间：' + item.MaxExistTime}}</span>
+            {{/if}}
+            {{if item.MaxExistAmount > 0}}
+            <span>{{'最大拥有数' + item.MaxExistAmount}}</span>
+            {{/if}}
+            <span>{{item.CanTrade ? '可交易' : '不可交易'}}</span>
+            <span>{{item.CanDestroy || item.CanDestroy === null ? '✔️': '❌'}}</span>
+            {{if item.BelongSchool}}
+            <span>{{'门派 ' + item.BelongSchool}}</span>
+            {{/if}}
+            {{if item.MagicKind}}
+            <span>{{'心法 ' + item.MagicKind}}</span>
+            {{/if}}
+            {{if item.MagicType}}
+            <span>{{'属性 ' + item.MagicType}}</span>
+            {{/if}}
+            {{if item.GetType}}
+            <span>{{'获得途径 ' + item.GetType}}</span>
+            {{/if}}
+            {{if item.CanSetColor}}
+            <span>可以改色</span>
+            {{/if}}
+            {{if item.Requires && item.Requires[100]}}
+            <span>{{item.Requires[100]}}</span>
+            {{/if}}
+            <span>{{item.CanApart ? '可以分解' : '不可分解'}}</span>
+            {{if item.CanExterior}}
+            <span>可以收集</span>
+            {{/if}}
+            {{if item.CanShared}}
+            <span>可以分享</span>
+            {{/if}}
+            <span>{{item.CanStack ? '可以堆叠' : '不可堆叠'}}</span>
+            {{if item.CanConsume}}
+            <span>消耗品</span>
+            {{/if}}
+            <!-- 
+                <span>回购价格 70金69银93铜</span>
+                <span>品质等级2560</span>
+                <span>拾取后绑定</span>
+                <span>耐久度 2654/2654</span>
+                <span>可交易</span>
+                <span>品质 珍奇</span>
+                <span>门派 少林</span>
+                <span>心法 防御</span>
+                <span>属性 内防御劲</span>
+                <span>获得途径 道具换取</span>
+                <span>可以分解</span>
+                <span>可以收集</span> 
+            -->
+        </div>
+        {{if prices}}
+        <h4>交易行价格</h4>
+        <div class="item-prices">
+            <h5>近期价格</h5>
+            <div class="price-list">
+                <div class="price-card">
+                    <span>今日均价</span><br/>
+                    <span>{{filters.formatPrice(prices.today.price)}}</span>
+                </div>
+                <div class="price-card">
+                    <span>今日最低价</span><br/>
+                    <span>{{filters.formatPrice(prices.today.min_price)}}</span>
+                </div>
+                <div class="price-card">
+                    <span>今日最高价</span><br/>
+                    <span>{{filters.formatPrice(prices.today.max_price)}}</span>
+                </div>
+            </div>
+            <!-- 
+                <h5>价格波动</h5>
+                <div id="price-chart"></div> 
+            -->
+        </div>
+        {{/if}}
+    </div>
+    <p class="tips">
+        数据获取时间：{{time}}
+    </p>
+    <p class="tips">
+        数据来源<span class="b">JX3BOX</span> 本功能模板大量借鉴<span class="b">JX3BOX</span>的物品百科功能，请多加支持剑三魔盒（
+    </p>
+    <p class="tips">
+        本机器人是开源免费的机器人，有需要请加群<span class="b">116523057</span>获取
+    </p>
+
+</div>

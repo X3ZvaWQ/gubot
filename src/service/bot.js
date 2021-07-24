@@ -302,6 +302,8 @@ class Bot{
             '^器物谱\\s(\\S*)$': '/travel $1',
             '^家具\\s(\\S*)$': '/furniture $1',
             '^物价\\s(\\S+)$': '/price $1',
+            '^物品\\s(\\S*)$': '/item $1',
+            '^交易行\\s(\\S*)$': '/item $1',
 
             '^群信息$': '/group info',
             '^群昵称\\s([\\S\\s]+)': '/group groupname $1',
