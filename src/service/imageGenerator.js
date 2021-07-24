@@ -7,7 +7,8 @@ const fonts = require('../../env.json').image_fonts;
 
 class ImageGenerator {
     constructor(puppeteer) {
-        this.puppeteer = puppeteer
+        this.puppeteer = puppeteer;
+        artTemplate.defaults.imports.parseInt = parseInt;
     }
     
     async generateFromHtmlFile(htmlname, options){

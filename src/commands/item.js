@@ -151,7 +151,7 @@ module.exports = class ItemHandler {
         
             return output;
         },
-        formartPrice: (Price) => {
+        formatPrice: (Price) => {
             let zhuan = parseInt(Price / 100 / 100 / 10000);
             let jin = parseInt(Price / 100 / 100 % 10000);
             let yin = parseInt(Price / 100 % 100);
@@ -184,17 +184,17 @@ module.exports = class ItemHandler {
             //判断输入的物品是不是id，否则搜索
             let searchResult = [];
             let itemId;
-            if(!/[\d_]+/.exec(args.item)) {
+            if(!/\d_[\d_]+/.exec(args.item)) {
                 searchResult = await Jx3box.itemSearch(args.item);
-                itemId = searchResult[i].id;
+                itemId = searchResult[0].id;
             }else{
-                itemId = args.name;
+                itemId = args.item;
             }
-            let prices = await Jx3box.itemPrices(itemId);
+            let prices = await Jx3box.itemPrices(itemId, args.server);
             let item = await Jx3box.itemInfo(itemId);
             let renderData = {
                 time: moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss'),
-                searchKey: searchKey,
+                searchKey: args.item,
                 searchResult: searchResult,
                 item: item,
                 prices: prices,

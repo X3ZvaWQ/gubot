@@ -70,7 +70,11 @@
     .c-item .c-item-wrapper .u-title {
         margin: 0;
     }
-
+    .c-item ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
     .u-title,
     .u-desc {
         margin: 0;
@@ -102,6 +106,7 @@
     }
 
     .u-max-strength-level span {
+        position: absolute;
         top: 0;
         right: 0;
     }
@@ -126,6 +131,29 @@
     .u-attributes .u-horse-attribute .u-horse-icon{
         float: left;
     }
+    .u-diamonds {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+    }
+
+    .u-diamonds .u-diamond .u-square,
+    .u-diamonds .u-diamond .u-text {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .u-diamonds .u-diamond .u-square {
+        width: 1.1em;
+        height: 1.1em;
+        margin-right: 3px;
+        border: 1px solid #999999;
+    }
+
+    .u-diamonds .u-diamond .u-text {
+        margin-top: -1px;
+    }
+
 
     .item-other{
         display: flex;
@@ -143,21 +171,18 @@
     .price-list{
         display: flex; 
         justify-content: center;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .price-card{
         display: inline-block;
         text-align: center;
-        padding: 1rem;
-        margin: 0 2rem;
+        padding: 0.2rem;
+        margin: 0 1rem;
     }
     .price-card span:first-of-type{
         font-size: 16px;
         opacity: 0.8;
-    }
-    #price-chart{
-
     }
 </style>
 <div id="template">
@@ -293,7 +318,7 @@
                     <li class="u-diamond">
                         <span class="u-square"></span>
                         <span class="u-text">
-                            {{`镶嵌孔：$value`}}
+                            镶嵌孔：{{$value}}
                         </span>
                     </li>
                     {{/each}}
@@ -374,81 +399,81 @@
                 </div>
                 {{/if}}
                 <!-- 描述 -->
-                {{if source.DescHtml}}
+                {{if item.DescHtml}}
                 <p class="u-desc u-yellow">
-                    {{@ source.DescHtml}}
+                    {{@ item.DescHtml}}
                 </p>
                 {{/if}}
                 <!-- 五彩石属性 -->
-                {{if source.WuCaiHtml}}
+                {{if item.WuCaiHtml}}
                 <p class="u-desc">
-                    {{@ source.WuCaiHtml}}
+                    {{@ item.WuCaiHtml}}
                 </p>
                 {{/if}}
                 <!-- 品质等级 -->
-                {{if source.Level}}
+                {{if item.Level}}
                 <div class="u-level u-yellow">
-                    {{'品质等级' + source.Level}}
+                    {{'品质等级' + item.Level}}
                 </div>
                 {{/if}}
                 <!-- 装备分数 -->
-                {{if source.EquipmentRating}}
+                {{if item.EquipmentRating}}
                 <div class="u-equipment-rating u-orange">
-                    {{'装备分数' + source.EquipmentRating}}
+                    {{'装备分数' + item.EquipmentRating}}
                 </div>
                 {{/if}}
                 <!-- 推荐门派心法 -->
-                {{if source.Recommend}}
+                {{if item.Recommend}}
                 <div class="u-equipment-recommend">
-                    {{'推荐门派：' + source.Recommend}}
+                    {{'推荐门派：' + item.Recommend}}
                 </div>
                 {{/if}}
                 <!-- 冷却时间 -->
-                {{if source.CoolDown}}
+                {{if item.CoolDown}}
                 <div class="u-equipment-cooldown">
-                    {{'使用间隔' + filters.second_format(source.CoolDown)}}
+                    {{'使用间隔' + filters.secondFormat(item.CoolDown)}}
                 </div>
                 {{/if}}
                 <!-- 外观名称 -->
-                {{if source.Appearance}}
+                {{if item.Appearance}}
                 <div class="u-appearance">
-                    {{'外观名称：' + source.Appearance}}
+                    {{'外观名称：' + item.Appearance}}
                 </div>
                 {{/if}}
                 <!-- 可收集门派 -->
-                {{if source.CanExterior}}
+                {{if item.CanExterior}}
                 <div class="u-can-exterior">
-                    {{'外观：' + source.CanExterior}}
+                    {{'外观：' + item.CanExterior}}
                 </div>
                 {{/if}}
                 <!-- 储物箱共享 -->
-                {{if source.CanShared && !(source.AucGenre >= 1 && source.AucGenre <= 4)}}
+                {{if item.CanShared && !(item.AucGenre >= 1 && item.AucGenre <= 4)}}
                 <div class="u-can-shared">
                     该物品可以放入账号储物箱共享。
                 </div>
                 {{/if}}
-                {{if source.CanShared && (source.AucGenre >= 1 && source.AucGenre <= 4)}}
+                {{if item.CanShared && (item.AucGenre >= 1 && item.AucGenre <= 4)}}
                 <div class="u-can-shared">
                     该装备未精炼、镶嵌、附魔、穿戴前可以放入账号储物箱共享。
                 </div>
                 {{/if}}
                 <!-- 家具可交互可缩放 -->
-                {{if source.furniture_attributes}}
+                {{if item.furniture_attributes}}
                 <div class="u-furniture-can">
-                    {{if source.furniture_attributes.interact}}
+                    {{if item.furniture_attributes.interact}}
                         <span>可交互</span>
                     {{/if}}
-                    {{if source.furniture_attributes.scale_range}}
+                    {{if item.furniture_attributes.scale_range}}
                         <span>
-                            {{`可缩放(${source.furniture_attributes.scale_range.replace(';',' - ')}倍)`}}
+                            {{`可缩放(${item.furniture_attributes.scale_range.replace(';',' - ')}倍)`}}
                         </span>
                     {{/if}}
                 </div>
                 {{/if}}
                 <!-- 物品来源 -->
-                {{if source.GetType}}
+                {{if item.GetType}}
                 <div class="u-get-type">
-                    {{`物品来源：${source.GetType}`}}
+                    {{`物品来源：${item.GetType}`}}
                 </div>
                 {{/if}}
             </div>
@@ -472,7 +497,7 @@
             <span>{{'最大拥有数' + item.MaxExistAmount}}</span>
             {{/if}}
             <span>{{item.CanTrade ? '可交易' : '不可交易'}}</span>
-            <span>{{item.CanDestroy || item.CanDestroy === null ? '✔️': '❌'}}</span>
+            <span>{{item.CanDestroy || item.CanDestroy === null ? '可以丢弃': '不可丢弃'}}</span>
             {{if item.BelongSchool}}
             <span>{{'门派 ' + item.BelongSchool}}</span>
             {{/if}}
@@ -517,22 +542,22 @@
                 <span>可以收集</span> 
             -->
         </div>
-        {{if prices}}
+        {{if prices.today}}
         <h4>交易行价格</h4>
         <div class="item-prices">
             <h5>近期价格</h5>
             <div class="price-list">
                 <div class="price-card">
                     <span>今日均价</span><br/>
-                    <span>{{filters.formatPrice(prices.today.price)}}</span>
+                    <span>{{@ filters.formatPrice(prices.today.price)}}</span>
                 </div>
                 <div class="price-card">
                     <span>今日最低价</span><br/>
-                    <span>{{filters.formatPrice(prices.today.min_price)}}</span>
+                    <span>{{@ filters.formatPrice(prices.today.min_price)}}</span>
                 </div>
                 <div class="price-card">
                     <span>今日最高价</span><br/>
-                    <span>{{filters.formatPrice(prices.today.max_price)}}</span>
+                    <span>{{@ filters.formatPrice(prices.today.max_price)}}</span>
                 </div>
             </div>
             <!-- 
