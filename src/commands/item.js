@@ -194,7 +194,7 @@ module.exports = class ItemHandler {
             let item = await Jx3box.itemInfo(itemId);
             let renderData = {
                 time: moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss'),
-                searchKey: args.item,
+                searchKey: args,
                 searchResult: searchResult,
                 item: item,
                 prices: prices,

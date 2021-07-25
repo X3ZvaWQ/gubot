@@ -217,7 +217,7 @@
 </style>
 <div>
     <h2>咕Bot - 物品查询</h2>
-    <h3>查询物品：{{ searchKey }}</h3>
+    <h3>查询物品：{{ searchKey.item }} {{ searchKey.server }}</h3>
     <div style="text-align:center">
         <img style="width: 60px; height: 60px;padding-top: 1rem;" src="{{filters.iconUrl(item.IconID)}}" alt="">
         <h4 class="title">物品详情</h4>
@@ -574,7 +574,7 @@
             -->
         </div>
         {{if prices.today}}
-        <h4 class="title">交易行价格</h4>
+        <h4 class="title">交易行价格 - {{prices.server}}</h4>
         <div class="item-prices">
             <div class="price-list">
                 <div class="price-card">
