@@ -171,7 +171,6 @@ class Jx3api{
     }
 
     static async seniority(params) {
-        console.log(params)
         let response = await $jx3api.get(`/seniority`, {params: params});
         if (response.data.code == 200) {
             return response.data.data.map((data) => ({
