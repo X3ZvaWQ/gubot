@@ -1578,7 +1578,7 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-node-fetch@^2.6.1:
+node-fetch@^2.2.0, node-fetch@^2.6.1:
   version "2.6.1"
   resolved "https://registry.nlark.com/node-fetch/download/node-fetch-2.6.1.tgz?cache=0&sync_timestamp=1626684920037&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnode-fetch%2Fdownload%2Fnode-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha1-BFvTI2Mfdu0uK1VXM5RBa2OaAFI=
@@ -2123,12 +2123,26 @@ tencentcloud-sdk-nodejs-common@^1.1.5:
     node-fetch "^2.6.1"
     tslib "1.13.0"
 
-tencentcloud-sdk-nodejs-nlp@^4.0.156:
+tencentcloud-sdk-nodejs-nlp@^4.0.165:
   version "4.0.165"
   resolved "https://registry.nlark.com/tencentcloud-sdk-nodejs-nlp/download/tencentcloud-sdk-nodejs-nlp-4.0.165.tgz#44b5adec999be0ba3bdb94ca3ec459f58fcb62ff"
   integrity sha1-RLWt7Jmb4Lo725TKPsRZ9Y/LYv8=
   dependencies:
     tencentcloud-sdk-nodejs-common "^1.1.5"
+
+tencentcloud-sdk-nodejs@^4.0.170:
+  version "4.0.170"
+  resolved "https://registry.nlark.com/tencentcloud-sdk-nodejs/download/tencentcloud-sdk-nodejs-4.0.170.tgz#04cdcffbed49b1eeffa3f97de249a90435ba6be0"
+  integrity sha1-BM3P++1Jse7/o/l94kmpBDW6a+A=
+  dependencies:
+    babel-eslint "^10.0.2"
+    eslint-plugin-react "^7.17.0"
+    form-data "^3.0.0"
+    get-stream "^6.0.0"
+    https-proxy-agent "^5.0.0"
+    is-stream "^2.0.0"
+    node-fetch "^2.2.0"
+    tslib "1.13.0"
 
 throttle-debounce@^1.0.1:
   version "1.1.0"

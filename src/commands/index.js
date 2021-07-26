@@ -24,7 +24,7 @@ module.exports = {
     price: require('./price'),
     //jjc: require('./jjc'),
     seniority: require('./seniority'),
-    
+    talk: require('./talk'),
     item: require('./item'),
     //chat: require('./chat')
 }

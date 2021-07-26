@@ -2,5 +2,7 @@ node_modules
 env.json
 storage/htmls/*
 storage/images/*
+storage/audios/*
 !storage/htmls/index.html
 !storage/images/index.png
+!storage/audios/index.mp3

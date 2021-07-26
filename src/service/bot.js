@@ -324,7 +324,7 @@ class Bot{
             '^添加别名\\s([\\S\\s]+)': '/alias add $1',
             '^删除别名\\s([\\S\\s]+)': '/alias delete $1'
         };
-        /* if(data.group_id && data.switchs.chat) {
+        if(data.group_id && data.switchs.chat) {
             let nickname = await this.redis.get(`GroupNickname:${data.group_id}`);
             if(nickname == null) {
                 const Group = require('../model/group');
@@ -333,8 +333,8 @@ class Bot{
                 await this.redis.set(`GroupNickname:${data.group_id}`, nickname);
             }
             nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-            regex_map[`^(${nickname})\\s?([\\S\\s]+)$`] = '/chat $2';
-        }  */
+            regex_map[`^(${nickname}说)\\s?([\\S\\s]+)$`] = '/talk $2';
+        } 
         let message = data.message.trim();
         for(let i in regex_map) {
             let regex = new RegExp(i);

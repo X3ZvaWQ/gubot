@@ -53,6 +53,10 @@ Group.init({
     accept_join_group: {
         type: DataTypes.STRING,
         defaultValue: null
+    },
+    bot_voice_type: {
+        type: DataTypes.INTEGER,
+        defaultValue: 101016
     }
 }, {
     sequelize,
