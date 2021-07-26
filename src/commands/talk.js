@@ -16,7 +16,7 @@ module.exports = class TalkHandler {
                 await bot.redis.set(`GroupVoiceType:${ctx.data.group_id}`, voice_type);
             }
         } else {
-            voice_type = undefined;
+            voice_type = 101016;
         }
         let redis_key = `TTS:${md5(message)}:${voice_type}`;
         let result = bot.redis.get(redis_key);
