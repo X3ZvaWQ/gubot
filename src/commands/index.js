@@ -26,5 +26,5 @@ module.exports = {
     seniority: require('./seniority'),
     talk: require('./talk'),
     item: require('./item'),
-    //chat: require('./chat')
+    chat: require('./chat')
 }

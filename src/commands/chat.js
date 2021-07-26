@@ -1,10 +1,10 @@
 const Api = require('../service/api');
 const Group = require('../model/group');
+const Tencentcloud = require('../service/httpApi/tencentcloud');
 
 module.exports = class ChatHandler {
     async handle(ctx) {
         let message = ctx.args.message;
-        let session = ctx.data.group_id || ctx.data.user_id || 'session_undefined';
         let nickname;
         if(ctx.data.group_id != undefined) {
             nickname = await bot.redis.get(`GroupNickname:${ctx.data.group_id}`);
@@ -15,7 +15,7 @@ module.exports = class ChatHandler {
         }else{
             nickname = '咕咕'
         }
-        let answer = await Api.getChatAnswer(message, session, nickname);
+        let answer = await Tencentcloud.chat(message, nickname);
         return answer;
     }
 
