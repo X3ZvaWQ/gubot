@@ -5,10 +5,12 @@ const md5 = require('js-md5');
 const artTemplate = require('art-template');
 const fonts = require('../../env.json').image_fonts;
 
+
 class ImageGenerator {
     constructor(puppeteer) {
         this.puppeteer = puppeteer;
         artTemplate.defaults.imports.parseInt = parseInt;
+        artTemplate.defaults.imports.btoa = (str) => Buffer.from(str).toString('base64');
         artTemplate.defaults.imports.JSON = JSON;
     }
     
