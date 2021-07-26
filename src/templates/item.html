@@ -595,6 +595,28 @@
                 <div id="price-chart"></div> 
             -->
         </div>
+        {{else if prices.yesterday}}
+        <h4 class="title">交易行价格 - {{prices.server}}</h4>
+        <div class="item-prices">
+            <div class="price-list">
+                <div class="price-card">
+                    <span>昨日均价</span><br/>
+                    <span>{{@ filters.formatPrice(prices.yesterday.price)}}</span>
+                </div>
+                <div class="price-card">
+                    <span>昨日最低价</span><br/>
+                    <span>{{@ filters.formatPrice(prices.yesterday.min_price)}}</span>
+                </div>
+                <div class="price-card">
+                    <span>昨日最高价</span><br/>
+                    <span>{{@ filters.formatPrice(prices.yesterday.max_price)}}</span>
+                </div>
+            </div>
+            <!-- 
+                <h5>价格波动</h5>
+                <div id="price-chart"></div> 
+            -->
+        </div>
         {{/if}}
         {{if searchResult}}
         <h4 class="title">其他搜索结果</h4>
