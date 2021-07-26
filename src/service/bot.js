@@ -334,7 +334,9 @@ class Bot{
             }
             nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
             regex_map[`^(${nickname}说)\\s?([\\S\\s]+)$`] = '/talk $2';
-        } 
+        }else{
+            regex_map[`^(咕咕说)\\s?([\\S\\s]+)$`] = '/talk $2';
+        }
         let message = data.message.trim();
         for(let i in regex_map) {
             let regex = new RegExp(i);

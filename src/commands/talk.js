@@ -5,6 +5,9 @@ const md5 = require('js-md5');
 module.exports = class TalkHandler {
     async handle(ctx) {
         let message = ctx.args.message;
+        message = message.replace(/你/g, 'avoid_swap_wo');
+        message = message.replace(/我/g, '你');
+        message = message.replace(/avoid_swap_wo/g, '我');
         let voice_type;
         if (ctx.data.group_id != undefined) {
             voice_type = await bot.redis.get(`GroupVoiceType:${ctx.data.group_id}`);
@@ -21,7 +24,7 @@ module.exports = class TalkHandler {
             result = await Tencentcloud.tts(message, voice_type);
             await bot.redis.set(redis_key, result);
         }
-        return `[CQ:record,file=${result}]`;
+        return `[CQ:record,file=file://${result}]`;
     }
 
     static argsList() {
