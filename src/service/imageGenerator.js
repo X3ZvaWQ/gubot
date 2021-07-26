@@ -9,6 +9,7 @@ class ImageGenerator {
     constructor(puppeteer) {
         this.puppeteer = puppeteer;
         artTemplate.defaults.imports.parseInt = parseInt;
+        artTemplate.defaults.imports.JSON = JSON;
     }
     
     async generateFromHtmlFile(htmlname, options){

@@ -590,10 +590,6 @@
                     <span>{{@ filters.formatPrice(prices.today.max_price)}}</span>
                 </div>
             </div>
-            <!-- 
-                <h5>价格波动</h5>
-                <div id="price-chart"></div> 
-            -->
         </div>
         {{else if prices.yesterday}}
         <h4 class="title">交易行价格 - {{prices.server}}</h4>
@@ -612,16 +608,22 @@
                     <span>{{@ filters.formatPrice(prices.yesterday.max_price)}}</span>
                 </div>
             </div>
-            <!-- 
-                <h5>价格波动</h5>
-                <div id="price-chart"></div> 
-            -->
         </div>
+        {{/if}}
+        {{if prices.logs}}
+        <style>
+            #price-chart{
+                width: 640px;
+                height: 400px;
+            }
+        </style>
+        <div id="price-chart"></div>
         {{/if}}
         {{if searchResult}}
         <h4 class="title">其他搜索结果</h4>
         <div class="search-result">
             {{each searchResult}}
+            {{if $value.id != item.id}}
             <div class="search-card">
                 <img src="{{filters.iconUrl($value.IconID)}}">
                 <p>{{$value.Name}}</p>
@@ -641,5 +643,47 @@
     <p class="tips">
         本机器人是开源免费的机器人，有需要请加群<span class="b">116523057</span>获取
     </p>
-
+    {{if prices.logs}}
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <script>
+        option = {
+            title: {
+                text: '价格波动 - {{item.Name}}'
+            },
+            tooltip: {},
+            legend: {
+                data:['价格']
+            },
+            xAxis: {
+                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.date))}}")
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: {{filters.itemPrice.toString()}}
+                }
+            },
+            animation: false,
+            series: [{
+                name: '均价',
+                smooth: true,
+                type: 'line',
+                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.price))}}"),
+            },{
+                name: '最低价',
+                smooth: true,
+                type: 'line',
+                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.min_price))}}"),
+            },{
+                name: '最高价',
+                smooth: true,
+                type: 'line',
+                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.max_price))}}"),
+            }]
+        };
+        var chartDom = document.getElementById('price-chart');
+        var myChart = echarts.init(chartDom);
+        myChart.setOption(option)
+    </script>
+    {{/if}}
 </div>
