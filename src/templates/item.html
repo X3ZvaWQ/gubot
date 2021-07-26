@@ -615,6 +615,7 @@
             #price-chart{
                 width: 640px;
                 height: 400px;
+                margin-top: 2rem;
             }
         </style>
         <div id="price-chart"></div>
@@ -623,7 +624,6 @@
         <h4 class="title">其他搜索结果</h4>
         <div class="search-result">
             {{each searchResult}}
-            {{if $value.id != item.id}}
             <div class="search-card">
                 <img src="{{filters.iconUrl($value.IconID)}}">
                 <p>{{$value.Name}}</p>
@@ -647,20 +647,24 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
     <script>
         option = {
+            textStyle: {
+                color: 'dodgerblue'
+            },
             title: {
-                text: '价格波动 - {{item.Name}}'
+                text: '价格波动 - {{item.Name}}',
+                textStyle: {
+                    color: 'dodgerblue'
+                }
             },
             tooltip: {},
-            legend: {
-                data:['价格']
-            },
+            legend: {},
             xAxis: {
-                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.date))}}")
-            },
+                data: JSON.parse(atob("{{@ btoa(JSON.stringify(prices.logs.map(x => x.date)))}}"))
+            },  
             yAxis: {
                 type: 'value',
                 axisLabel: {
-                    formatter: {{filters.itemPrice.toString()}}
+                    formatter: {{@ filters.itemPrice.toString()}}
                 }
             },
             animation: false,
@@ -668,17 +672,17 @@
                 name: '均价',
                 smooth: true,
                 type: 'line',
-                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.price))}}"),
+                data: JSON.parse("{{@ JSON.stringify(prices.logs.map(x => x.price))}}"),
             },{
                 name: '最低价',
                 smooth: true,
                 type: 'line',
-                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.min_price))}}"),
+                data: JSON.parse("{{@ JSON.stringify(prices.logs.map(x => x.min_price))}}"),
             },{
                 name: '最高价',
                 smooth: true,
                 type: 'line',
-                data: JSON.parse("{{JSON.stringify(prices.logs.map(x => x.max_price))}}"),
+                data: JSON.parse("{{@ JSON.stringify(prices.logs.map(x => x.max_price))}}"),
             }]
         };
         var chartDom = document.getElementById('price-chart');
