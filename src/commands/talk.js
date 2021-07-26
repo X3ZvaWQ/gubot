@@ -21,7 +21,7 @@ module.exports = class TalkHandler {
         let redis_key = `TTS:${md5(message)}:${voice_type}`;
         let result = bot.redis.get(redis_key);
         if(result || !await fs.exist(result)) {
-            result = await Tencentcloud.tts(message, voice_type);
+            result = await Tencentcloud.tts(message, parseInt(voice_type));
             await bot.redis.set(redis_key, result);
         }
         return `[CQ:record,file=file://${result}]`;
