@@ -34,8 +34,8 @@ class CqHttp{
                 }
             }catch(e) {
                 if(typeof e == 'object') {
-                    this.bot.log(message, 'error');
-                    this.bot.log(e.stack || e, 'error');
+                    cqhttp.bot.log(message, 'error');
+                    cqhttp.bot.log(e.stack || e, 'error');
                 }
             }
         });
