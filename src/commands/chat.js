@@ -6,6 +6,9 @@ module.exports = class ChatHandler {
     async handle(ctx) {
         let message = ctx.args.message;
         let nickname;
+        if(ctx.cqhttp && ctx.data.user_id == ctx.cqhttp.qq){
+            return null;
+        }
         if(ctx.data.group_id != undefined) {
             nickname = await bot.redis.get(`GroupNickname:${ctx.data.group_id}`);
             if(nickname == null) {

@@ -142,13 +142,13 @@ class Bot{
         this.log(`Bot: all init successed.`, 'success');
     }
 
-    async handleRequest(request) {
+    async handleRequest(request, cqhttp) {
         if(request.post_type == 'message') {
             let result;
             if(request.message.split('')[0] == '/'){
-                result = await this.handleCommand(request);
+                result = await this.handleCommand(request, cqhttp);
             }else{
-                result = await this.handleMessage(request);
+                result = await this.handleMessage(request, cqhttp);
             }
             if(result != null && result != undefined && result != ''){
                 return result;
@@ -233,13 +233,14 @@ class Bot{
         }
     }
 
-    async handleCommand(data) {
+    async handleCommand(data, cqhttp) {
         try{
             let [args, command] = await this.parseArgs(data) ?? [];
             let ctx = {
                 command: command,
                 args: args,
-                data: data
+                data: data,
+                cqhttp: cqhttp
             }
             if(this.route[command] != undefined) {
                 if(this.route[command].demandPermission){
@@ -256,7 +257,7 @@ class Bot{
         }
     }
 
-    async handleMessage(data) {
+    async handleMessage(data, cqhttp) {
         if(data.group_id) {
             data.switchs = await this.checkFunctionSwitch(data.group_id);
             if(!data.switchs.convenient) {
@@ -274,6 +275,8 @@ class Bot{
             '^帮助\\s(\\S*)$': '/help $1',
 
             '^花价\\s([\\S\\s]*)$': '/flowerPrice $1',
+            '^花价$': '/flowerPrice',
+
             '^科举\\s([\\S\\s]+)$': '/exam $1',
 
             '^金价\\s(\\S*)$': '/goldPrice $1',
@@ -345,7 +348,7 @@ class Bot{
             let regex = new RegExp(i);
             if(regex.test(message)) {
                 data.message = message.replace(regex, regex_map[i]);
-                return await this.handleCommand(data);
+                return await this.handleCommand(data, cqhttp);
             }
         }
         return null;

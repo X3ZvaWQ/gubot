@@ -16,7 +16,7 @@ class CqHttp{
         this.ws.handleMessageStack.push(async function(message) {
             try{
                 let request = JSON.parse(message);
-                let result = await cqhttp.bot.handleRequest(request);
+                let result = await cqhttp.bot.handleRequest(request, cqhttp);
                 //object
                 if(typeof result == 'object') {
                     cqhttp.send(result);
