@@ -19,7 +19,7 @@ module.exports = class AliasHandler {
         let args = ctx.args;
         let permission = ctx.permission;
         if(permission < 2) {
-            throw '错误：权限不足。需要admin及以上权限';
+            throw `错误：权限不足，需要权限${2}，你的权限${permission}。`;
         }
         if(args.alias == args.real) {
             throw '错误：禁止套娃！'
@@ -51,7 +51,7 @@ module.exports = class AliasHandler {
         let args = ctx.args;
         let permission = ctx.permission;
         if(permission < 2) {
-            throw '错误：权限不足。需要admin及以上权限';
+            throw `错误：权限不足，需要权限${2}，你的权限${permission}。`;
         }
         let where = {
             real: args.real,

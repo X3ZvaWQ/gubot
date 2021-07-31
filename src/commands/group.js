@@ -64,8 +64,8 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (server != null && server != undefined) {
                 let permission = ctx.permission;
-                if (permission < 4) {
-                    throw '权限不足。'
+                if (permission < 2) {
+                    throw `错误：权限不足，需要权限${2}，你的权限${permission}。`
                 }
                 let group_id = ctx.data.group_id;
                 let group = await Group.findOne({
@@ -99,8 +99,8 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (nickname != null && nickname != undefined) {
                 let permission = ctx.permission;
-                if (permission < 4) {
-                    throw '权限不足。'
+                if (permission < 2) {
+                    throw `错误：权限不足，需要权限${2}，你的权限${permission}。`
                 }
                 let group_id = ctx.data.group_id;
                 let group = await Group.findOne({
@@ -136,8 +136,8 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (groupname != null && groupname != undefined) {
                 let permission = ctx.permission;
-                if (permission < 4) {
-                    throw '权限不足。'
+                if (permission < 2) {
+                    throw `错误：权限不足，需要权限${2}，你的权限${permission}。`
                 }
                 let group_id = ctx.data.group_id;
                 let group = await Group.findOne({
@@ -172,8 +172,8 @@ module.exports = class GroupHandler {
         if (ctx.data.message_type == 'group') {
             if (args.switch != null && args.switch != undefined) {
                 let permission = ctx.permission;
-                if (permission < 4) {
-                    throw '权限不足。'
+                if (permission < 2) {
+                    throw `错误：权限不足，需要权限${2}，你的权限${permission}。`
                 }
                 let group_id = ctx.data.group_id;
                 let swi = args.switch == 'true';
