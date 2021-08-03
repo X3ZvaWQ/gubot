@@ -18,7 +18,7 @@ module.exports = class PermissionHandler {
     async list(ctx) {
         let permission = ctx.permission;
         if (permission < 2) {
-            throw '权限不足。'
+            throw `错误：权限不足，需要权限${2}，你的权限${permission}。`
         }
         const n2r = {
             1: 'member',
@@ -74,13 +74,16 @@ module.exports = class PermissionHandler {
 
     async set(ctx) {
         let permission = ctx.permission;
-        if (permission < 4) {
-            throw '权限不足。'
+        if (permission < 2) {
+            throw `错误：权限不足，需要权限${2}，你的权限${permission}。`
         }
         let args = ctx.args;
         let [_, targetQQ] = /qq=(\d+)/.exec(args.user);
         let level = args.level;
         if (ctx.data.message_type == 'group') {
+            if(targetQQ == ctx.data.user_id) {
+                throw `错误：不可以修改自己的权限`
+            }
             let group_id = ctx.data.group_id;
             let user = await User.findOne({
                 where: {
@@ -99,7 +102,7 @@ module.exports = class PermissionHandler {
                 user.permissions = level;
                 user.save();
             }
-            return '权限修改成功';
+            return `成功：权限修改成功，${targetQQ}的权限现在为${level}`;
         } else if (ctx.data.message_type == 'private') {
             let target_id = args.user;
             let user = await User.findAll({
@@ -119,7 +122,7 @@ module.exports = class PermissionHandler {
                 user.permissions = level;
                 user.save();
             }
-            return '权限修改成功';
+            return `成功：权限修改成功，${targetQQ}的权限现在为${level}`;
         }
     }
 

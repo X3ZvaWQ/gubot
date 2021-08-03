@@ -29,7 +29,7 @@ module.exports = class TeamHandler {
     async create(ctx) {
         let args = ctx.args;
         let permission = ctx.permission;
-        if (permission < 2) throw '权限不足';
+        if (permission < 2) throw `错误：权限不足，需要权限${2}，你的权限${permission}。`;
         if (!ctx.data.group_id) throw '该命令仅限群内使用';
         let emptyData;
         try {
@@ -51,7 +51,7 @@ module.exports = class TeamHandler {
     async delete(ctx) {
         let args = ctx.args;
         let permission = ctx.permission;
-        if (permission < 2) throw '权限不足';
+        if (permission < 2) throw `错误：权限不足，需要权限${2}，你的权限${permission}。`;
         if (!ctx.data.group_id) throw '该命令仅限群内使用';
         let team;
         if (args.team_id == '-') {
