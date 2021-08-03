@@ -61,7 +61,7 @@ module.exports = class MacroHandler {
                 macro: macros
             }
             let macro_sync = macros.map((x) => x.name);
-            result = `[CQ:image,file=file://${await bot.imageGenerator.generateFromTemplateFile('macro', data)}]
+            result = `[CQ:image,file=file://${platform}${await bot.imageGenerator.generateFromTemplateFile('macro', data)}]
                 云端宏:
                 ${macro_sync.join('\n')}`;
             await bot.redis.set(redis_key, result);

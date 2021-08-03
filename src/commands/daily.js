@@ -25,7 +25,7 @@ module.exports = class ServerStatusHandler {
             await bot.redis.expire('Daily', 600);
         }
 
-        return `[CQ:image,file=file://${result}]`;
+        return `[CQ:image,file=file://${platform}${result}]`;
     }
 
     static argsList() {

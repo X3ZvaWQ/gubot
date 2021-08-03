@@ -5,7 +5,7 @@ var Model = Sequelize.Model;
 let sequelize = bot.sequelize;
 
 class Group extends Model {
-    
+
 }
 
 Group.init({
@@ -34,6 +34,10 @@ Group.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
+    group_serendipity_broadcast:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
     news_broadcast:{
         type: DataTypes.BOOLEAN,
         defaultValue: true
@@ -51,6 +55,10 @@ Group.init({
         defaultValue: true
     },
     accept_join_group: {
+        type: DataTypes.STRING,
+        defaultValue: null
+    },
+    members: {
         type: DataTypes.STRING,
         defaultValue: null
     },

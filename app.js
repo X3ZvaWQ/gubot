@@ -3,6 +3,7 @@ const ENV = require('./env.json');
 const Bot = require('./src/service/bot');
 
 (async () => {
+    global.platform = process.platform == 'win32' ? '/' : '';
     const bot = new Bot(ENV);
     await bot.initRedis();
     await bot.initSequelize();

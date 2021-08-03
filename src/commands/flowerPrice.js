@@ -22,7 +22,7 @@ module.exports = class FlowerPriceHandler {
             await bot.redis.set(key, result);
             await bot.redis.expire(key, 300);
         }
-        return `[CQ:image,file=file://${result}]`;
+        return `[CQ:image,file=file://${platform}${result}]`;
     }
 
     static argsList() {

@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 
 module.exports = class AliasHandler {
     static demandPermission = true;
-    
+
     async handle(ctx) {
         let action = ctx.args.action;
         if (action == 'list') {
@@ -102,7 +102,7 @@ module.exports = class AliasHandler {
                 array.push([alias.scope, alias.alias, alias.real]);
             }
             result = `查询的别名列表:
-            [CQ:image,file=file://${await bot.imageGenerator.generateFromArrayTable(array)}]`;
+            [CQ:image,file=file://${platform}${await bot.imageGenerator.generateFromArrayTable(array)}]`;
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 86400);
         }

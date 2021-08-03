@@ -27,9 +27,9 @@ module.exports = class GoldPriceHandler {
             })
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 600);
-        } 
-        
-        return `[CQ:image,file=file://${result}]`;
+        }
+
+        return `[CQ:image,file=file://${platform}${result}]`;
     }
 
     static argsList() {

@@ -49,7 +49,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return `[CQ:image,file=file://${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
+            return `[CQ:image,file=file://${platform}${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
         } else if (ctx.data.message_type == 'private') {
             let users = await User.findAll({
                 where: {
@@ -68,7 +68,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return `[CQ:image,file=file://${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
+            return `[CQ:image,file=file://${platform}${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
         }
     }
 

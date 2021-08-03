@@ -40,7 +40,7 @@ module.exports = class TravelHandler {
                 await bot.redis.expire(redis_key, 86400);
             }
         }
-        return result.map(x => `[CQ:image,file=file://${x}]`).join('\n');
+        return result.map(x => `[CQ:image,file=file://${platform}${x}]`).join('\n');
     }
 
     static argsList() {

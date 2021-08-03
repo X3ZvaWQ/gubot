@@ -3,7 +3,7 @@ const fs = require('fs-extra')
 
 module.exports = class FurnitureHandler {
     async handle(ctx) {
-        let args = ctx.args;    
+        let args = ctx.args;
         let redis_key = `Furniture:${args.name}`;
         let result = await bot.redis.get(redis_key);
 
@@ -13,7 +13,7 @@ module.exports = class FurnitureHandler {
             await bot.redis.set(redis_key, JSON.stringify(result));
             await bot.redis.expire(redis_key, 86400);
         }
-        return `[CQ:image,file=file://${result}]`;
+        return `[CQ:image,file=file://${platform}${result}]`;
     }
 
     static argsList() {

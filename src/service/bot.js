@@ -5,8 +5,8 @@ class Bot{
     constructor(ENV) {
         this.ENV = ENV;
     }
-    
-    
+
+
     log(message, type) {
         type = type || 'info';
         let msg = `[${moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}][${type.toUpperCase().padStart(7)}] ${message}`;
@@ -67,7 +67,7 @@ class Bot{
         if(enable) {
             const ImageGenerator = require('./imageGenerator');
             const puppeteer = require('puppeteer');
-            const browser = await puppeteer.launch();
+            const browser = await puppeteer.launch({args: ['--no-sandbox']});
             this.imageGenerator = new ImageGenerator(browser);
         }else{
             this.imageGenerator = new Proxy({}, {
@@ -130,7 +130,9 @@ class Bot{
                     let groups = await cqhttp.getGroupList();
                     for(let group of groups) {
                         if(group.serendipity_broadcast && group.server == message.data.server){
-                            cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
+                            if (!group.group_serendipity_broadcast || (group.group_serendipity_broadcast && group.members.indexOf(message.data.name) > -1)) {
+                                cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
+                            }
                         }
                     }
                 }
@@ -312,7 +314,7 @@ class Bot{
             '^群昵称\\s([\\S\\s]+)': '/group groupname $1',
             '^咕咕称呼\\s([\\S\\s]+)': '/group nickname $1',
             '^群服务器\\s([\\S\\s]+)': '/group server $1',
-            '^(打开|关闭|开|关)\\s(奇遇播报|开服播报|新闻播报|简便命令|智障对话|斗图)': '/group set $2 $1',
+            '^(打开|关闭|开|关)\\s(奇遇播报|群内奇遇播报|开服播报|新闻播报|简便命令|智障对话|斗图)': '/group set $2 $1',
 
             '^权限列表$': '/permission list',
             '^权限设置\\s([\\S\\s]+)': '/permission set $1',
@@ -323,7 +325,10 @@ class Bot{
             '^(查看团队)\\s?([\\S\\s]*)': '/team view $2',
             '^(取消报名)\\s?([\\S\\s]*)': '/team cancel $2',
             '^(团队报名)\\s?([\\S\\s]+)': '/team apply $2',
-            
+
+            '^添加记录\\s(\\S*)$': '/sign add $1',
+            '^删除记录\\s(\\S*)$': '/sign delete $1',
+
             '^添加别名\\s([\\S\\s]+)': '/alias add $1',
             '^删除别名\\s([\\S\\s]+)': '/alias delete $1'
         };
@@ -342,7 +347,7 @@ class Bot{
             regex_map[`^(咕咕说)\\s?([\\S\\s]+)$`] = '/talk $2';
             regex_map[`^(咕咕)\\s?([\\S\\s]+)$`] = '/chat $2';
         }
-        
+
         let message = data.message.trim();
         for(let i in regex_map) {
             let regex = new RegExp(i);
@@ -420,7 +425,7 @@ class Bot{
             if(this.route[command] != undefined) {
                 let argsList = this.route[command].argsList();
                 let args = {};
-                
+
                 if(argsList instanceof Array) {
                     try{
                         for(let i in argsList) {

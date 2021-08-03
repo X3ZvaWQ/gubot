@@ -70,7 +70,7 @@ class CqHttp{
         groupList = groupList.data;
         let groups = Group.findAll({
             where: {
-                bot_id: cqhttp.qq,
+                bot_id: cqhttp.qq || '',
                 group_id: groupList.map(group => `${group.group_id}`)
             }
         });

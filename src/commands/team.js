@@ -291,7 +291,7 @@ module.exports = class TeamHandler {
             remarks: team.remarks,
             cells: cells,
         });
-        return `[CQ:image,file=file://${image}]`;
+        return `[CQ:image,file=file://${platform}${image}]`;
     }
 
     static argsList(ctx) {
