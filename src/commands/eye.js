@@ -1,6 +1,7 @@
 const Jx3api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 const moment = require('moment');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class ReinforcementHandler {
     async handle(ctx) {
@@ -21,7 +22,7 @@ module.exports = class ReinforcementHandler {
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 600);
         }
-        return `[CQ:image,file=file://${platform}${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

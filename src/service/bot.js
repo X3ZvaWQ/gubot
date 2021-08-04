@@ -67,7 +67,7 @@ class Bot{
         if(enable) {
             const ImageGenerator = require('./imageGenerator');
             const puppeteer = require('puppeteer');
-            const browser = await puppeteer.launch({args: ['--no-sandbox']});
+            const browser = await puppeteer.launch();
             this.imageGenerator = new ImageGenerator(browser);
         }else{
             this.imageGenerator = new Proxy({}, {

@@ -1,6 +1,7 @@
 const Jx3api = require('../service/httpApi/jx3api');
 const moment = require('moment');
 const fs = require('fs-extra');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class SeniorityHandler {
     async handle(ctx) {
@@ -33,7 +34,7 @@ module.exports = class SeniorityHandler {
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 60*60);
         }
-        return `[CQ:image,file=file://${platform}${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

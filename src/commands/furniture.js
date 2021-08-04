@@ -1,5 +1,6 @@
 const Jx3api = require('../service/httpApi/jx3api');
-const fs = require('fs-extra')
+const fs = require('fs-extra');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class FurnitureHandler {
     async handle(ctx) {
@@ -13,7 +14,7 @@ module.exports = class FurnitureHandler {
             await bot.redis.set(redis_key, JSON.stringify(result));
             await bot.redis.expire(redis_key, 86400);
         }
-        return `[CQ:image,file=file://${platform}${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

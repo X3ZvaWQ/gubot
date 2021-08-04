@@ -1,4 +1,5 @@
 const Websocket = require('./websocket');
+const url = require('url');
 
 class CqHttp{
     wsApi;
@@ -79,6 +80,10 @@ class CqHttp{
 
     send(object){
         this.ws.sendJSON(object);
+    }
+
+    static imageCQCode(file) {
+        return `[CQ:image,file=${url.pathToFileURL(file)}]`;
     }
 }
 

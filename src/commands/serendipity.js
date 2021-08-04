@@ -2,6 +2,7 @@ const Jx3box = require('../service/httpApi/jx3box');
 const serendipityMap = require('../assets/json/serendipity.json');
 const moment = require('moment');
 const fs = require('fs-extra');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class SerendipityHandler {
     async handle(ctx) {
@@ -12,18 +13,15 @@ module.exports = class SerendipityHandler {
         //get data from redis
         let result = await bot.redis.get(redis_key);
         //check data is empty?
-        if (result == null || !await fs.exists(result) || args['update'] || true) {
+        if (result == null || !await fs.exists(result) || args['update']) {
             let serendipity = args.serendipity;
-            // if (serendipity != '全部奇遇') {
-            //     serendipity = serendipityMap
-            //         .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
-            //         .map(x => x.name).join(',');
-            // } else {
-            //     serendipity = ''
-            //     /*serendipityMap
-            //         .filter(s => s.languages[0] == 'zhcn')
-            //         .map(x => x.name).join(',')*/;
-            // }
+            if (serendipity != '全部奇遇') {
+                serendipity = serendipityMap
+                    .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
+                    .map(x => x.name).join(',');
+            } else {
+                serendipity = '';
+            }
             let player = args.player;
             if(player == '全部玩家') {
                 player = '';
@@ -42,17 +40,6 @@ module.exports = class SerendipityHandler {
                     name: data.serendipity,
                     time: moment(data.dwTime*1000).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')
                 }));
-                if (serendipity != '全部奇遇') {
-                    if (serendipity == '其他奇遇') {
-                        datas = datas.filter(d => {
-                            return d.type != '普通奇遇' && d.type != '绝世奇遇'
-                        });
-                    } else {
-                        datas = datas.filter(d => {
-                            return d.type == '普通奇遇' || d.type == '绝世奇遇'
-                        });
-                    }
-                }
             }else{
                 datas = [
                     {
@@ -78,7 +65,7 @@ module.exports = class SerendipityHandler {
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 300);
         }
-        return `[CQ:image,file=file://${platform}${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

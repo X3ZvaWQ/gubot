@@ -1,5 +1,6 @@
 const Jx3api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class TravelHandler {
     async handle(ctx) {
@@ -40,7 +41,7 @@ module.exports = class TravelHandler {
                 await bot.redis.expire(redis_key, 86400);
             }
         }
-        return result.map(x => `[CQ:image,file=file://${platform}${x}]`).join('\n');
+        return result.map(x => CqHttp.imageCQCode(x)).join('\n');
     }
 
     static argsList() {

@@ -1,6 +1,7 @@
 const Jx3api = require('../service/httpApi/jx3api');
 const fs = require('fs-extra')
 const moment = require('moment');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class GoldPriceHandler {
     async handle(ctx) {
@@ -29,7 +30,7 @@ module.exports = class GoldPriceHandler {
             await bot.redis.expire(redis_key, 600);
         }
 
-        return `[CQ:image,file=file://${platform}${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

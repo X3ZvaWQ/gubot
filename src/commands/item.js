@@ -2,6 +2,7 @@ const Jx3box = require('../service/httpApi/jx3box');
 const moment = require('moment');
 const fs = require('fs-extra');
 const {__imgPath, __iconPath} = require('@jx3box/jx3box-common/js/jx3box.json')
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class ItemHandler {
     //thanks to JX3BOX's filter, 魔盒 yyds!
@@ -206,7 +207,7 @@ module.exports = class ItemHandler {
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 300);
         }
-        return `[CQ:image,file=file://${platform}${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

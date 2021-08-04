@@ -1,5 +1,6 @@
 const Group = require("../model/group");
 const User = require("../model/user");
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class PermissionHandler {
     static demandPermission = true;
@@ -49,7 +50,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return `[CQ:image,file=file://${platform}${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
+            return CqHttp.imageCQCode(await bot.imageGenerator.generateFromTemplateFile('permissionList', data));
         } else if (ctx.data.message_type == 'private') {
             let users = await User.findAll({
                 where: {
@@ -68,7 +69,7 @@ module.exports = class PermissionHandler {
                     nickname: user.nickname
                 });
             }
-            return `[CQ:image,file=file://${platform}${await bot.imageGenerator.generateFromTemplateFile('permissionList', data)}]`;
+            return CqHttp.imageCQCode(await bot.imageGenerator.generateFromTemplateFile('permissionList', data));
         }
     }
 
