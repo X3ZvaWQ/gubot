@@ -10,6 +10,7 @@ module.exports = {
     serverStatus: require('./serverStatus'),
     achievement: require('./achievement'),
     serendipity: require('./serendipity'),
+    sign: require('./sign'),
     macro: require('./macro'),
     gameUpdate: require('./gameUpdate'),
     sandbox: require('./sandbox'),

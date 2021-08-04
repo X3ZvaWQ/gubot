@@ -1,5 +1,6 @@
 const Jx3box = require('../service/httpApi/jx3box');
-const fs = require('fs-extra')
+const fs = require('fs-extra');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class FlowerPriceHandler {
     async handle(ctx) {
@@ -22,7 +23,7 @@ module.exports = class FlowerPriceHandler {
             await bot.redis.set(key, result);
             await bot.redis.expire(key, 300);
         }
-        return `[CQ:image,file=file://${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

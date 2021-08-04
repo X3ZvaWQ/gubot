@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 const fonts = require('../../env.json').image_fonts;
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class ServerStatusHandler {
     async handle(ctx) {
@@ -15,7 +16,7 @@ module.exports = class ServerStatusHandler {
             await bot.redis.expire('GameUpdate', 600);
         }
 
-        return `[CQ:image,file=file://${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

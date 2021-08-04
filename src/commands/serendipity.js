@@ -1,12 +1,14 @@
 const Jx3box = require('../service/httpApi/jx3box');
-const serendipityMap = require('@jx3box/jx3box-data/data/serendipity/serendipity.json')
+const serendipityMap = require('../assets/json/serendipity.json');
 const moment = require('moment');
 const fs = require('fs-extra');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class SerendipityHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
+        console.log('args', args);
         let redis_key = JSON.stringify('Serendipity:' + JSON.stringify(args));
         //get data from redis
         let result = await bot.redis.get(redis_key);
@@ -18,10 +20,7 @@ module.exports = class SerendipityHandler {
                     .filter(s => ((s.name == args.serendipity || s.type == args.serendipity) && s.languages[0] == 'zhcn'))
                     .map(x => x.name).join(',');
             } else {
-                serendipity = ''
-                /*serendipityMap
-                    .filter(s => s.languages[0] == 'zhcn')
-                    .map(x => x.name).join(',')*/;
+                serendipity = '';
             }
             let player = args.player;
             if(player == '全部玩家') {
@@ -30,7 +29,7 @@ module.exports = class SerendipityHandler {
             let searchKey = {
                 server: args.server,
                 role: player,
-                serendipity: serendipity
+                serendipity: ''
             }
             let datas = await Jx3box.serendipity(searchKey);
             if(datas != null) {
@@ -65,8 +64,8 @@ module.exports = class SerendipityHandler {
             });
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 300);
-        } 
-        return `[CQ:image,file=file://${result}]`;
+        }
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {
@@ -93,8 +92,8 @@ module.exports = class SerendipityHandler {
                 longArgs: 'server',
                 limit: null,
                 nullable: true,
-                default: '绝世奇遇'
-            }, 
+                default: ''
+            },
             {
                 name: 'server',
                 alias: 'server',

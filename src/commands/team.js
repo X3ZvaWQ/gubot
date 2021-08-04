@@ -3,6 +3,7 @@ const Group = require('../model/group');
 const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
 const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json');
 const allschool = require('@jx3box/jx3box-data/data/xf//school.json')
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class TeamHandler {
     static demandPermission = true;
@@ -291,7 +292,7 @@ module.exports = class TeamHandler {
             remarks: team.remarks,
             cells: cells,
         });
-        return `[CQ:image,file=file://${image}]`;
+        return CqHttp.imageCQCode(image);
     }
 
     static argsList(ctx) {

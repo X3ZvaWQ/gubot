@@ -1,5 +1,7 @@
-const fs = require('fs-extra')
+const fs = require('fs-extra');
+const CqHttp = require('../service/cqhttp');
 const XiaoHei = require('../service/httpApi/xiaohei')
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class PriceHandler {
     async handle(ctx) {
@@ -23,7 +25,7 @@ module.exports = class PriceHandler {
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 1800);
         }
-        return `[CQ:image,file=file://${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

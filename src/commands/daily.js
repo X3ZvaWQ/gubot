@@ -1,5 +1,6 @@
 const Jx3api = require('../service/httpApi/jx3api');
-const fs = require('fs-extra')
+const fs = require('fs-extra');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class ServerStatusHandler {
     async handle(ctx) {
@@ -25,7 +26,7 @@ module.exports = class ServerStatusHandler {
             await bot.redis.expire('Daily', 600);
         }
 
-        return `[CQ:image,file=file://${result}]`;
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {

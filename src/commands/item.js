@@ -2,6 +2,7 @@ const Jx3box = require('../service/httpApi/jx3box');
 const moment = require('moment');
 const fs = require('fs-extra');
 const {__imgPath, __iconPath} = require('@jx3box/jx3box-common/js/jx3box.json')
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class ItemHandler {
     //thanks to JX3BOX's filter, 魔盒 yyds!
@@ -37,11 +38,11 @@ module.exports = class ItemHandler {
             }
         },
         secondFormat: (second) => {
-            let day = Math.floor(second / (24 * 3600)); 
+            let day = Math.floor(second / (24 * 3600));
             let hour = Math.floor((second - day * 24 * 3600) / 3600);
             let minute = Math.floor((second - day * 24 * 3600 - hour * 3600) / 60);
             second = second - day * 24 * 3600 - hour * 3600 - minute * 60;
-        
+
             let output = '';
             if (day) output += day + "天";
             if (hour) output += hour + "小时";
@@ -142,13 +143,13 @@ module.exports = class ItemHandler {
             let jin = parseInt(Price / 100 / 100 % 10000);
             let yin = parseInt(Price / 100 % 100);
             let tong = parseInt(Price % 100);
-        
+
             let output = '';
             if (zhuan) output += zhuan + '砖';
             if (jin) output += jin + '金';
             if (yin) output += yin + '银';
             output += tong + '铜';
-        
+
             return output;
         },
         formatPrice: (Price) => {
@@ -205,8 +206,8 @@ module.exports = class ItemHandler {
             });
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 300);
-        } 
-        return `[CQ:image,file=file://${result}]`;
+        }
+        return CqHttp.imageCQCode(result);
     }
 
     static argsList() {
@@ -234,7 +235,7 @@ module.exports = class ItemHandler {
                 limit: null,
                 nullable: true,
                 default: '-'
-            }, 
+            },
             {
                 name: 'update',
                 alias: null,

@@ -1,4 +1,5 @@
 const Jx3sp = require('../service/httpApi/jx3sp');
+const CqHttp = require('../service/cqhttp');
 
 module.exports = class SandBoxHandler {
     async handle(ctx) {
@@ -10,7 +11,7 @@ module.exports = class SandBoxHandler {
         if (result == null) {
             let [area, server, updated_at, sandbox_image] = await Jx3sp.get(args.server);
             result = `------沙盘查询------
-            [CQ:image,file=${sandbox_image}]
+            ${CqHttp.imageCQCode(sandbox_image)}
             --------------
             服务器：${area}·${server}
             上次更新时间：${updated_at}`;

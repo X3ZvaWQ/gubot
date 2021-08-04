@@ -1,4 +1,5 @@
 const Websocket = require('./websocket');
+const url = require('url');
 
 class CqHttp{
     wsApi;
@@ -70,7 +71,7 @@ class CqHttp{
         groupList = groupList.data;
         let groups = Group.findAll({
             where: {
-                bot_id: cqhttp.qq,
+                bot_id: cqhttp.qq || '',
                 group_id: groupList.map(group => `${group.group_id}`)
             }
         });
@@ -79,6 +80,10 @@ class CqHttp{
 
     send(object){
         this.ws.sendJSON(object);
+    }
+
+    static imageCQCode(file) {
+        return `[CQ:image,file=${url.pathToFileURL(file)}]`;
     }
 }
 
