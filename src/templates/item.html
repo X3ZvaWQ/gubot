@@ -620,7 +620,7 @@
             </div>
         </div>
         {{/if}}
-        {{if prices.logs}}
+        {{if prices.logs && prices.logs[0]}}
         <style>
             #price-chart{
                 width: 640px;
@@ -630,15 +630,17 @@
         </style>
         <div id="price-chart"></div>
         {{/if}}
-        {{if searchResult}}
+        {{if searchResult && searchResult.length > 1}}
         <h4 class="title">其他搜索结果</h4>
         <div class="search-result">
             {{each searchResult}}
+            {{if $value.id != item.id}}
             <div class="search-card">
                 <img src="{{filters.iconUrl($value.IconID)}}">
                 <p>{{$value.Name}}</p>
                 <p>{{$value.id}}</p>
             </div>
+            {{/if}}
             {{/each}}
         </div>
         <p class="tips">搜索结果有多个物品可以直接输入上面的形如"5_24428"的id进行查询</p>
