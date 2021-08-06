@@ -1,7 +1,6 @@
 const fs = require('fs-extra');
 const CqHttp = require('../service/cqhttp');
 const XiaoHei = require('../service/httpApi/xiaohei')
-const CqHttp = require('../service/cqhttp');
 
 module.exports = class PriceHandler {
     async handle(ctx) {
