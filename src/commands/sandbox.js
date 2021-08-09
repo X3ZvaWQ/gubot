@@ -11,7 +11,7 @@ module.exports = class SandBoxHandler {
         if (result == null) {
             let [area, server, updated_at, sandbox_image] = await Jx3sp.get(args.server);
             result = `------沙盘查询------
-            ${CqHttp.imageCQCode(sandbox_image)}
+            [CQ:image,file=${sandbox_image}]
             --------------
             服务器：${area}·${server}
             上次更新时间：${updated_at}`;
