@@ -60,7 +60,7 @@ Group.init({
     },
     members: {
         type: DataTypes.STRING,
-        defaultValue: null
+        defaultValue: ''
     },
     bot_voice_type: {
         type: DataTypes.INTEGER,

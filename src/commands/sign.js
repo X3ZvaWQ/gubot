@@ -41,7 +41,7 @@ module.exports = class ReinforcementHandler {
                 groupname: group_id
             })
         }
-        let members = group.members.split(',');
+        let members = group.members ? group.members.split(',') : [];
         members.push(args.player);
         group.members = members.join(',');
         group.save();
@@ -59,7 +59,7 @@ module.exports = class ReinforcementHandler {
         if(group == null) {
             throw `错误：当前群并没有监控过 ${args.player}`;
         }
-        let members = group.members.split(',');
+        let members = group.members ? group.members.split(',') : [];
         let index = members.indexOf(args.player)
         if(index == -1) {
             throw `错误：当前群并没有监控过 ${args.player}`
