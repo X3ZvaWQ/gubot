@@ -32,8 +32,11 @@ class Websocket{
         bot.log(`Websocket: ws [${this.name}] connected.`, 'success');
     }
     onClose(code, reason) {
-        this.init();
-        bot.log(`Websocket: ws [${this.name}] closed. Try to reconnect. \n    code: ${code}\n    reason: ${reason}`, 'error');
+        let that = this;
+        setTimeout(() => {
+            that.init();
+        }, 5000);
+        bot.log(`Websocket: ws [${this.name}] closed. Try to reconnect in 5s. \n    code: ${code}\n    reason: ${reason}`, 'error');
     }
     onError(error) {
         bot.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`, 'error');
@@ -62,7 +65,11 @@ class Websocket{
     }
 
     send(data) {
-        this._ws.send(data);
+        if(this._ws.readyState === Ws.OPEN) {
+            this._ws.send(data);
+        }else{
+            this.onClose();
+        }
     }
 
     sendJSON(object) {
