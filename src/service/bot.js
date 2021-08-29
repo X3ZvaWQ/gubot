@@ -8,6 +8,7 @@ class Bot{
 
     log(message, type) {
         type = type || 'info';
+        message = typeof message == 'object' ? JSON.stringify(message, null ,4) : message;
         let msg = `[${moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}][${type.toUpperCase().padStart(7)}]${message}`;
         if(type == 'verbose') {
             msg = msg.gray;
