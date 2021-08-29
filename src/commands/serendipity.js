@@ -8,7 +8,6 @@ module.exports = class SerendipityHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        console.log('args', args);
         let redis_key = JSON.stringify('Serendipity:' + JSON.stringify(args));
         //get data from redis
         let result = await bot.redis.get(redis_key);

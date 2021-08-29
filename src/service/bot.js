@@ -6,10 +6,9 @@ class Bot{
         this.ENV = ENV;
     }
 
-
     log(message, type) {
         type = type || 'info';
-        let msg = `[${moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}][${type.toUpperCase().padStart(7)}] ${message}`;
+        let msg = `[${moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')}][${type.toUpperCase().padStart(7)}]${message}`;
         if(type == 'verbose') {
             msg = msg.gray;
         }
@@ -145,117 +144,117 @@ class Bot{
     }
 
     async handleRequest(request, cqhttp) {
-        if(request.post_type == 'message') {
-            let result;
-            if(request.message.split('')[0] == '/'){
-                result = await this.handleCommand(request, cqhttp);
-            }else{
-                result = await this.handleMessage(request, cqhttp);
-            }
-            if(result != null && result != undefined && result != ''){
-                return result;
-            }
-        }
-        if(request.post_type == 'request') {
-            //加好友申请
-            if(request.request_type == 'friend') {
-                if(!this.ENV.agree_friend_invite) {
-                    return false;
+        try{
+            if(request.post_type == 'message') {
+                let result;
+                if(request.message.split('')[0] == '/'){
+                    result = await this.handleCommand(request, cqhttp);
+                }else{
+                    result = await this.handleMessage(request, cqhttp);
                 }
-                this.log(`接受了 ${request.user_id} 的加好友请求`, 'info')
-                //接受申请
-                return {
-                    action: "set_friend_add_request",
-                    params: {
-                        flag: request.flag,
-                        approve: true
+                if(result != null && result != undefined && result != ''){
+                    return result;
+                }
+            }
+            if(request.post_type == 'request') {
+                //加好友申请
+                if(request.request_type == 'friend') {
+                    if(!this.ENV.agree_friend_invite) {
+                        return false;
+                    }
+                    this.log(`[${cqhttp.qq}] 接受了 ${request.user_id} 的加好友请求`, 'info')
+                    //接受申请
+                    return {
+                        action: "set_friend_add_request",
+                        params: {
+                            flag: request.flag,
+                            approve: true
+                        }
                     }
                 }
-            }
-            //邀请入群
-            if(request.request_type == 'group' && request.sub_type == 'invite') {
-                if(!this.ENV.agree_group_invite) {
-                    return false;
-                }
-                this.log(`接受了 ${request.user_id} 的邀请加入群 ${request.group_id} 的请求`, 'info')
-                const Group = require('../model/group');
-                let group = await Group.findOne({
-                    where: {
-                        group_id: request.group_id
+                //邀请入群
+                if(request.request_type == 'group' && request.sub_type == 'invite') {
+                    if(!this.ENV.agree_group_invite) {
+                        return false;
                     }
-                });
-                if(group == null) {
-                    group = await Group.create({
-                        bot_id: request.self_id,
-                        group_id: request.group_id,
-                        groupname: request.group_id,
-                        server: '唯我独尊'
+                    this.log(`[${cqhttp.qq}]接受了 ${request.user_id} 的邀请加入群 ${request.group_id} 的请求`, 'info')
+                    const Group = require('../model/group');
+                    let group = await Group.findOne({
+                        where: {
+                            group_id: request.group_id
+                        }
                     });
+                    if(group == null) {
+                        group = await Group.create({
+                            bot_id: request.self_id,
+                            group_id: request.group_id,
+                            groupname: request.group_id,
+                            server: '唯我独尊'
+                        });
+                    }
+                    //接受申请
+                    return {
+                        action: "set_group_add_request",
+                        params: {
+                            flag: request.flag,
+                            sub_type: 'invite',
+                            approve: true
+                        }
+                    };
                 }
-                //接受申请
-                return {
-                    action: "set_group_add_request",
-                    params: {
-                        flag: request.flag,
-                        sub_type: 'invite',
-                        approve: true
-                    }
-                };
-            }
-            //加群申请
-            if(request.request_type == 'group' && request.sub_type == 'add') {
-                const Group = require('../model/group');
-                let group = await Group.findOne({
-                    where: {
-                        group_id: request.group_id
-                    }
-                });
-                if(group == null) {
-                    group = await Group.create({
-                        bot_id: request.self_id,
-                        group_id: request.group_id,
-                        groupname: request.group_id,
-                        server: '唯我独尊'
+                //加群申请
+                if(request.request_type == 'group' && request.sub_type == 'add') {
+                    const Group = require('../model/group');
+                    let group = await Group.findOne({
+                        where: {
+                            group_id: request.group_id
+                        }
                     });
-                }
-                if(group.accept_join_group != null) {
-                    if(request.comment && request.comment.indexOf(group.accept_join_group) != -1) {
-                        this.log(`接受了 ${request.user_id} 的申请加入群 ${request.group_id} 的请求`, 'info');
-                        return {
-                            action: "set_group_add_request",
-                            params: {
-                                flag: request.flag,
-                                sub_type: 'add',
-                                approve: true
+                    if(group == null) {
+                        group = await Group.create({
+                            bot_id: request.self_id,
+                            group_id: request.group_id,
+                            groupname: request.group_id,
+                            server: '唯我独尊'
+                        });
+                    }
+                    if(group.accept_join_group != null) {
+                        if(request.comment && request.comment.indexOf(group.accept_join_group) != -1) {
+                            this.log(`[${cqhttp.qq}]接受了 ${request.user_id} 的申请加入群 ${request.group_id} 的请求`, 'info');
+                            return {
+                                action: "set_group_add_request",
+                                params: {
+                                    flag: request.flag,
+                                    sub_type: 'add',
+                                    approve: true
+                                }
                             }
                         }
                     }
                 }
-            }
-        }
-    }
-
-    async handleCommand(data, cqhttp) {
-        try{
-            let [args, command] = await this.parseArgs(data) ?? [];
-            let ctx = {
-                command: command,
-                args: args,
-                data: data,
-                cqhttp: cqhttp
-            }
-            if(this.route[command] != undefined) {
-                if(this.route[command].demandPermission){
-                    ctx['permission'] = await this.checkPermission(data);
-                }
-                let handler = new this.route[command]();
-                return await handler.handle(ctx);
             }
         }catch(e) {
             if(typeof e == 'object') {
                 this.log(e.stack || e, 'error');
             }
             return e;
+        }
+    }
+
+    async handleCommand(data, cqhttp) {
+        let [args, command] = await this.parseArgs(data) ?? [];
+        let ctx = {
+            command: command,
+            args: args,
+            data: data,
+            cqhttp: cqhttp
+        }
+        if(this.route[command] != undefined) {
+            if(this.route[command].demandPermission){
+                ctx['permission'] = await this.checkPermission(data);
+            }
+            let handler = new this.route[command]();
+            return await handler.handle(ctx);
         }
     }
 
