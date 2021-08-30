@@ -23,9 +23,11 @@ class XiaoHei{
         if(outWardList.length == 1) {
             return outWardList[0].id;
         }
-        //返回第一个结果但是完全符合
-        if(outWardList[0].outwardName == outwardName || outWardList[0].outwardAlias == outwardName || outWardList[0].outwardAlias1 == outwardName) {
-            return outWardList[0].id;
+        //返回多个结果但是存在完全符合的结果
+        for(let outward of outWardList){
+            if(outward.outwardName == outwardName || outward.outwardAlias == outwardName || outward.outwardAlias1 == outwardName) {
+                return outward.id;
+            }
         }
         //返回多个结果没有完全符合的
         throw `提示：${outWardList.map((outward) => outward.outwardName).join('|')}`
