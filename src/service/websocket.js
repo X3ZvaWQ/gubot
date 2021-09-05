@@ -4,6 +4,7 @@ const uuid = require('uuid').v4;
 class Websocket{
     handleMessageStack = [];
     requestWaiting = {};
+    reconnectTimer;
 
     constructor(url, name) {
         this.name = name;
@@ -27,18 +28,24 @@ class Websocket{
             ws.onMessage(message);
         });
     }
-
+    
     onOpen() {
         bot.log(`Websocket: ws [${this.name}] connected.`, 'success');
     }
     onClose(code, reason) {
         let that = this;
-        setTimeout(() => {
-            that.init();
-        }, 5000);
-        bot.log(`Websocket: ws [${this.name}] closed. Try to reconnect in 5s. \n    code: ${code}\n    reason: ${reason}`, 'error');
+        this._ws.close();
+        this._ws = null;
+        if(this.reconnectTimer === null) {
+            this.reconnectTimer = setTimeout(() => {
+                that.reconnectTimer = null;
+                that.init();
+            }, 10000);
+        }
+        bot.log(`Websocket: ws [${this.name}] closed. Try to reconnect in 10s. \n    code: ${code}\n    reason: ${reason}`, 'error');
     }
     onError(error) {
+        this.onClose(0, 'error');
         bot.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`, 'error');
     }
     
