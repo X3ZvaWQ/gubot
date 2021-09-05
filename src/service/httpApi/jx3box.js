@@ -66,10 +66,21 @@ class Jx3box {
         }
     }
 
+    //https://helper.jx3box.com/api/wiki/post?type=achievement&source_id=8487&supply=1
     static async achievementPost(ID) {
-        let response = await $helper.get(`/api/achievement/${ID}/post`);
+        let response = await $helper.get(`/api/wiki/post`, {
+            params: {
+                type: 'achievement',
+                supply: 1,
+                source_id: ID
+            }
+        });
         let data = response.data;
-        return data;
+        if(data.code == 200) {
+            return data;
+        }else{
+            throw `错误：[${Jx3box.apiDisplayName}]的接口[helper/achievement/get]返回异常`
+        }
     }
 
     static async serendipity(params) {
