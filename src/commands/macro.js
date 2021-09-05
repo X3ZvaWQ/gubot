@@ -12,16 +12,16 @@ module.exports = class MacroHandler {
         if (result == null) {
             let kungfu = xfs[args.xf];
             if (kungfu == undefined) {
-                throw `\n错误：未知的心法 ${args.xf}`;
+                throw `错误：未知的心法 ${args.xf}`;
             }
-            kungfuid = kungfu.id;
+            let kungfuid = kungfu.id;
             //根据rank 判断从jx3api获取数据还是从jx3box获取数据
             //-1从jx3api拿，0从jx3box的宏推荐拿，1-10从jx3box的宏排名拿
             let macroId;
             if(args.rank < 1) {
                 if(args.rank == -1) {
                     let data = await Jx3api.macro(args.xf);
-                    result = `咕bot ${data.name} 宏
+                    result = `咕bot ${data.name} 宏 来源jx3api
                     ------
                     ${data.content}
                     ------
@@ -30,7 +30,7 @@ module.exports = class MacroHandler {
                     let recommandList = await Jx3box.macroRecommand();
                     macroId = recommandList.filter((macro) => (macro.icon == kungfu.icon))[0];
                     //如果找不到推荐宏的话就直接从排行榜取
-                    if(macroId.length == 0) {
+                    if(macroId == undefined) {
                         ctx.args.rank = 1;
                         return await this.handle(ctx);
                     }
@@ -45,7 +45,6 @@ module.exports = class MacroHandler {
             //否则说明macroId已经有值，需要根据postId从jx3box解析对应宏
             if(result == null){
                 let post = await Jx3box.macroContent(macroId);
-                post = post.post;
                 let macros = post.post_meta.data.map(async (macro) => {
                     let talents;
                     if (macro.talent != '' && macro.talent != null) {

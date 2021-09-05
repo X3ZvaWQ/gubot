@@ -267,7 +267,8 @@ class Bot{
             }
         }
         let regex_map = {
-            '^宏\\s(\\S+)$': '/macro $1',
+            '^宏\\s([\\S\\s]+)$': '/macro $1',
+            '^文字宏\\s([\\S]+)$': '/macro $1 -1',
 
             '^骚话$': '/saohua',
             '^语音骚话$': '/saohuav',

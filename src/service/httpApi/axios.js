@@ -59,6 +59,15 @@ const $helper = axios.create({
 });
 exports.$helper = $helper;
 
+const $cms = axios.create({
+    baseURL: `https://cms.jx3box.com`,
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+    }
+});
+exports.$cms = $cms;
+
 const $jx3api = axios.create({
     baseURL: jx3api_baseurl,
     headers: {

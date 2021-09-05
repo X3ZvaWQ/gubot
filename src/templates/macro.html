@@ -3,7 +3,11 @@
     <div class="macro-info">
         <p><strong>{{ game_version }} - {{ xf }}</strong></p>
         <p>作者【<strong>{{ author }}</strong>】</p>
+        {{if rank < 1}}
+        <p><strong>JX3BOX - 当前版本编辑推荐</strong></p>
+        {{else}}
         <p>JX3BOX心法排行榜<strong> 30</strong> 天内同步次数第 <strong>{{ rank }}</strong></p>
+        {{/if}}
     </div>
     <div class="macro-content">
         <hr>
@@ -36,16 +40,11 @@
         <p>{{/each}}</p>
     </div>
     <div class="macro-attention">
-            <p>需要同步的云端宏在该图片的后面</p>
-            <p>请在茗伊插件集打开云端宏按钮显示之后在宏界面同步云端宏</p>
-            <p>以上内容全部来自jx3box，机器人只是一个无情的搬运工</p>
-        
-    </div>
-    <hr>
-    <p class="note">
-        数据来源<span class="stress">jx3box.com</span><br />
+        <p>需要同步的云端宏在该图片的后面</p>
+        <p>请在茗伊插件集打开云端宏按钮显示之后在宏界面同步云端宏</p>
+        <p>以上内容全部来自<span class="stress">jx3box</span>，机器人只是一个无情的搬运工</p>
         本机器人是开源免费的机器人，有需要请加群<span class="stress">116523057</span>获取
-    </p>
+    </div>
 </div>
 <style>
     #template {
@@ -65,8 +64,11 @@
         margin-top: 0.1rem;
     }
     p.note{
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: skyblue;
         text-align: center;
+    }
+    .stress{
+        font-weight: bold;
     }
 </style>

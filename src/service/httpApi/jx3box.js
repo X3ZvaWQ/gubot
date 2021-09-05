@@ -1,4 +1,4 @@
-const { $next, $helper, $spider, $oss, $server } = require('./axios');
+const { $next, $helper, $spider, $oss, $server, $cms } = require('./axios');
 
 class Jx3box {
     static apiDisplayName = 'JX3BOX';
@@ -115,13 +115,12 @@ class Jx3box {
         }
         return data;
     }
-
+    
+    //https://cms.jx3box.com/api/cms/post/10800
     static async macroContent(pid) {
-        let response = await $server.get(`/post/find`, {params :{
-            id: pid
-        }})
+        let response = await $cms.get(`/api/cms/post/${pid}`)
         let data = response.data;
-        if (data.code != 10064) {
+        if (data.code != 0) {
             throw `错误：[${Jx3box.apiDisplayName}] 抓取宏内容时出现错误`;
         }
         return data.data;

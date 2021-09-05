@@ -164,7 +164,7 @@ class Jx3api{
         data = data.data;
         return {
             name: data.name,
-            talents: data.plan,
+            talents: data.holes,
             content: data.command,
             time: response.data.time
         }
