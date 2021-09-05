@@ -4,7 +4,7 @@ class Jx3api{
     static apiDisplayName = 'JX3API';
 
     static async strengthen(xf) {
-        let response = await $jx3api.get('/strengthen', {params:{
+        let response = await $jx3api.get('/app/strengthen', {params:{
             name: xf || "冰心诀"
         }});
         if(response.data.code == 200) {
@@ -21,7 +21,7 @@ class Jx3api{
     }
 
     static async gest(xf) {
-        let response = await $jx3api.get('/gest', {params:{
+        let response = await $jx3api.get('/app/gest', {params:{
             name: xf || "冰心诀"
         }});
         if(response.data.code == 200) {
@@ -44,7 +44,7 @@ class Jx3api{
     }
 
     static async travel(map) {
-        let response = await $jx3api.get('/travel', {params:{
+        let response = await $jx3api.get('/app/travel', {params:{
             map: map || "七秀"
         }});
         if(response.data.code == 200) {
@@ -76,7 +76,7 @@ class Jx3api{
     }
 
     static async saohua() {
-        let response = await $jx3api.get('/random');
+        let response = await $jx3api.get('/app/random');
         if(response.data.code == 200) {
             let result = response.data.data.text;
             return result;
@@ -86,7 +86,7 @@ class Jx3api{
     }
 
     static async daily(server) {
-        let response = await $jx3api.get('/daily', {params:{
+        let response = await $jx3api.get('/app/daily', {params:{
             server: server || "唯我独尊",
         }});
         if(response.data.code == 200) {
@@ -110,7 +110,7 @@ class Jx3api{
     }
 
     static async gold(server){
-        let response = await $jx3api.get('/gold', {params:{
+        let response = await $jx3api.get('/app/gold', {params:{
             server: server || "唯我独尊",
         }});
         if(response.data.code == 200) {
@@ -130,7 +130,7 @@ class Jx3api{
     }
 
     static async furniture(name) {
-        let response = await $jx3api.get(`/furniture`, {params:{
+        let response = await $jx3api.get(`/app/furniture`, {params:{
             name: name
         }});
         if (response.data.code == 200) {
@@ -154,7 +154,7 @@ class Jx3api{
     }
 
     static async macro(name) {
-        let response = await $jx3api.get('/macro', {params:{
+        let response = await $jx3api.get('/app/macro', {params:{
             name: name
         }});
         let data = response.data;
@@ -171,7 +171,7 @@ class Jx3api{
     }
 
     static async seniority(params) {
-        let response = await $jx3api.get(`/seniority`, {params: params});
+        let response = await $jx3api.get(`/app/seniority`, {params: params});
         if (response.data.code == 200) {
             return response.data.data.map((data) => ({
                 avatar: `${__dirname}/../../assets/images/school/${data.sect}.png`,

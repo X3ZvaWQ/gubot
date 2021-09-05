@@ -1,4 +1,5 @@
 const Jx3box = require('../service/httpApi/jx3box');
+const Jx3api = require('../service/httpApi/jx3api');
 const xfs = require('@jx3box/jx3box-data/data/xf/xf.json');
 const xfids = require('@jx3box/jx3box-data/data/xf/xfid.json');
 const CqHttp = require('../service/cqhttp');
@@ -9,62 +10,90 @@ module.exports = class MacroHandler {
         let redis_key = `Macro:${JSON.stringify(args)}`;
         let result = await bot.redis.get(redis_key);
         if (result == null) {
-            let kungfuid = xfs[args.xf];
-            if (kungfuid == undefined) {
+            let kungfu = xfs[args.xf];
+            if (kungfu == undefined) {
                 throw `\n错误：未知的心法 ${args.xf}`;
             }
-            kungfuid = kungfuid.id;
-            let rank = await Jx3box.macroTops(kungfuid);
-            rank = rank[args.rank - 1];
-            let post = await Jx3box.macroContent(rank.pid);
-            post = post.post;
-            let macros = post.post_meta.data.map(async (macro) => {
-                let talents;
-                if (macro.talent != '' && macro.talent != null) {
-                    try {
-                        let talent = JSON.parse(macro.talent);
-                        let redis_talent_key = `Talent:${talent.xf}_${talent.version}`
-                        let talentList = await bot.redis.get(redis_talent_key);
-                        if(talentList == null) {
-                            talentList = await Jx3box.talentsList(talent.version || 'v20201030');
-                            talentList = talentList[talent.xf];
-                            await bot.redis.set(redis_talent_key, JSON.stringify(talentList));
-                        }else{
-                            talentList = JSON.parse(talentList);
-                        }
-                        talents = talent.sq.split(',');
-                        for (let i in talents) {
-                            talents[i] = talentList[`${parseInt(i) + 1}`][talents[i]]['name'];
-                        }
-                    } catch (e) {
-                        talents = ['作者上传的奇穴方案有误，无法解析'];
+            kungfuid = kungfu.id;
+            //根据rank 判断从jx3api获取数据还是从jx3box获取数据
+            //-1从jx3api拿，0从jx3box的宏推荐拿，1-10从jx3box的宏排名拿
+            let macroId;
+            if(args.rank < 1) {
+                if(args.rank == -1) {
+                    let data = await Jx3api.macro(args.xf);
+                    result = `咕bot ${data.name} 宏
+                    ------
+                    ${data.content}
+                    ------
+                    ${data.talents}`;
+                }else if(args.rank == 0) {
+                    let recommandList = await Jx3box.macroRecommand();
+                    macroId = recommandList.filter((macro) => (macro.icon == kungfu.icon))[0];
+                    //如果找不到推荐宏的话就直接从排行榜取
+                    if(macroId.length == 0) {
+                        ctx.args.rank = 1;
+                        return await this.handle(ctx);
                     }
-                } else {
-                    talents = ['无奇穴方案'];
+                    macroId = parseInt(macroId.link.match(/\/macro\/(\d+)/)[1]);
                 }
-                return {
-                    name: `${post.author}#${macro.name}`,
-                    qixue: talents.join(','),
-                    speed: macro.speed != '' ? macro.speed : null,
-                    remark: macro.desc != '' ? macro.desc : null,
-                    content: macro.macro
-                };
-            });
-            for(let m in macros) {
-                macros[m] = await macros[m];
+            }else{
+                let rank = await Jx3box.macroTops(kungfuid);
+                rank = rank[args.rank - 1];
+                macroId = rank.pid
             }
-            let data = {
-                rank: args.rank,
-                author: post.author,
-                game_version: post.meta_1,
-                macro_name: post.post_title,
-                xf: xfids[post.meta_2],
-                macro: macros
+            //如果result已经有值了就跳过这一段代码
+            //否则说明macroId已经有值，需要根据postId从jx3box解析对应宏
+            if(result == null){
+                let post = await Jx3box.macroContent(macroId);
+                post = post.post;
+                let macros = post.post_meta.data.map(async (macro) => {
+                    let talents;
+                    if (macro.talent != '' && macro.talent != null) {
+                        try {
+                            let talent = JSON.parse(macro.talent);
+                            let redis_talent_key = `Talent:${talent.xf}_${talent.version}`
+                            let talentList = await bot.redis.get(redis_talent_key);
+                            if(talentList == null) {
+                                talentList = await Jx3box.talentsList(talent.version || 'v20201030');
+                                talentList = talentList[talent.xf];
+                                await bot.redis.set(redis_talent_key, JSON.stringify(talentList));
+                            }else{
+                                talentList = JSON.parse(talentList);
+                            }
+                            talents = talent.sq.split(',');
+                            for (let i in talents) {
+                                talents[i] = talentList[`${parseInt(i) + 1}`][talents[i]]['name'];
+                            }
+                        } catch (e) {
+                            talents = ['作者上传的奇穴方案有误，无法解析'];
+                        }
+                    } else {
+                        talents = ['无奇穴方案'];
+                    }
+                    return {
+                        name: `${post.author}#${macro.name}`,
+                        qixue: talents.join(','),
+                        speed: macro.speed != '' ? macro.speed : null,
+                        remark: macro.desc != '' ? macro.desc : null,
+                        content: macro.macro
+                    };
+                });
+                for(let m in macros) {
+                    macros[m] = await macros[m];
+                }
+                let data = {
+                    rank: args.rank,
+                    author: post.author,
+                    game_version: post.meta_1,
+                    macro_name: post.post_title,
+                    xf: xfids[post.meta_2],
+                    macro: macros
+                }
+                let macro_sync = macros.map((x) => x.name);
+                result = `${CqHttp.imageCQCode(await bot.imageGenerator.generateFromTemplateFile('macro', data))}
+                    云端宏:
+                    ${macro_sync.join('\n')}`;
             }
-            let macro_sync = macros.map((x) => x.name);
-            result = `${CqHttp.imageCQCode(await bot.imageGenerator.generateFromTemplateFile('macro', data))}
-                云端宏:
-                ${macro_sync.join('\n')}`;
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 86400);
         }
@@ -91,11 +120,11 @@ module.exports = class MacroHandler {
             shortArgs: null,
             longArgs: 'rank',
             limit: {
-                min: 1,
+                min: -1,
                 max: 10
             },
             nullable: true,
-            default: 1
+            default: 0
         }];
     }
 }

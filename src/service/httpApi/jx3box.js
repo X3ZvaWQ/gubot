@@ -95,6 +95,15 @@ class Jx3box {
         return qixue_xf;
     }
 
+    static async macroRecommand() {
+        let response = await $helper.get(`/api/menu_group/macro-rec`);
+        let data = response.data;
+        if (data.code != 200) {
+            throw `错误：[${Jx3box.apiDisplayName}] 抓取宏内容时出现错误`;
+        }
+        return data.data.menu_group.menus;
+    }
+
     static async macroTops(xfid) {
         let response = await $next.get(`/api/macro/tops`, {params:{
             kungfu: xfid,
