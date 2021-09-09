@@ -14,6 +14,7 @@ class Websocket{
 
     init() {
         const ws = this;
+        this.reconnectTimer = null;
         this._ws = new Ws(this.url);
         this._ws.on('open', function() {
             ws.onOpen();
@@ -32,20 +33,22 @@ class Websocket{
     onOpen() {
         bot.log(`Websocket: ws [${this.name}] connected.`, 'success');
     }
+
     onClose(code, reason) {
         let that = this;
-        this._ws.close();
-        this._ws = null;
+        if(this._ws != null) {
+            this._ws.close();
+            this._ws = null;
+        }
         if(this.reconnectTimer === null) {
             this.reconnectTimer = setTimeout(() => {
-                that.reconnectTimer = null;
                 that.init();
             }, 10000);
         }
         bot.log(`Websocket: ws [${this.name}] closed. Try to reconnect in 10s. \n    code: ${code}\n    reason: ${reason}`, 'error');
     }
+    
     onError(error) {
-        this.onClose(0, 'error');
         bot.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`, 'error');
     }
     
