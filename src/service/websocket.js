@@ -72,10 +72,10 @@ class Websocket{
                 }
             }
         }
-    }
+    } 
 
     send(data) {
-        if(this._ws.readyState === Ws.OPEN) {
+        if(this._ws && this._ws.readyState === Ws.OPEN) {
             this._ws.send(data);
         }else{
             this.onClose();
