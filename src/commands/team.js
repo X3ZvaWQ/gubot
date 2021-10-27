@@ -1,8 +1,8 @@
 const Team = require('../model/team');
 const Group = require('../model/group');
-const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
-const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json');
-const allschool = require('@jx3box/jx3box-data/data/xf//school.json')
+const allxf = require('../assets/json/xf.json');
+const allxfid = require('../assets/json/xfid.json');
+const allschool = require('../assets/json/school.json')
 const CqHttp = require('../service/cqhttp');
 
 module.exports = class TeamHandler {
