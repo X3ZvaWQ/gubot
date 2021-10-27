@@ -237,18 +237,18 @@
         "name": "无方",
         "color":"#16708a",
         "id":10627,
-        "icon":10627,
-        "force":22,
-        "kungfuId":23,
+        "icon":15594,
+        "force":27,
+        "kungfuId":29,
         "school":24
     },
     "灵素": {
         "name": "灵素",
         "color":"#39bf9b",
         "id":10626,
-        "icon":10626,
-        "force":22,
-        "kungfuId":23,
+        "icon":15593,
+        "force":27,
+        "kungfuId":28,
         "school":24
     },
     "通用": {
