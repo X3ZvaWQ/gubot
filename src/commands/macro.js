@@ -1,7 +1,7 @@
 const Jx3box = require('../service/httpApi/jx3box');
 const Jx3api = require('../service/httpApi/jx3api');
-const xfs = require('@jx3box/jx3box-data/data/xf/xf.json');
-const xfids = require('@jx3box/jx3box-data/data/xf/xfid.json');
+const xfs = require('../assets/json/xf.json');
+const xfids = require('../assets/json/xfid.json');
 const CqHttp = require('../service/cqhttp');
 
 module.exports = class MacroHandler {
