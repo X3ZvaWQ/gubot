@@ -18,7 +18,7 @@ module.exports = class SandBoxHandler {
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 21600);
         } */
-        return '待更新，请先查看：https://www.j3sp.com/'.replace(/[ ]{2,}/g, "");
+        return '待更新，请前往剑三沙盘查看'.replace(/[ ]{2,}/g, "");
     }
 
     static argsList() {
