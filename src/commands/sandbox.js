@@ -1,24 +1,22 @@
 const Jx3sp = require('../service/httpApi/jx3sp');
-const CqHttp = require('../service/cqhttp');
 
 module.exports = class SandBoxHandler {
     async handle(ctx) {
         //get args from state
         let args = ctx.args;
-        /* let redis_key = `SandBox:${args.server}`;
+        let redis_key = `SandBox:${args.server}`;
         //get data from redis
         let result = await bot.redis.get(redis_key);
         if (result == null) {
             let [area, server, updated_at, sandbox_image] = await Jx3sp.get(args.server);
-            result = `------沙盘查询------
+            result = `[沙盘查询]咕Bot
             [CQ:image,file=${sandbox_image}]
-            --------------
             服务器：${area}·${server}
             上次更新时间：${updated_at}`;
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 21600);
-        } */
-        return '待更新，请前往剑三沙盘查看'.replace(/[ ]{2,}/g, "");
+        }
+        return result.replace(/[ ]{2,}/g, "");
     }
 
     static argsList() {

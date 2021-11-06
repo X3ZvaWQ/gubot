@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const CqHttp = require('../service/cqhttp');
-const XiaoHei = require('../service/httpApi/xiaohei')
+const XiaoHei = require('../service/httpApi/xiaohei');
+const moment = require('moment');
 
 module.exports = class PriceHandler {
     async handle(ctx) {
@@ -16,7 +17,8 @@ module.exports = class PriceHandler {
             let outwardSeconds = await XiaoHei.seconds(outwardId);
             let templateData = {
                 info: outwardInfo,
-                data: outwardSeconds
+                data: outwardSeconds,
+                timestamps: moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')
             };
             result = await bot.imageGenerator.generateFromTemplateFile('outward', templateData, {
                 selector: 'body'

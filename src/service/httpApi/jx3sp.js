@@ -26,7 +26,7 @@ class Jx3sp{
         let area = tr.querySelector('td:nth-of-type(1)').innerHTML.trim();
         server = tr.querySelector('td:nth-of-type(2)').innerHTML.trim();
         let updated_at = tr.querySelector('td:nth-of-type(5)').innerHTML.trim();
-        let sandbox_image = tr.querySelector('td:nth-of-type(7)>img').getAttribute('fc9fbcddb038ef7b').trim();
+        let sandbox_image = tr.querySelector('td:nth-of-type(7)>img').attributes[3].value;
         sandbox_image = `https://img.j3sp.com/uploads/${sandbox_image}.png_small`;
         return [area, server, updated_at, sandbox_image];
     }
