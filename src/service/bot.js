@@ -114,7 +114,7 @@ class Bot{
                 }
             }
             if(message.type == 2002) {
-                let broadcast_msg = `咕咕咕！[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：请前往官网查看，近期风控严格不方便发链接`;
+                let broadcast_msg = `咕咕咕！[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
                 for(let cqhttp of bot.cqhttps){
                     let groups = await cqhttp.getGroupList();
                     for(let group of groups) {
