@@ -136,17 +136,11 @@ class ImageGenerator {
             evaluate: options['evaluate'] || undefined
         }
         const page = await this.puppeteer.newPage();
-        if(!configs['selector']){
-            await page.setViewport({
-                width: configs['size'][0], 
-                height: configs['size'][1],
-                deviceScaleFactor: 2
-            });
-        }else{
-            await page.setViewport({
-                deviceScaleFactor: 2
-            });
-        }
+        await page.setViewport({
+            width: configs['size'][0], 
+            height: configs['size'][1],
+            deviceScaleFactor: 2
+        });
         await page.goto(url, {
             timeout: 0,
             waitUntil: [
