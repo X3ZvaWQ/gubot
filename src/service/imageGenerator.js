@@ -24,7 +24,8 @@ class ImageGenerator {
         const page = await this.puppeteer.newPage();
         await page.setViewport({
             width: configs['size'][0], 
-            height: configs['size'][1]
+            height: configs['size'][1],
+            deviceScaleFactor: 2
         });
         await page.setDefaultNavigationTimeout(0)
         await page.goto(url, {
@@ -138,7 +139,12 @@ class ImageGenerator {
         if(!configs['selector']){
             await page.setViewport({
                 width: configs['size'][0], 
-                height: configs['size'][1]
+                height: configs['size'][1],
+                deviceScaleFactor: 2
+            });
+        }else{
+            await page.setViewport({
+                deviceScaleFactor: 2
             });
         }
         await page.goto(url, {
