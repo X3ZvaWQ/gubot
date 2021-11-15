@@ -4,24 +4,24 @@ class Jx3api{
     static apiDisplayName = 'JX3API';
 
     static async strengthen(xf) {
-        let response = await $jx3api.get('/app/strengthen', {params:{
+        let response = await $jx3api.get('/app/heighten', {params:{
             name: xf || "冰心诀"
         }});
         if(response.data.code == 200) {
-            let data = response.data.data;
+            let data = response.data.data.data;
             return {
-                增强小药: data.heightenDrug,
-                增强小吃: data.heightenFood,
-                辅助小药: data.auxiliaryDrug,
-                辅助小吃: data.auxiliaryFood
+                增强小药: data.heighten_drug,
+                增强小吃: data.heighten_food,
+                辅助小药: data.auxiliary_drug,
+                辅助小吃: data.auxiliary_food
             }
         }else{
-            throw `错误：[${Jx3api.apiDisplayName}]的接口[strengthen]返回值异常，请检查参数。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[heighten]返回值异常，请检查参数。`;
         }
     }
 
     static async gest(xf) {
-        let response = await $jx3api.get('/app/gest', {params:{
+        let response = await $jx3api.get('/app/matrix', {params:{
             name: xf || "冰心诀"
         }});
         if(response.data.code == 200) {
@@ -39,7 +39,7 @@ class Jx3api{
                 七重归一: '空'
             }
         }else{
-            throw `错误：[${Jx3api.apiDisplayName}]的接口[gest]返回值异常，请检查参数。`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[matrix]返回值异常，请检查参数。`;
         }
     }
 
@@ -57,15 +57,15 @@ class Jx3api{
                 let cur = data[i];
                 result.data.push({
                     name: cur.name,
-                    geomantic: cur.geomanticScore,
-                    hard: cur.hardScore,
-                    view: cur.viewScore,
-                    practical: cur.practicalScore,
-                    interesting: cur.interestingScore,
+                    geomantic: cur.geomantic_score,
+                    hard: cur.hard_score,
+                    view: cur.view_score,
+                    practical: cur.practical_score,
+                    interesting: cur.interesting_score,
                     source: cur.source,
-                    quality: cur.qualityLevel,
-                    levelLimit: cur.levelLimit,
-                    image_url: cur.imagePath,
+                    quality: cur.quality_level,
+                    levelLimit: cur.level_limit,
+                    image_url: cur.image_path,
                     tip: cur.tip.replace(/\n/g, '<br />')
                 });
             }
@@ -92,16 +92,16 @@ class Jx3api{
         if(response.data.code == 200) {
             let data = response.data.data;
             let result = {
-                时间: data.DateTime,
-                星期: data.Week,
-                秘境日常: data.DayWar,
-                驰援任务: data.DayCommon,
-                阵营日常: data.DayCamp,
-                美人图: data.DayDraw || '（今天不画）',
-                战场首胜: data.DayBattle,
-                周常五人本: data.WeekFive,
-                周常十人本: data.WeekTeam,
-                周公共日常: data.WeekCommon
+                时间: data.date,
+                星期: data.week,
+                秘境日常: data.dayWar,
+                驰援任务: data.dayPublic,
+                阵营日常: data.dayCamp,
+                美人图: data.dayDraw || '（今天不画）',
+                战场首胜: data.dayBattle,
+                周常五人本: data.weekFive,
+                周常十人本: data.weekTeam,
+                周公共日常: data.weekPublic
             };
             return result; 
         }else{
@@ -122,7 +122,9 @@ class Jx3api{
                 7881: data.data['7881'],
                 dd373: data.data['dd373'],
                 uu898: data.data['uu898'],
-                万宝楼: data.data['wanbaolou']
+                万宝楼: data.data['wanbaolou'],
+                贴吧: data.data['tieba'],
+
             }
         }else{
             throw `错误：[${Jx3api.apiDisplayName}]的接口[gold]返回值异常，请检查参数。`;
@@ -137,19 +139,19 @@ class Jx3api{
             let data = response.data.data;
             return {
                 name: data.name,
-                geomantic: data.geomanticScore,
-                hard: data.hardScore,
-                view: data.viewScore,
-                practical: data.practicalScore,
-                interesting: data.interestingScore,
+                geomantic: data.geomantic_score,
+                hard: data.hard_score,
+                view: data.view_score,
+                practical: data.practical_score,
+                interesting: data.interesting_score,
                 source: data.source,
                 quality: data.quality,
-                levelLimit: data.levelLimit,
-                image_url: data.imagePath,
+                levelLimit: data.level_limit,
+                image_url: data.image_path,
                 tip: data.tip.replace(/\n/g, '<br />')
             };
         } else {
-            throw `错误：[${Jx3api.apiDisplayName}]的接口[serendipity]返回异常，请检查参数`;
+            throw `错误：[${Jx3api.apiDisplayName}]的接口[furniture]返回异常，请检查参数`;
         }
     }
 
@@ -164,9 +166,9 @@ class Jx3api{
         data = data.data;
         return {
             name: data.name,
-            talents: data.holes,
-            content: data.command,
-            time: response.data.time
+            talents: data.qixue,
+            content: data.macro,
+            time: data.time
         }
     }
 
