@@ -110,7 +110,7 @@ class Jx3api{
     }
 
     static async gold(server){
-        let response = await $jx3api.get('/app/gold', {params:{
+        let response = await $jx3api.get('/app/demon', {params:{
             server: server || "唯我独尊",
         }});
         if(response.data.code == 200) {
