@@ -30,7 +30,7 @@ module.exports = class TeamCalcelHandler {
         registry.registerHandler((data) => (
             data.post_type == 'message' &&
             data.message_type == 'group' &&
-            data.message.startsWith('取消报名')
+            data.message.startsWith('取消报名 ')
         ), this);
     }
 
@@ -60,8 +60,10 @@ module.exports = class TeamCalcelHandler {
         let cell = cells.filter((x) => (x.applied && x.applicant.qq == user.qq));
         if (cell.length < 1) {
             throw `错误：你没有报名id为 ${team.id} 的团队。`;
+        } else if(cell.length > 1 && args.game_id == '-'){
+            throw `错误：id为 ${team.id} 的团队内有多个你的报名，请指定要取消的id。`;   
         }
-        if (args.game_id == '-') {
+        if (cell.length < 1) {
             for (let i in cell) {
                 cell[i].xf = null;
                 cell[i].applied = false,

@@ -42,7 +42,7 @@ module.exports = class TeamApplyHandler {
         registry.registerHandler((data) => (
             data.post_type == 'message' &&
             data.message_type == 'group' &&
-            data.message.startsWith('团队报名')
+            (data.message.startsWith('团队报名 ') || data.message.startsWith('报名 '))
         ), this);
     }
 

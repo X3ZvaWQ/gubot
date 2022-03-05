@@ -44,7 +44,7 @@ module.exports = class TeamCreateHandler {
         registry.registerHandler((data) => (
             data.post_type == 'message' &&
             data.message_type == 'group' &&
-            data.message.startsWith('创建团队')
+            data.message.startsWith('创建团队 ')
         ), this);
     }
 

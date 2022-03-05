@@ -14,21 +14,24 @@
     #title #left{
         display: inline-block;
         height: 100%;
-        width: 60%;
+        width: 55%;
     }
     #title #left h2{
         margin-top: 0;
-        margin-bottom: .75rem;
+        margin-bottom: .25rem;
     }
     #title #left p{
-        text-align: right;
-        padding-right: 1.75rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     #title #right{
         vertical-align: top;
         display: inline-block;
         height: 100%;
-        width: 39%;
+        width: 45%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-indent: 2rem;
     }
     #team{ 
         display: flex;
@@ -37,6 +40,9 @@
         justify-content: flex-start;
         height: 390px;
         width: 752px;
+    }
+    .cell-applicant {
+        text-shadow: 0 0 10px white; 
     }
     .cell-applicant.right-border, .cell-optional.right-border{
         border-right: 1px solid gray;
