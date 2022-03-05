@@ -1,21 +1,37 @@
-var Sequelize = require('sequelize');
-var DataTypes = Sequelize.DataTypes;
-var Model = Sequelize.Model;
+const GroupOption = require('./groupOptions');
+const Team = require('./team');
+const Sequelize = require('sequelize');
+const DataTypes = Sequelize.DataTypes;
+const Model = Sequelize.Model;
 
 let sequelize = bot.sequelize;
 
 class Group extends Model {
+    async getOption(option) {
+        let groupOptions = await this.getOptions();
+        for (let groupOption in groupOptions) {
+            if (groupOption.option == option) {
+                return groupOption.value;
+            }
+        }
+        return null;
+    }
 
+    async getUsers() {
+        const User = require('./user');
+        return User.findAll({
+            where: {
+                group_id: this.group_id
+            }
+        })
+    }
 }
 
 Group.init({
-    bot_id: {
-        type: DataTypes.STRING
-    },
     group_id: {
         type: DataTypes.STRING
     },
-    nickname: {
+    botname: {
         type: DataTypes.STRING,
         defaultValue: '咕咕'
     },
@@ -24,47 +40,7 @@ Group.init({
     },
     server: {
         type: DataTypes.STRING,
-        defaultValue: '唯我独尊'
-    },
-    convenient:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
-    },
-    chat:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
-    },
-    group_serendipity_broadcast:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    },
-    news_broadcast:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
-    },
-    server_broadcast:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
-    },
-    serendipity_broadcast:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    },
-    meme:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
-    },
-    accept_join_group: {
-        type: DataTypes.STRING,
-        defaultValue: null
-    },
-    members: {
-        type: DataTypes.STRING,
-        defaultValue: ''
-    },
-    bot_voice_type: {
-        type: DataTypes.INTEGER,
-        defaultValue: 101016
+        defaultValue: '梦江南'
     }
 }, {
     sequelize,
@@ -74,4 +50,15 @@ Group.init({
     createdAt: 'created_at',
     updatedAt: 'updated_at'
 });
+
+Group.hasMany(GroupOption, {
+    foreignKey: 'group_id',
+    as: 'options'
+});
+
+Group.hasMany(Team, {
+    foreignKey: 'group_id',
+    as: 'teams'
+});
+
 module.exports = Group;

@@ -141,9 +141,6 @@ class Team extends Model {
 }
 
 Team.init({
-    group_id: {
-        type: DataTypes.STRING,
-    },
     name: {
         type: DataTypes.STRING,
     },
@@ -166,6 +163,7 @@ Team.init({
     tableName: 'teams',
     timestamps: true,
     createdAt: 'created_at',
-    updatedAt: 'updated_at'
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at'
 });
 module.exports = Team;

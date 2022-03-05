@@ -1,8 +1,9 @@
 const axios = require('axios');
+const ENV = require('../../../env.json');
 
 const {__next, __spider, __helperUrl, __ossRoot, __server} = require('@jx3box/jx3box-common/js/jx3box.json')
-const jx3tuilan_baseurl = bot.ENV.jx3tuilan_baseurl || '';
-const jx3api_baseurl = bot.ENV.jx3api_baseurl || 'https://jx3api.com';
+const jx3tuilan_baseurl = ENV.jx3tuilan_baseurl || '';
+const jx3api_baseurl = ENV.jx3api_baseurl || 'https://jx3api.com';
 const xiaohei_url = 'https://www.j3price.top:8088/black-api/api';
 
 const $tuilan = axios.create({

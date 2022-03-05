@@ -28,6 +28,7 @@
     "mysql2": "^2.1.0",
     "puppeteer": "^5.5.0",
     "redis": "^3.0.2",
+    "require-all": "^3.0.0",
     "sequelize": "^6.3.4",
     "tencentcloud-sdk-nodejs": "^4.0.170",
     "tencentcloud-sdk-nodejs-nlp": "^4.0.165",

@@ -1,5 +1,5 @@
-const Api = require('../service/api');
-const CqHttp = require('../service/cqhttp');
+const Api = require('../../../service/api');
+const CqHttp = require('../../../service/cqhttp');
 
 module.exports = class DouTuHandler {
     async handle() {
