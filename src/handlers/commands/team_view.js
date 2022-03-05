@@ -48,7 +48,7 @@ module.exports = class TeamViewHandler {
             });
         }
         if (team == null) {
-            throw '错误：该团队不存在，请使用/team list查看本群团队';
+            throw '错误：该团队不存在，请使用 团队列表 查看本群团队';
         }
         let cells = JSON.parse(team.data);
         for (let i in cells) {

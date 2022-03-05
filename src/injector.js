@@ -78,7 +78,7 @@ module.exports = class Injector {
                 if (arg.nullable) {
                     value = arg.default;
                 } else {
-                    throw `Error: ${arg.displayName || arg.name || ''} 必填参数缺失，请使用/help命令查看命令用法`;
+                    throw `错误: ${arg.displayName || arg.name || ''} 必填参数缺失，请使用/help命令查看命令用法`;
                 }
             }
             if (arg.type == 'server' && value == '-') {

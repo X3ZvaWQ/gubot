@@ -47,7 +47,7 @@ module.exports = class TeamDeleteHandler {
             });
         }
         if (team == null) {
-            throw '错误：该团队不存在，请使用/team list查看本群团队';
+            throw '错误：该团队不存在，请使用 团队列表 查看本群团队';
         }
         let [id, name] = [team.id, team.name];
         await team.destroy();

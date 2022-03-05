@@ -30,7 +30,7 @@ module.exports = class TeamCalcelHandler {
         registry.registerHandler((data) => (
             data.post_type == 'message' &&
             data.message_type == 'group' &&
-            data.message.startsWith('取消报名 ')
+            data.message.startsWith('取消报名')
         ), this);
     }
 
@@ -54,16 +54,16 @@ module.exports = class TeamCalcelHandler {
             });
         }
         if (team == null) {
-            throw '错误：该团队不存在，请使用/team list查看本群团队';
+            throw '错误：该团队不存在，请使用 团队列表 查看本群团队';
         }
         let cells = JSON.parse(team.data);
         let cell = cells.filter((x) => (x.applied && x.applicant.qq == user.qq));
         if (cell.length < 1) {
             throw `错误：你没有报名id为 ${team.id} 的团队。`;
         } else if(cell.length > 1 && args.game_id == '-'){
-            throw `错误：id为 ${team.id} 的团队内有多个你的报名，请指定要取消的id。`;   
+            throw `错误：该团队有多个你的报名，请指定要取消的id。`;   
         }
-        if (cell.length < 1) {
+        if (cell.length < 2) {
             for (let i in cell) {
                 cell[i].xf = null;
                 cell[i].applied = false,
@@ -91,6 +91,6 @@ module.exports = class TeamCalcelHandler {
         }
         team.data = JSON.stringify(cells);
         await team.save();
-        return CqHttp.sendGroupMessage(`取消报名成功，可以使用 查看团队 查看当前团队`, group.id);
+        return CqHttp.sendGroupMessage(`取消报名成功，可以使用 查看团队 查看当前团队`, group.group_id);
     }
 }

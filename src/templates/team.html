@@ -1,6 +1,6 @@
 <style>
     body{
-        background-color: cornsilk;
+        background-color: white;
         width: 812px;
     }
     #table{
@@ -40,9 +40,6 @@
         justify-content: flex-start;
         height: 390px;
         width: 752px;
-    }
-    .cell-applicant {
-        text-shadow: 0 0 10px white; 
     }
     .cell-applicant.right-border, .cell-optional.right-border{
         border-right: 1px solid gray;
@@ -101,7 +98,7 @@
     <div id="team">
         <% for (var i = 0; i<cells.length; i++) { %>
             {{if cells[i].applicant.qq}}
-            <div class="cell-applicant {{if i>19}} right-border {{/if}} {{if (i+1)%5==0}}bottom-border{{/if}}" style="background-color: {{ cells[i].color }}CC;">
+            <div class="cell-applicant {{if i>19}} right-border {{/if}} {{if (i+1)%5==0}}bottom-border{{/if}}" style="background-color: {{ cells[i].color }}88;">
                 <p>
                     <span>{{if cells[i].applicant.id}}{{cells[i].applicant.id}}{{else}}&nbsp;{{/if}}</span>
                     <span>{{if cells[i].xf}}<img src="https://img.jx3box.com/image/xf/{{ cells[i].xf }}.png" alt="{{ cells[i].xf }}">{{/if}}</span>
@@ -121,5 +118,5 @@
             {{/if}}
         <% } %>
     </div>
-    <p style="color: gray; font-size: 14px; text-align: center; margin-top: 0;">发送 "<span style="color: red; font-weight: bold">团队报名 心法 id</span>" 即可报名</p>
+    <p style="color: gray; font-size: 14px; text-align: center; margin-top: 0;">发送 "<span style="color: red; font-weight: bold">团队报名 心法 id</span>" 即可报名 | 发送 <span style="color: red; font-weight: bold"></span>取消报名 id</span> 即可取消报名</p>
 </div>

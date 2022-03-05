@@ -69,6 +69,6 @@ module.exports = class TeamCreateHandler {
             time: args.time,
             remarks: args.remark
         })
-        return CqHttp.sendGroupMessage(`成功：团队创建完毕,id为${team.id}，可以通过/team view id/name查看团队`, group.group_id)
+        return CqHttp.sendGroupMessage(`成功：团队创建完毕,id为${team.id}，可以通过 查看团队 进行查看`, group.group_id)
     }
 }

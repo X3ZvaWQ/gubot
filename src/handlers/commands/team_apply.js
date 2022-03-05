@@ -21,7 +21,7 @@ module.exports = class TeamApplyHandler {
             displayName: '角色ID',
             type: 'string',
             limit: {
-                min: 2,
+                min: 1,
                 max: 6
             },
             nullable: false,
@@ -72,7 +72,7 @@ module.exports = class TeamApplyHandler {
             });
         }
         if (team == null) {
-            throw '错误：该团队不存在，请使用/team list查看本群团队';
+            throw '错误：该团队不存在，请使用 团队列表 查看本群团队';
         }
         let cells = JSON.parse(team.data);
         let cells_valid = cells.filter((x) => (x.xf_optional.indexOf(xf) != -1 && !x.applied));
