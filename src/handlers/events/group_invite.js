@@ -20,7 +20,7 @@ module.exports = class GroupInviteHandler {
         let allow = await bot.getOption('accept_group_invite');
         if (allow == 'true') {
             Logger.info(`${this.name}: accept group [${data.group_id}] invite request by qq user [${data.user_id}]`)
-            return CqHttp.setFriendInviteRequest(true, data.flag);
+            return CqHttp.setGroupInviteRequest(true, data.flag);
         }
     }
 }

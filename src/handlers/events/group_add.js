@@ -17,15 +17,15 @@ module.exports = class GroupAddHandler {
         let data = event.data;
         let group = event.group;
         if(!group) return;
-        let allow = await bot.getOption('accept_group_add');
+        let allow = await group.getOption('accept_group_add');
         if (allow == 'true') {
             Logger.info(`${this.name}: accept group [${data.group_id}] add request by qq user [${data.user_id}]`)
-            return CqHttp.setFriendAddRequest(true, data.flag);
+            return CqHttp.setGroupAddRequest(true, data.flag);
         }else if (allow =='keyword'){
-            let keyword = await bot.getOption('accept_group_add_keyword');
+            let keyword = await group.getOption('accept_group_add_keyword');
             if(typeof data.comment == 'string' && data.comment.indexOf(keyword)) {
                 Logger.info(`${this.name}: accept group [${data.group_id}] add request by qq user [${data.user_id}], comment: ${data.comment}`)
-                return CqHttp.setFriendAddRequest(true, data.flag);
+                return CqHttp.setGroupAddRequest(true, data.flag);
             }
         }
     }

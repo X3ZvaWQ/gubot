@@ -9,7 +9,7 @@ let sequelize = bot.sequelize;
 class Bot extends Model {
     async getOption(option) {
         let botOptions = await this.getOptions();
-        for(let botOption in botOptions){
+        for(let botOption of botOptions){
             if(botOption.option == option) {
                 return botOption.value;
             }

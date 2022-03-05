@@ -9,7 +9,7 @@ let sequelize = bot.sequelize;
 class Group extends Model {
     async getOption(option) {
         let groupOptions = await this.getOptions();
-        for (let groupOption in groupOptions) {
+        for (let groupOption of groupOptions) {
             if (groupOption.option == option) {
                 return groupOption.value;
             }
