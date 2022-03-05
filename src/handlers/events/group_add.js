@@ -23,7 +23,7 @@ module.exports = class GroupAddHandler {
             return CqHttp.setGroupAddRequest(true, data.flag);
         }else if (allow =='keyword'){
             let keyword = await group.getOption('accept_group_add_keyword');
-            if(typeof data.comment == 'string' && data.comment.indexOf(keyword)) {
+            if(typeof data.comment == 'string' && (data.comment.indexOf(keyword) != -1)) {
                 Logger.info(`${this.name}: accept group [${data.group_id}] add request by qq user [${data.user_id}], comment: ${data.comment}`)
                 return CqHttp.setGroupAddRequest(true, data.flag);
             }
