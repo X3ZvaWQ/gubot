@@ -20,7 +20,7 @@ module.exports = class TeamDeleteHandler {
         registry.registerHandler((data) => (
             data.post_type == 'message' &&
             data.message_type == 'group' &&
-            data.message.startsWith('删除团队 ')
+            data.message.startsWith('删除团队')
         ), this);
     }
 

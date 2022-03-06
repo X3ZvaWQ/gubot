@@ -20,10 +20,10 @@ module.exports = class GroupDecreaseHandler {
         let type = await data.sub_type;
         if (type == 'leave') {
             if (await group.getOption('group_leave_notice') == 'true')
-                return CqHttp.sendGroupMessage(`${data.user_id} 默默地离开了我们......`, data.group_id);
+                return CqHttp.sendGroupMessage(`${user.nickname ? `${user.nickname}(${data.user_id})` : data.user_id} 默默地离开了我们......`, data.group_id);
         } else if (type == 'kick') {
             if (await group.getOption('group_kick_notice') == 'true')
-                return CqHttp.sendGroupMessage(`${data.user_id} 被 ${data.operator_id} 请出了群......`, data.group_id);
+                return CqHttp.sendGroupMessage(`${user.nickname ? `${user.nickname}(${data.user_id})` : data.user_id} 被 ${data.operator_id} 请出了群......`, data.group_id);
         }
     }
 }

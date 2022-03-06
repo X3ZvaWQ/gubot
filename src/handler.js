@@ -43,13 +43,13 @@ module.exports = class EventHandler {
                         user: null,
                         bot: null
                     }
-                    if(ws.bot) event.bot = ws.bot;
+                    if (ws.bot) event.bot = ws.bot;
 
                     let handler = matcher.handler;
                     await (new Injector(event, handler)).inject();
                     let result = await handler.handle(event);
-                    if(result) {
-                        if (typeof result == 'array') {
+                    if (result) {
+                        if (Array.isArray(result)) {
                             resultSet.push(...result);
                         } else {
                             resultSet.push(result);
@@ -63,7 +63,7 @@ module.exports = class EventHandler {
                     } else if (data.post_type == 'message' && data.message_type == 'group') {
                         resultSet.push(CqHttp.sendGroupMessage(e, data.group_id));
                     }
-                }else{
+                } else {
                     Logger.warn(`handle event error! \nEvent data:${JSON.stringify(data, null, 4)}\nException: ${e.stack || e}`);
                 }
             }

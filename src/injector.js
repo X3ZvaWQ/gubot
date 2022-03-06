@@ -54,6 +54,11 @@ module.exports = class Injector {
                         group: data.group_id
                     }
                 }))[0];
+                let nickname = data.sender.card || data.sender.nickname;
+                if (data.sender && nickname != user.nickname) {
+                    user.nickname = nickname;
+                    await user.save();
+                }
                 this.event.user = user;
             }
         } else if (data.user_id) {
@@ -63,6 +68,10 @@ module.exports = class Injector {
                     group: "*"
                 }
             });
+            if (data.sender && data.sender.nickname != user.nickname) {
+                user.nickname = data.sender.nickname;
+                await user.save();
+            }
             this.event.user = user;
         }
     }
