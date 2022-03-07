@@ -1,4 +1,4 @@
-const Cqhttp = require('../../service/cqhttp');
+const CqHttp = require('../../service/cqhttp');
 
 module.exports = class EchoHandler {
     name = "Echo";
@@ -22,10 +22,12 @@ module.exports = class EchoHandler {
 
     async handle(event) {
         let data = event.data;
+        let user = event.user;
+        if(user.power < 512) return;
         if (data.message_type == 'private') {
             return CqHttp.sendPrivateMessage(event.args['message'], data.user_id);
         } else {
-            return Cqhttp.sendGroupMessage(event.args['message'], data.group_id)
+            return CqHttp.sendGroupMessage(event.args['message'], data.group_id)
         }
     }
 }

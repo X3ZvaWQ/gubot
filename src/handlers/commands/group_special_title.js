@@ -18,11 +18,11 @@ module.exports = class GroupSpecialTitleHandler {
     }];
 
     init(registry) {
-        registry.registerHandler((data) => (
+        /* registry.registerHandler((data) => (
             data.post_type == 'message' &&
             data.message_type == 'group' &&
             data.message.startsWith('我要头衔 ')
-        ), this);
+        ), this); */
     }
 
     async handle(event) {
