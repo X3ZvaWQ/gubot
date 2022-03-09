@@ -77,7 +77,7 @@ module.exports = class TeamApplyHandler {
         let cells = JSON.parse(team.data);
         let cells_valid = cells.filter((x) => (x.xf_optional.indexOf(xf) != -1 && !x.applied));
         if (cells_valid.length < 1) {
-            throw `错误：id为 ${team_id} 的团队没有 ${xf} 的坑位。`;
+            throw `错误：id为 ${args.team_id} 的团队没有 ${xf} 的坑位。`;
         }
         let success = false;
         for (let i in cells_valid) {
