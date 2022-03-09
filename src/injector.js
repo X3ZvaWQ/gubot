@@ -54,8 +54,8 @@ module.exports = class Injector {
                         group: data.group_id
                     }
                 }))[0];
-                let nickname = data.sender.card || data.sender.nickname;
                 if (data.sender && nickname != user.nickname) {
+                    let nickname = data.sender.card || data.sender.nickname;
                     user.nickname = nickname;
                     await user.save();
                 }

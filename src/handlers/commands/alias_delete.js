@@ -63,8 +63,6 @@ module.exports = class AliasDeleteHandler {
             await alias.destroy();
             let reply = `成功：[${where.scope}]作用域下[${where.real}]的别名[${where.alias}]已删除`;
             delete where.real;
-            
-            console.log(await bot.redis.get('Alias:' + JSON.stringify(where)));
             await bot.redis.del('Alias:' + JSON.stringify(where));
             if (data.message_type == 'group') {
                 return CqHttp.sendGroupMessage(reply, data.group_id)
