@@ -24,8 +24,8 @@ module.exports = class TeamApplyHandler {
                 min: 1,
                 max: 6
             },
-            nullable: false,
-            default: null
+            nullable: true,
+            default: '-'
         },
         {
             name: 'team_id',
@@ -52,6 +52,9 @@ module.exports = class TeamApplyHandler {
         let user = event.user;
         let _xf = args.xf;
         let xf = allxf[_xf];
+        if (args.game_id == '-') {
+            args.game_id = user.nickname || user.qq;
+        }
         if (xf == undefined) {
             throw `错误：未知的心法 ${_xf} !`;
         }
