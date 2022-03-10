@@ -16,6 +16,7 @@ module.exports = class GroupDecreaseHandler {
     async handle(event) {
         let data = event.data;
         let group = event.group;
+        let user = event.user;
         if (!group) return;
         let type = await data.sub_type;
         if (type == 'leave') {
