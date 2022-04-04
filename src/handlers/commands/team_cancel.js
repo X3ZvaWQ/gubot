@@ -1,14 +1,14 @@
 const CqHttp = require('../../service/cqhttp');
 const Team = require('../../model/team');
 const allxf = require('../../assets/json/xf.json');
-
+const allxfid = require('../../assets/json/xfid.json');
 module.exports = class TeamCalcelHandler {
     name = "TeamCancel";
 
     args = [
         {
             name: 'game_id',
-            alias: null,
+            alias: 'xf',
             displayName: '游戏ID',
             type: 'string',
             limit: null,
@@ -38,6 +38,8 @@ module.exports = class TeamCalcelHandler {
         let args = event.args;
         let group = event.group;
         let user = event.user;
+        let xfid = allxf[args.game_id] ? allxf[args.game_id].id : null;
+
         let team;
         if (args.team_id == '-') {
             team = await group.getTeams();
@@ -56,41 +58,49 @@ module.exports = class TeamCalcelHandler {
         if (team == null) {
             throw '错误：该团队不存在，请使用 团队列表 查看本群团队';
         }
+
         let cells = JSON.parse(team.data);
         let cell = cells.filter((x) => (x.applied && x.applicant.qq == user.qq));
         if (cell.length < 1) {
             throw `错误：你没有报名id为 ${team.id} 的团队。`;
-        } else if(cell.length > 1 && args.game_id == '-'){
-            throw `错误：该团队有多个你的报名，请指定要取消的id。`;   
+        } else if (cell.length > 1 && args.game_id == '-') {
+            throw `错误：该团队有多个你的报名，请指定要取消的id。`;
         }
-        if (cell.length < 2) {
+
+        let cancelled_cell = {count: 0};
+
+        cell = cell.filter((c) => { return (c.applicant.id == args.game_id || c.xf == xfid) });
+        if (cell.length > 0) {
             for (let i in cell) {
+                let id = `[${cell[i].applicant.id}]`;
+                let xf =  allxfid[`${cell[i].xf}`] || cell[i].xf;
+                if(cancelled_cell[xf]) {
+                    cancelled_cell[xf].push(id);
+                }else{
+                    cancelled_cell[xf] = [id]
+                }
+                cancelled_cell.count ++;
+
                 cell[i].xf = null;
-                cell[i].applied = false,
-                    cell[i].applicant = {
-                        qq: null,
-                        id: null
-                    }
+                cell[i].applied = false;
+                cell[i].applicant = {
+                    qq: null,
+                    id: null
+                }
                 cells[cell[i].id - 1] = cell[i];
             }
         } else {
-            cell = cell.filter((c) => { return c.applicant.id == args.game_id });
-            if (cell.length > 0) {
-                for (let i in cell) {
-                    cell[i].xf = null;
-                    cell[i].applied = false,
-                        cell[i].applicant = {
-                            qq: null,
-                            id: null
-                        }
-                    cells[cell[i].id - 1] = cell[i];
-                }
-            } else {
-                throw `错误：你并没有报名游戏id为 ${args.game_id} 的角色`;
+            throw `错误：你并没有报名游戏id或心法为 ${args.game_id} 的角色`;
+        }
+
+        let text = ``;
+        for(let xf in cancelled_cell) {
+            if(xf != 'count'){
+                text += `ID为${cancelled_cell[xf].join('、')}的[${xf}]`
             }
         }
         team.data = JSON.stringify(cells);
         await team.save();
-        return CqHttp.sendGroupMessage(`取消报名成功，可以使用 查看团队 查看当前团队`, group.group_id);
+        return CqHttp.sendGroupMessage(`取消了${text}共${cancelled_cell.count}个报名，可以使用 查看团队 查看当前团队`, group.group_id);
     }
 }
