@@ -67,19 +67,21 @@ module.exports = class TeamCalcelHandler {
             throw `错误：该团队有多个你的报名，请指定要取消的id。`;
         }
 
-        let cancelled_cell = {count: 0};
+        let cancelled_cell = { count: 0 };
 
-        cell = cell.filter((c) => { return (c.applicant.id == args.game_id || c.xf == xfid) });
+        if (cell.length > 1) {
+            cell = cell.filter((c) => (c.applicant.id == args.game_id || c.xf == xfid));
+        }
         if (cell.length > 0) {
             for (let i in cell) {
                 let id = `[${cell[i].applicant.id}]`;
-                let xf =  allxfid[`${cell[i].xf}`] || cell[i].xf;
-                if(cancelled_cell[xf]) {
+                let xf = allxfid[`${cell[i].xf}`] || cell[i].xf;
+                if (cancelled_cell[xf]) {
                     cancelled_cell[xf].push(id);
-                }else{
+                } else {
                     cancelled_cell[xf] = [id]
                 }
-                cancelled_cell.count ++;
+                cancelled_cell.count++;
 
                 cell[i].xf = null;
                 cell[i].applied = false;
@@ -94,8 +96,8 @@ module.exports = class TeamCalcelHandler {
         }
 
         let text = ``;
-        for(let xf in cancelled_cell) {
-            if(xf != 'count'){
+        for (let xf in cancelled_cell) {
+            if (xf != 'count') {
                 text += `ID为${cancelled_cell[xf].join('、')}的[${xf}]`
             }
         }
