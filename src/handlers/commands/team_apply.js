@@ -53,7 +53,8 @@ module.exports = class TeamApplyHandler {
         let _xf = args.xf;
         let xf = allxf[_xf];
         if (args.game_id == '-') {
-            args.game_id = user.nickname || user.qq;
+            args.game_id = user.nickname || `${user.qq}`;
+            if (args.game_id.length > 6) args.game_id = args.game_id.substr(0, 6);
         }
         if (xf == undefined) {
             throw `错误：未知的心法 ${_xf} !`;
