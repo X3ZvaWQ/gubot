@@ -95,7 +95,7 @@ module.exports = class Injector {
             }
             if (arg.type == 'server' && value == '-') {
                 if (event.group) {
-                    value = group.server;
+                    value = event.group.server;
                 } else {
                     value = '梦江南'
                 }

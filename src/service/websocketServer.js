@@ -1,7 +1,5 @@
 const Wss = require('ws').Server;
-const uuid = require('uuid').v4;
 const Bot = require('../model/bot');
-const BotOption = require('../model/botOption');
 const Logger = require('./logger');
 
 class WebsocketServer {
@@ -26,7 +24,7 @@ class WebsocketServer {
             } else {
                 Logger.info(`WebsockerServer: ws client ${request.socket.remoteAddress} connected!`);
             }
-            ws.on('message', function (message) {
+            ws.on('message',  (message) => {
                 wss.onMessage(message, ws);
             });
         });
@@ -45,19 +43,17 @@ class WebsocketServer {
         }, 30000);
     }
 
-    onMessage(message, ws) {
+    async onMessage(message, ws) {
         let data = JSON.parse(message);
         if (data['post_type'] == 'meta_event' && data['meta_event_type'] == 'lifecycle' && data['sub_type'] == 'connect') {
             //gocqhttp连接后发的第一个事件
             let self_id = data['self_id'];
             this.clients[self_id] = ws;
-            Bot.findOrCreate({
+            ws.bot = (await Bot.findOrCreate({
                 where: {
                     self_id: self_id
                 }
-            }).then((bot) => {
-                ws.bot = bot[0];
-            })
+            }))[0];
             Logger.success(`WebsockerServer: go-cqhttp client, id [${self_id}] connected!`);
         } else if (data['post_type'] == 'meta_event' && data['meta_event_type'] == 'heartbeat') {
             //心跳事件
