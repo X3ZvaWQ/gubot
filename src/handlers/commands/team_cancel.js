@@ -90,6 +90,25 @@ module.exports = class TeamCalcelHandler {
                     id: null
                 }
                 cells[cell[i].id - 1] = cell[i];
+                //取消坑位之后从后面找人替代
+                for(let j = cell[i].id; j < cells.length; j++) {
+                    if(cell[i].xf_optional.indexOf(cells[j].xf) != -1) {
+                        cell[i].xf = cells[j].xf;
+                        cell[i].applied = true;
+                        cell[i].applicant = {
+                            qq: cells[j].applicant.qq,
+                            id: cells[j].applicant.id
+                        };
+                        
+                        cells[j].xf = null;
+                        cells[j].applied = false;
+                        cells[j].applicant = {
+                            qq: null,
+                            id: null
+                        }
+                        break;
+                    }
+                }
             }
         } else {
             throw `错误：你并没有报名游戏id或心法为 ${args.game_id} 的角色`;
