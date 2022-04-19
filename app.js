@@ -8,6 +8,7 @@ const Bot = require('./src/bot');
     await bot.initImageGenerator();
     await bot.initHandler();
     await bot.initWebsocketServer();
+    await bot.initWebsocketApi();
     await bot.start();
 })();
 

@@ -1,10 +1,10 @@
 const Wss = require('ws').Server;
-const Bot = require('../model/bot');
+const Bot = require('../model/bot'); 
 const Logger = require('./logger');
 
 class WebsocketServer {
     messageHandler = [];
-    clients = {};
+    clients = [];
 
     constructor(port, token) {
         this.port = port;
@@ -48,12 +48,12 @@ class WebsocketServer {
         if (data['post_type'] == 'meta_event' && data['meta_event_type'] == 'lifecycle' && data['sub_type'] == 'connect') {
             //gocqhttp连接后发的第一个事件
             let self_id = data['self_id'];
-            this.clients[self_id] = ws;
             ws.bot = (await Bot.findOrCreate({
                 where: {
                     self_id: self_id
                 }
-            }))[0];
+            }))[0]; 
+            this.clients.push(ws);
             Logger.success(`WebsockerServer: go-cqhttp client, id [${self_id}] connected!`);
         } else if (data['post_type'] == 'meta_event' && data['meta_event_type'] == 'heartbeat') {
             //心跳事件

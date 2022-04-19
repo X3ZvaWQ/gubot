@@ -1,8 +1,9 @@
 const yargs_parser = require('yargs-parser');
 const Logger = require('./service/logger');
 const Handler = require('./handler');
+const CqHttp = require('./service/cqhttp');
 
-class Bot{
+class Bot {
     constructor(ENV) {
         this.ENV = ENV;
         global.bot = this;
@@ -11,7 +12,7 @@ class Bot{
     async initRedis() {
         let env = this.ENV.redis;
         let bot = this;
-        if(env.enable){
+        if (env.enable) {
             const redis = require('async-redis');
             const client = redis.createClient({
                 host: env.host || 'localhost',
@@ -21,7 +22,7 @@ class Bot{
                 Logger.error("Redis Error: " + err);
             });
             this.redis = client;
-        }else{
+        } else {
             this.redis = new Proxy({}, {
                 get: () => (async () => null),
             });
@@ -44,12 +45,12 @@ class Bot{
 
     async initImageGenerator() {
         let env = this.ENV.puppeteer;
-        if(env.enable) {
+        if (env.enable) {
             const ImageGenerator = require('./service/imageGenerator');
             const puppeteer = require('puppeteer');
             const browser = await puppeteer.launch();
             this.imageGenerator = new ImageGenerator(browser);
-        }else{
+        } else {
             this.imageGenerator = new Proxy({}, {
                 get: () => (async () => `${__dirname}/../assets/images/error/image_generator_disable.jpg`),
             });
@@ -60,55 +61,43 @@ class Bot{
     async initHandler() {
         this.handler = new Handler();
     }
-    
-    //TODO
+
     async initWebsocketApi() {
         const Jx3api = require('./service/wsApi/jx3api');
         this.jx3api_ws = new Jx3api(this.ENV.jx3api_websocket_url, 'JX3API_Websocket');
-        let bot = this;
         this.jx3api_ws.handleMessageStack.push(async (message) => {
             message = JSON.parse(message);
-            if(message.type == 2001 && message.data.status == 1) {
-                let broadcast_msg = `咕咕咕！[${message.data.server}]开服啦！`;
-                for(let cqhttp of bot.cqhttps){
-                    let groups = await cqhttp.getGroupList();
-                    for(let group of groups) {
-                        if(group.server_broadcast && group.server == message.data.server){
-                            cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
+            if (message.type == 2001 && message.data.status == 1) {
+                let broadcast_msg = `[${message.data.server}] 开服啦, 冲鸭！`;
+                let clients = this.wss.clients;
+                for (let client of clients) {
+                    bot = client.bot;
+                    let groups = await bot.getGroups();
+                    for (let group of groups) {
+                        if (group.server == message.data.server && (await group.getOption('server_boradcast'))) {
+                            client.send(JSON.stringify(CqHttp.sendGroupMessage(broadcast_msg, group.group_id)));
                         }
                     }
                 }
             }
-            if(message.type == 2002) {
-                let broadcast_msg = `咕咕咕！[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
-                for(let cqhttp of bot.cqhttps){
-                    let groups = await cqhttp.getGroupList();
-                    for(let group of groups) {
-                        if(group.news_broadcast){
-                            cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
+            if (message.type == 2002) {
+                let broadcast_msg = `[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
+                for (let client of clients) {
+                    bot = client.bot;
+                    let groups = await bot.getGroups();
+                    for (let group of groups) {
+                        if(await group.getOption('news_boradcast')) {
+                            client.send(JSON.stringify(CqHttp.sendGroupMessage(broadcast_msg, group.group_id)));
                         }
                     }
                 }
             }
-            if(message.type == 2003) {
-                let broadcast_msg = `咕咕咕！${message.data.serendipity} 被 ${message.data.name} 抱回家啦~`;
-                for(let cqhttp of bot.cqhttps){
-                    let groups = await cqhttp.getGroupList();
-                    for(let group of groups) {
-                        if(group.serendipity_broadcast && group.server == message.data.server){
-                            if (!group.group_serendipity_broadcast || (group.group_serendipity_broadcast && group.members.indexOf(message.data.name) > -1)) {
-                                cqhttp.sendGroupMessage(broadcast_msg, group.group_id);
-                            }
-                        }
-                    }
-                }
-            }
-        })
-    }
+        });
+    };
 
     async initWebsocketServer() {
         let env = this.ENV;
-        if(env.websocket_server && env.websocket_server.enable) {
+        if (env.websocket_server && env.websocket_server.enable) {
             const Wss = require('./service/websocketServer');
             this.wss = new Wss(env.websocket_server.port || 8080, env.websocket_server.access_token);
             this.wss.messageHandler.push(async (message, ws) => {
@@ -119,12 +108,12 @@ class Bot{
 
     async handleMessage(message, ws) {
         let resultSet = await this.handler.handle(message, ws);
-        for(let result of resultSet){
-            if(result._delay) {
-                setTimeout(function(){
+        for (let result of resultSet) {
+            if (result._delay) {
+                setTimeout(function () {
                     ws.send(JSON.stringify(result.request));
                 }, result._delay);
-            }else{
+            } else {
                 ws.send(JSON.stringify(result));
             }
         }
@@ -136,9 +125,9 @@ class Bot{
 
     //TODO
     async _handleMessage(data, cqhttp) {
-        if(data.group_id) {
+        if (data.group_id) {
             data.switchs = await this.checkFunctionSwitch(data.group_id);
-            if(!data.switchs.convenient) {
+            if (!data.switchs.convenient) {
                 return null;
             }
         }
@@ -209,26 +198,26 @@ class Bot{
             '^添加别名\\s([\\S\\s]+)': '/alias add $1',
             '^删除别名\\s([\\S\\s]+)': '/alias delete $1'
         };
-        if(data.group_id && data.switchs.chat) {
+        if (data.group_id && data.switchs.chat) {
             let nickname = await this.redis.get(`GroupNickname:${data.group_id}`);
-            if(nickname == null) {
+            if (nickname == null) {
                 const Group = require('./model/group');
-                nickname = (await Group.findOne({where: {group_id: data.group_id}})).nickname;
+                nickname = (await Group.findOne({ where: { group_id: data.group_id } })).nickname;
                 nickname = nickname ?? '咕咕';
                 await this.redis.set(`GroupNickname:${data.group_id}`, nickname);
             }
             nickname = nickname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
             regex_map[`^(${nickname}说)\\s?([\\S\\s]+)$`] = '/talk $2';
             regex_map[`^(${nickname})\\s?([\\S\\s]+)$`] = '/chat $2';
-        }else{
+        } else {
             regex_map[`^(咕咕说)\\s?([\\S\\s]+)$`] = '/talk $2';
             regex_map[`^(咕咕)\\s?([\\S\\s]+)$`] = '/chat $2';
         }
 
         let message = data.message.trim();
-        for(let i in regex_map) {
+        for (let i in regex_map) {
             let regex = new RegExp(i);
-            if(regex.test(message)) {
+            if (regex.test(message)) {
                 data.message = message.replace(regex, regex_map[i]);
                 return await this.handleCommand(data, cqhttp);
             }
