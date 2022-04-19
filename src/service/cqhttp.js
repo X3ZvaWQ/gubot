@@ -63,8 +63,26 @@ module.exports = class Cqhttp {
             }
         }
     }
+    
+    static setGroupAdmin(group_id, user_id, enable) {
+        return {
+            action: "set_group_admin",
+            params: {
+                group_id: group_id,
+                user_id: user_id,
+                enable: enable
+            }
+        }
+    }
 
     static CQ_image(path) {
         return `[CQ:image,file=${url.pathToFileURL(path)}]`;
+    }
+
+    static delayRequest(request, delay) {
+        return {
+            _delay: delay,
+            request: request
+        }
     }
 }

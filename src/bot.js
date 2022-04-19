@@ -112,11 +112,21 @@ class Bot{
             const Wss = require('./service/websocketServer');
             this.wss = new Wss(env.websocket_server.port || 8080, env.websocket_server.access_token);
             this.wss.messageHandler.push(async (message, ws) => {
-                let resultSet = await this.handler.handle(message, ws);
-                for(let result of resultSet){
-                    ws.send(JSON.stringify(result));
-                }
-            })
+                return await this.handleMessage(message, ws);
+            });
+        }
+    }
+
+    async handleMessage(message, ws) {
+        let resultSet = await this.handler.handle(message, ws);
+        for(let result of resultSet){
+            if(result._delay) {
+                setTimeout(function(){
+                    ws.send(JSON.stringify(result.request));
+                }, result._delay);
+            }else{
+                ws.send(JSON.stringify(result));
+            }
         }
     }
 
@@ -125,7 +135,7 @@ class Bot{
     }
 
     //TODO
-    async handleMessage(data, cqhttp) {
+    async _handleMessage(data, cqhttp) {
         if(data.group_id) {
             data.switchs = await this.checkFunctionSwitch(data.group_id);
             if(!data.switchs.convenient) {
