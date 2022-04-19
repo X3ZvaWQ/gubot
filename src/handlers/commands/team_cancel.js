@@ -2,6 +2,7 @@ const CqHttp = require('../../service/cqhttp');
 const Team = require('../../model/team');
 const allxf = require('../../assets/json/xf.json');
 const allxfid = require('../../assets/json/xfid.json');
+const { isNumber } = require('lodash');
 module.exports = class TeamCalcelHandler {
     name = "TeamCancel";
 
@@ -74,6 +75,27 @@ module.exports = class TeamCalcelHandler {
         }
         if (cell.length > 0) {
             for (let i in cell) {
+                const findReplace = (cell, cells, deletes) => {
+                    for (let j = cell.id; j < cells.length; j++) {
+                        if (cell.xf_optional.indexOf(cells[j].xf) != -1 && deletes.indexOf(cells[j].id) == -1) {
+                            cell.xf = cells[j].xf;
+                            cell.applied = true;
+                            cell.applicant = {
+                                qq: cells[j].applicant.qq,
+                                id: cells[j].applicant.id,
+                            }
+
+                            cells[j].applied = false;
+                            cells[j].xf = null;
+                            cells[j].applicant = {
+                                qq: null,
+                                id: null
+                            }
+                            return j;
+                        }
+                    }
+                    return cells.length + 1;
+                }
                 let id = `[${cell[i].applicant.id}]`;
                 let xf = allxfid[`${cell[i].xf}`] || cell[i].xf;
                 if (cancelled_cell[xf]) {
@@ -90,38 +112,29 @@ module.exports = class TeamCalcelHandler {
                     id: null
                 }
                 cells[cell[i].id - 1] = cell[i];
+
                 //取消坑位之后从后面找人替代
-                for(let j = cell[i].id; j < cells.length; j++) {
-                    if(cell[i].xf_optional.indexOf(cells[j].xf) != -1) {
-                        cell[i].xf = cells[j].xf;
-                        cell[i].applied = true;
-                        cell[i].applicant = {
-                            qq: cells[j].applicant.qq,
-                            id: cells[j].applicant.id
-                        };
-                        
-                        cells[j].xf = null;
-                        cells[j].applied = false;
-                        cells[j].applicant = {
-                            qq: null,
-                            id: null
-                        }
-                        break;
-                    }
+                let cur_cell = cell[i];
+                let deletes = cell.map((c) => c.id);
+                let j;
+                do {
+                    j = findReplace(cur_cell, cells, deletes);
+                    cur_cell = cells[j];
                 }
+                while (isNumber(j) && j < cells.length);
             }
         } else {
             throw `错误：你并没有报名游戏id或心法为 ${args.game_id} 的角色`;
         }
 
-        let text = ``;
+        let text = [];
         for (let xf in cancelled_cell) {
             if (xf != 'count') {
-                text += `ID为${cancelled_cell[xf].join('、')}的[${xf}]`
+                text.push(`ID为${cancelled_cell[xf].join('、')}的[${xf}]`);
             }
         }
         team.data = JSON.stringify(cells);
         await team.save();
-        return CqHttp.sendGroupMessage(`取消了${text}共${cancelled_cell.count}个报名，可以使用 查看团队 查看当前团队`, group.group_id);
+        return CqHttp.sendGroupMessage(`取消了${text.join(';')}共${cancelled_cell.count}个报名，可以使用 查看团队 查看当前团队`, group.group_id);
     }
 }
