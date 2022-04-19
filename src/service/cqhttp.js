@@ -75,6 +75,17 @@ module.exports = class Cqhttp {
         }
     }
 
+    static setGroupBan(group_id, user_id, duration) {
+        return {
+            action: "set_group_ban",
+            params: {
+                group_id: group_id,
+                user_id: user_id,
+                duration: duration
+            }
+        }
+    }
+
     static CQ_image(path) {
         return `[CQ:image,file=${url.pathToFileURL(path)}]`;
     }
