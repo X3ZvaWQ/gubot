@@ -71,8 +71,8 @@ class Bot {
                 let broadcast_msg = `[${message.data.server}] 开服啦, 冲鸭！`;
                 let clients = this.wss.clients;
                 for (let client of clients) {
-                    bot = client.bot;
-                    let groups = await bot.getGroups();
+                    let botModel = client.bot;
+                    let groups = await botModel.getGroups();
                     for (let group of groups) {
                         if (group.server == message.data.server && (await group.getOption('server_boradcast'))) {
                             client.send(JSON.stringify(CqHttp.sendGroupMessage(broadcast_msg, group.group_id)));
@@ -84,8 +84,8 @@ class Bot {
                 let broadcast_msg = `[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
                 let clients = this.wss.clients;
                 for (let client of clients) {
-                    bot = client.bot;
-                    let groups = await bot.getGroups();
+                    let botModel = client.bot;
+                    let groups = await botModel.getGroups();
                     for (let group of groups) {
                         if(await group.getOption('news_boradcast')) {
                             client.send(JSON.stringify(CqHttp.sendGroupMessage(broadcast_msg, group.group_id)));
