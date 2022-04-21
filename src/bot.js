@@ -82,6 +82,7 @@ class Bot {
             }
             if (message.type == 2002) {
                 let broadcast_msg = `[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
+                let clients = this.wss.clients;
                 for (let client of clients) {
                     bot = client.bot;
                     let groups = await bot.getGroups();
