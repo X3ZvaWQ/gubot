@@ -26,9 +26,9 @@ module.exports = class AtAllHandler {
         let user = event.user;
         if (user.power < 512) return;
         if (data.message_type == 'private') {
-            return CqHttp.sendPrivateMessage(message, data.user_id);
+            return CqHttp.sendPrivateMessage(event.args.message, data.user_id);
         } else {
-            return CqHttp.sendGroupMessage(CqHttp.CQ_at('all') + message, data.group_id)
+            return CqHttp.sendGroupMessage(CqHttp.CQ_at('all') + event.args.message, data.group_id)
         }
     }
 }
