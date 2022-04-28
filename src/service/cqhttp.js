@@ -90,6 +90,10 @@ module.exports = class Cqhttp {
         return `[CQ:image,file=${url.pathToFileURL(path)}]`;
     }
 
+    static CQ_at(user_id) {
+        return `[CQ:at,qq=${user_id}]`;
+    }
+
     static delayRequest(request, delay) {
         return {
             _delay: delay,
