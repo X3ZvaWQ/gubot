@@ -14,7 +14,7 @@ class Team extends Model {
         let squads = squad.match(/(\d+\D+)/g);
         let _squads = [];
         let result = [];
-        for(let i in squads){
+        for (let i in squads) {
             let squad = squads[i];
             let [_, num, value] = squad.match(/(\d+)(\D+)/);
             let limits = value.split(/\!|\|/);
@@ -30,21 +30,21 @@ class Team extends Model {
                 priority: 5,
                 valid: false
             };
-    
-            for(let li in limits) {
+
+            for (let li in limits) {
                 let xf = limits[li];
                 //if xf is determiners
-                if(xf == 'us'){
+                if (xf == 'us') {
                     limit.us = true;
                     limit.usid = i;
                     continue;
                 }
-                if(xf == 'ux'){
+                if (xf == 'ux') {
                     limit.ux = true;
                     limit.uxid = i;
                     continue;
                 }
-                if(xf == 'boss'){
+                if (xf == 'boss') {
                     limit.boss = true;
                     limit.schools = Object.values(allschool.school);
                     limit.xfs = Object.keys(allxfid).map(x => parseInt(x));
@@ -52,43 +52,43 @@ class Team extends Model {
                     limit.priority = 4;
                     continue;
                 }
-                if(xf == 't'){
+                if (xf == 't') {
                     limit.xfs.push(...allxftype.t);
                     limit.valid = true;
                     limit.priority = 4;
                     continue;
                 }
-                if(xf == 'h'){
+                if (xf == 'h') {
                     limit.xfs.push(...allxftype.h);
                     limit.valid = true;
                     limit.priority = 4;
                     continue;
                 }
-                if(xf == 'd'){
+                if (xf == 'd') {
                     limit.xfs.push(...allxftype.dps);
                     limit.valid = true;
                     limit.priority = 4;
                     continue;
                 }
-                if(xf == 'n'){
+                if (xf == 'n') {
                     limit.xfs.push(...allxftype.ng);
                     limit.valid = true;
                     limit.priority = 3;
                     continue;
                 }
-                if(xf == 'w'){
+                if (xf == 'w') {
                     limit.xfs.push(...allxftype.wg);
                     limit.valid = true;
                     limit.priority = 3;
                     continue;
                 }
-                if(xf == 'j'){
+                if (xf == 'j') {
                     limit.xfs.push(...allxftype.jz);
                     limit.valid = true;
                     limit.priority = 3;
                     continue;
                 }
-                if(xf == 'y'){
+                if (xf == 'y') {
                     limit.xfs.push(...allxftype.yc);
                     limit.valid = true;
                     limit.priority = 3;
@@ -96,13 +96,13 @@ class Team extends Model {
                 }
                 //if xf is a xf
                 let _xf;
-                if(group != undefined) {
+                if (group != undefined) {
                     _xf = await Alias.get(xf, 'xf', group);
                     _xf = xf == _xf ? await Alias.get(xf, 'xf') : _xf;
-                }else{
+                } else {
                     _xf = await Alias.get(xf, 'xf');
                 }
-                if(allxf[_xf] != undefined){
+                if (allxf[_xf] != undefined) {
                     limit.valid = true;
                     limit.xfs.push(allxf[_xf].id);
                     limit.priority = 1;
@@ -112,10 +112,10 @@ class Team extends Model {
             }
             _squads.push(limit);
         }
-        _squads.sort((a,b) => a.priority - b.priority);
-        for(let i in _squads){
+        _squads.sort((a, b) => a.priority - b.priority);
+        for (let i in _squads) {
             let limit = _squads[i];
-            for(let j = 0; j < limit.num; j++){
+            for (let j = 0; j < limit.num; j++) {
                 result.push({
                     boss: limit.boss,
                     xf: null,
@@ -132,9 +132,9 @@ class Team extends Model {
                 });
             }
         }
-        result.sort((a,b) => a.xf_optional.length - b.xf_optional.length)
-        for(let i = 0; i < result.length; i++) {
-            result[i].id = i+1;
+        result.sort((a, b) => a.xf_optional.length - b.xf_optional.length)
+        for (let i = 0; i < result.length; i++) {
+            result[i].id = i + 1;
         }
         return result;
     }
@@ -155,6 +155,9 @@ Team.init({
     },
     time: {
         type: DataTypes.STRING
+    },
+    freeze: {
+        type: DataTypes.BOOLEAN,
     }
 }, {
     sequelize,

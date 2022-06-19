@@ -42,7 +42,7 @@ module.exports = class TeamApplyHandler {
         registry.registerHandler((data) => (
             data.post_type == 'message' &&
             data.message_type == 'group' &&
-            (data.message.startsWith('团队报名 ') || data.message.startsWith('报名 '))
+            (data.message.startsWith('团队报名 ') || data.message.startsWith('报名 ') || data.message.startsWith('报名团队 ') || data.message.startsWith('代报名 '))
         ), this);
     }
 
@@ -77,6 +77,9 @@ module.exports = class TeamApplyHandler {
         }
         if (team == null) {
             throw '错误：该团队不存在，请使用 团队列表 查看本群团队';
+        }
+        if (team.freeze) {
+            throw '错误：该团队已停止报名，请直接招募里面看看有没有坑吧。';
         }
         let cells = JSON.parse(team.data);
         let cells_valid = cells.filter((x) => (x.xf_optional.indexOf(xf) != -1 && !x.applied));
