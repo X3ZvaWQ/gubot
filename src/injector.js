@@ -10,21 +10,22 @@ module.exports = class Injector {
         if (this.isMessage()) {
             let argsList = this.handler.args;
             let args = await this.argsParse(argsList);
-            this.event['args'] = args;
+            this.event["args"] = args;
         }
     }
 
     isMessage() {
-        if (this.event.data
-            && this.event.data.post_type == 'message') {
+        if (this.event.data && this.event.data.post_type == "message") {
             return true;
         }
     }
 
     isGroupMessage() {
-        if (this.event.data
-            && this.event.data.post_type == 'message'
-            && this.event.data.message_type == 'group') {
+        if (
+            this.event.data &&
+            this.event.data.post_type == "message" &&
+            this.event.data.message_type == "group"
+        ) {
             return true;
         }
     }
@@ -33,27 +34,31 @@ module.exports = class Injector {
         let data = this.event.data;
         let bot = this.event.bot;
         if (data.group_id && bot) {
-            const User = require('./model/user');
-            const Group = require('./model/group');
-            let group = (await Group.findOrCreate({
-                where: {
-                    group_id: data.group_id,
-                    bot_id: bot.id
-                },
-                defaults: {
-                    groupname: data.group_id,
-                    group_id: data.group_id,
-                    bot_id: bot.id
-                }
-            }))[0];
+            const User = require("./model/user");
+            const Group = require("./model/group");
+            let group = (
+                await Group.findOrCreate({
+                    where: {
+                        group_id: data.group_id,
+                        bot_id: bot.id,
+                    },
+                    defaults: {
+                        groupname: data.group_id,
+                        group_id: data.group_id,
+                        bot_id: bot.id,
+                    },
+                })
+            )[0];
             this.event.group = group;
             if (group) {
-                let user = (await User.findOrCreate({
-                    where: {
-                        qq: data.user_id,
-                        group: data.group_id
-                    }
-                }))[0];
+                let user = (
+                    await User.findOrCreate({
+                        where: {
+                            qq: data.user_id,
+                            group: data.group_id,
+                        },
+                    })
+                )[0];
                 if (data.sender) {
                     let nickname = data.sender.card || data.sender.nickname;
                     if (nickname != user.nickname) {
@@ -64,13 +69,15 @@ module.exports = class Injector {
                 this.event.user = user;
             }
         } else if (data.user_id) {
-            const User = require('./model/user');
-            let user = await User.findOrCreate({
-                where: {
-                    qq: data.user_id,
-                    group: "*"
-                }
-            });
+            const User = require("./model/user");
+            let user = (
+                await User.findOrCreate({
+                    where: {
+                        qq: data.user_id,
+                        group: "*",
+                    },
+                })
+            )[0];
             if (data.sender && data.sender.nickname != user.nickname) {
                 user.nickname = data.sender.nickname;
                 await user.save();
@@ -80,56 +87,84 @@ module.exports = class Injector {
     }
 
     async argsParse(argsList) {
-        const yargs_parser = require('yargs-parser');
-        const Alias = require('./model/alias');
+        const yargs_parser = require("yargs-parser");
+        const Alias = require("./model/alias");
         let event = this.event;
         const getArg = async (arg, allArgs, index) => {
             let value = undefined;
             value = allArgs[index];
-            if (value == undefined || value == null || value == '-') {
+            if (value == undefined || value == null || value == "-") {
                 if (arg.nullable) {
                     value = arg.default;
                 } else {
-                    throw `错误: ${arg.displayName || arg.name || ''} 必填参数缺失`;
+                    throw `错误: ${
+                        arg.displayName || arg.name || ""
+                    } 必填参数缺失`;
                 }
             }
-            if (arg.type == 'server' && value == '-') {
+            if (arg.type == "server" && value == "-") {
                 if (event.group) {
                     value = event.group.server;
                 } else {
-                    value = '梦江南'
+                    value = "梦江南";
                 }
             }
             if (arg.alias != null && value != null) {
                 let _value = value;
                 if (event.group) {
-                    value = await Alias.get(value, arg.alias, event.group.group_id);
+                    value = await Alias.get(
+                        value,
+                        arg.alias,
+                        event.group.group_id
+                    );
                 }
-                if (value == _value) value = await Alias.get(value, arg.alias, '*');
+                if (value == _value)
+                    value = await Alias.get(value, arg.alias, "*");
             }
-            if (arg.type == 'string') {
+            if (arg.type == "string") {
                 value = `${value}`;
             }
-            if (arg.limit instanceof Object && arg.type == 'integer') {
+            if (arg.limit instanceof Object && arg.type == "integer") {
                 if (value < arg.limit.min || value > arg.limit.max) {
-                    throw `错误: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值范围[${arg.limit.min}, ${arg.limit.max}](闭区间)`;
+                    throw `错误: ${
+                        arg.displayName || arg.name || ""
+                    } 参数不符合规范，参数要求取值范围[${arg.limit.min}, ${
+                        arg.limit.max
+                    }](闭区间)`;
                 }
             }
-            if (arg.limit instanceof Array && arg.type == 'string') {
+            if (arg.limit instanceof Array && arg.type == "string") {
                 if (arg.limit.indexOf(`${value}`) == -1) {
-                    throw `错误: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求取值为{${arg.limit.join(',')}}中的一个, 你输入了[${value}]`;
+                    throw `错误: ${
+                        arg.displayName || arg.name || ""
+                    } 参数不符合规范，参数要求取值为{${arg.limit.join(
+                        ","
+                    )}}中的一个, 你输入了[${value}]`;
                 }
             }
-            if (arg.limit && arg.limit.min != undefined && arg.limit.max != undefined && arg.type == 'string') {
-                if (typeof value != 'string' || value.length < arg.limit.min || value.length > arg.limit.max) {
-                    throw `错误: ${arg.displayName || arg.name || ''} 参数不符合规范，参数要求字符串长度在[${arg.limit.min},${arg.limit.max}](闭区间)之间`;
+            if (
+                arg.limit &&
+                arg.limit.min != undefined &&
+                arg.limit.max != undefined &&
+                arg.type == "string"
+            ) {
+                if (
+                    typeof value != "string" ||
+                    value.length < arg.limit.min ||
+                    value.length > arg.limit.max
+                ) {
+                    throw `错误: ${
+                        arg.displayName || arg.name || ""
+                    } 参数不符合规范，参数要求字符串长度在[${arg.limit.min},${
+                        arg.limit.max
+                    }](闭区间)之间`;
                 }
             }
             return value;
-        }
+        };
 
         let args = {};
-        let allArgs = yargs_parser(this.event.data.message)['_'].slice(1);
+        let allArgs = yargs_parser(this.event.data.message)["_"].slice(1);
         if (argsList instanceof Array) {
             try {
                 for (let i in argsList) {
@@ -155,4 +190,4 @@ module.exports = class Injector {
         }
         return args;
     }
-}
+};

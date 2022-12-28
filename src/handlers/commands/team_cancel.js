@@ -1,7 +1,7 @@
 const CqHttp = require('../../service/cqhttp');
 const Team = require('../../model/team');
-const allxf = require('../../assets/json/xf.json');
-const allxfid = require('../../assets/json/xfid.json');
+const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
+const allxfid = require('@jx3box/jx3box-data/data/xf/xfid.json');
 const { isNumber } = require('lodash');
 module.exports = class TeamCalcelHandler {
     name = "TeamCancel";

@@ -1,6 +1,6 @@
 const CqHttp = require('../../service/cqhttp');
 const Team = require('../../model/team');
-const allxf = require('../../assets/json/xf.json');
+const allxf = require('@jx3box/jx3box-data/data/xf/xf.json');
 
 module.exports = class TeamApplyHandler {
     name = "TeamApply";

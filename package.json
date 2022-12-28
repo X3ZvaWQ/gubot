@@ -8,7 +8,7 @@
   "private": false,
   "dependencies": {
     "@jx3box/jx3box-common": "^5.5.1",
-    "@jx3box/jx3box-data": "^0.5.8",
+    "@jx3box/jx3box-data": "^2.0.0",
     "art-template": "^4.13.2",
     "async-redis": "^1.1.7",
     "axios": "^0.19.2",
