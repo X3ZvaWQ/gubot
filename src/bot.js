@@ -67,7 +67,7 @@ class Bot {
         this.jx3api_ws = new Jx3api(this.ENV.jx3api_websocket_url, 'JX3API_Websocket');
         this.jx3api_ws.handleMessageStack.push(async (message) => {
             message = JSON.parse(message);
-            if (message.type == 2001 && message.data.status == 1) {
+            if (message.action == 2001 && message.data.status == 1) {
                 let broadcast_msg = `[${message.data.server}] 开服啦, 冲鸭！`;
                 let clients = this.wss.clients;
                 for (let client of clients) {
@@ -80,7 +80,7 @@ class Bot {
                     }
                 }
             }
-            if (message.type == 2002) {
+            if (message.action == 2002) {
                 let broadcast_msg = `[${message.data.date}]有新的[${message.data.type}]请查收！\n标题：${message.data.title}\n链接：${message.data.url}`;
                 let clients = this.wss.clients;
                 for (let client of clients) {
