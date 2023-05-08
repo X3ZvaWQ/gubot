@@ -1,4 +1,4 @@
-const url = require('url');
+const url = require("url");
 
 module.exports = class Cqhttp {
     static sendPrivateMessage(message, user_id) {
@@ -6,8 +6,8 @@ module.exports = class Cqhttp {
             action: "send_private_msg",
             params: {
                 user_id: user_id,
-                message: message
-            }
+                message: message,
+            },
         };
     }
 
@@ -16,8 +16,8 @@ module.exports = class Cqhttp {
             action: "send_group_msg",
             params: {
                 group_id: group_id,
-                message: message
-            }
+                message: message,
+            },
         };
     }
 
@@ -26,9 +26,9 @@ module.exports = class Cqhttp {
             action: "set_friend_add_request",
             params: {
                 flag: flag,
-                approve: approve
-            }
-        }
+                approve: approve,
+            },
+        };
     }
 
     static setGroupInviteRequest(approve, flag) {
@@ -36,10 +36,10 @@ module.exports = class Cqhttp {
             action: "set_group_add_request",
             params: {
                 flag: flag,
-                sub_type: 'invite',
-                approve: approve
-            }
-        }
+                sub_type: "invite",
+                approve: approve,
+            },
+        };
     }
 
     static setGroupAddRequest(approve, flag) {
@@ -47,10 +47,10 @@ module.exports = class Cqhttp {
             action: "set_group_add_request",
             params: {
                 flag: flag,
-                sub_type: 'add',
-                approve: approve
-            }
-        }
+                sub_type: "add",
+                approve: approve,
+            },
+        };
     }
 
     static setGroupSpecialTitle(group_id, user_id, special_title) {
@@ -59,20 +59,20 @@ module.exports = class Cqhttp {
             params: {
                 group_id: group_id,
                 user_id: user_id,
-                special_title: special_title
-            }
-        }
+                special_title: special_title,
+            },
+        };
     }
-    
+
     static setGroupAdmin(group_id, user_id, enable) {
         return {
             action: "set_group_admin",
             params: {
                 group_id: group_id,
                 user_id: user_id,
-                enable: enable
-            }
-        }
+                enable: enable,
+            },
+        };
     }
 
     static setGroupBan(group_id, user_id, duration) {
@@ -81,9 +81,19 @@ module.exports = class Cqhttp {
             params: {
                 group_id: group_id,
                 user_id: user_id,
-                duration: duration
-            }
-        }
+                duration: duration,
+            },
+        };
+    }
+
+    static setGroupName(group_id, group_name) {
+        return {
+            action: "set_group_name",
+            params: {
+                group_id: group_id,
+                group_name: group_name,
+            },
+        };
     }
 
     static CQ_image(path) {
@@ -97,7 +107,7 @@ module.exports = class Cqhttp {
     static delayRequest(request, delay) {
         return {
             _delay: delay,
-            request: request
-        }
+            request: request,
+        };
     }
-}
+};
