@@ -12,7 +12,7 @@ module.exports = class GroupNameHandler {
             type: "string",
             limit: {
                 min: 1,
-                max: 6,
+                max: 30,
             },
             nullable: false,
             default: null,
@@ -33,7 +33,7 @@ module.exports = class GroupNameHandler {
         const args = event.args;
         const user = event.user;
         const group = event.group;
-        
+
         if (user.power < 4096) return;
         const new_name = args.name;
         Logger.info(
