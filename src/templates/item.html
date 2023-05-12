@@ -1,7 +1,5 @@
 <style>
     body {
-        background-color: cornsilk;
-        color: dodgerblue;
         font-family: 'Noto Sans SC', sans-serif;
         width: 680px;
         font-size: 0;
@@ -26,7 +24,7 @@
         text-align: center;
         font-size: 18px;
         margin-bottom: 0.15rem;
-        border-top: rgb(146, 188, 230) 1px solid;
+        border-top: #aaa 1px solid;
         margin-top: 1.6rem;
     }
 
@@ -652,21 +650,12 @@
     <p class="tips">
         数据来源<span class="b">JX3BOX</span> 本功能模板大量借鉴<span class="b">JX3BOX</span>的物品百科功能，请多加支持剑三魔盒（
     </p>
-    <p class="tips">
-        本机器人是开源免费的机器人，有需要请加群<span class="b">116523057</span>获取
-    </p>
     {{if prices.logs}}
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
     <script>
         option = {
-            textStyle: {
-                color: 'dodgerblue'
-            },
             title: {
                 text: '价格波动 - {{item.Name}}',
-                textStyle: {
-                    color: 'dodgerblue'
-                }
             },
             tooltip: {},
             legend: {},

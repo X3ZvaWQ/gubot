@@ -1,5 +1,6 @@
 const Ws = require('ws');
 const uuid = require('uuid').v4;
+const Logger = require('./logger');
 
 class Websocket{
     handleMessageStack = [];
@@ -31,7 +32,7 @@ class Websocket{
     }
     
     onOpen() {
-        bot.log(`Websocket: ws [${this.name}] connected.`, 'success');
+        Logger.success(`Websocket: ws [${this.name}] connected.`);
     }
 
     onClose(code, reason) {
@@ -45,11 +46,11 @@ class Websocket{
                 that.init();
             }, 10000);
         }
-        bot.log(`Websocket: ws [${this.name}] closed. Try to reconnect in 10s. \n    code: ${code}\n    reason: ${reason}`, 'error');
+        Logger.error(`Websocket: ws [${this.name}] closed. Try to reconnect in 10s. \n    code: ${code}\n    reason: ${reason}`);
     }
     
     onError(error) {
-        bot.log(`Websocket: ws [${this.name}] error. \n    message: ${error}`, 'error');
+        Logger.error(`Websocket: ws [${this.name}] error. \n    message: ${error}`);
     }
     
     onMessage(message) {
@@ -67,14 +68,15 @@ class Websocket{
                 handle(message);
             }catch(e){
                 if(typeof e == 'object') {
-                    bot.log(message, 'error');
-                    bot.log(e.stack || e, 'error');
+                    Logger.error(message);
+                    Logger.error(e.stack || e);
                 }
             }
         }
     } 
 
     send(data) {
+        if(this.reconnectTimer != null) return ;
         if(this._ws && this._ws.readyState === Ws.OPEN) {
             this._ws.send(data);
         }else{

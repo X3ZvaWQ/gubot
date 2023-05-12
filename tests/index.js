@@ -1,4 +1,3 @@
-const url = require('url');
+const yargs_parser = require('yargs-parser');
 
-let x = url.pathToFileURL('D:/games/ff14/FFXIV_20210402_downloader.exe');
-console.log(x);
+console.log(yargs_parser('/echo 25yx雷域大泽'));

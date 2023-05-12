@@ -1,11 +1,12 @@
-const Jx3box = require('../service/httpApi/jx3box');
+const CqHttp = require('../../service/cqhttp');
+const Jx3box = require('../../service/httpApi/jx3box');
 const moment = require('moment');
 const fs = require('fs-extra');
 const {__imgPath, __iconPath} = require('@jx3box/jx3box-common/js/jx3box.json')
-const CqHttp = require('../service/cqhttp');
 
 module.exports = class ItemHandler {
-    //thanks to JX3BOX's filter, 魔盒 yyds!
+    name = "Item";
+
     static itemFilter = {
         bind: (BindType) => {
             switch (BindType) {
@@ -13,7 +14,7 @@ module.exports = class ItemHandler {
                     return '不绑定';
                 case 2:
                     return '装备后绑定';
-                case 3 :
+                case 3:
                     return '拾取后绑定';
                 default:
                     return '未知'
@@ -27,7 +28,7 @@ module.exports = class ItemHandler {
                     return 'rgb(255,255,255)';
                 case 2:
                     return 'rgb(0,210,75)';
-                case 3 :
+                case 3:
                     return 'rgb(0,126,255)';
                 case 4:
                     return 'rgb(254,45,254)';
@@ -157,27 +158,65 @@ module.exports = class ItemHandler {
             let jin = parseInt(Price / 100 / 100 % 10000);
             let yin = parseInt(Price / 100 % 100);
             let tong = parseInt(Price % 100);
-            const img_asset = __dirname + '/../assets/images/price'
+            const img_asset = __dirname + '/../../assets/images/price'
             let result = '';
-            if(zhuan > 0) {
+            if (zhuan > 0) {
                 result += `${zhuan} <img src="${img_asset}/zhuan.png"/>`;
             }
-            if(jin > 0) {
+            if (jin > 0) {
                 result += `${jin} <img src="${img_asset}/jin.png"/>`;
             }
-            if(yin > 0) {
+            if (yin > 0) {
                 result += `${yin} <img src="${img_asset}/yin.png"/>`;
             }
-            if(tong > 0) {
+            if (tong > 0) {
                 result += `${tong} <img src="${img_asset}/tong.png"/>`;
             }
             return result;
         }
     }
-    async handle(ctx) {
-        //get args from state
-        let args = ctx.args;
-        let redis_key = JSON.stringify('Trade:' + JSON.stringify(args));
+
+    args = [
+        {
+            name: 'item',
+            alias: 'item',
+            displayName: '物品名',
+            type: 'string',
+            limit: null,
+            nullable: false,
+            default: null
+        },
+        {
+            name: 'server',
+            alias: 'server',
+            displayName: '服务器',
+            type: 'server',
+            limit: null,
+            nullable: true,
+            default: '-'
+        },
+        {
+            name: 'update',
+            alias: null,
+            displayName: '刷新缓存',
+            type: 'boolean',
+            limit: null,
+            nullable: true,
+            default: false
+        }
+    ];;
+
+    init(registry) {
+        registry.registerHandler((data) => (
+            data.post_type == 'message' &&
+            (data.message.startsWith('物品 ') || data.message.startsWith('交易行 '))
+        ), this);
+    }
+
+    async handle(event) {
+        let args = event.args;
+        let data = event.data;
+        let redis_key = JSON.stringify('Item:' + JSON.stringify(args));
         //get data from redis
         let result = await bot.redis.get(redis_key);
         //check data is empty?
@@ -207,47 +246,11 @@ module.exports = class ItemHandler {
             await bot.redis.set(redis_key, result);
             await bot.redis.expire(redis_key, 300);
         }
-        return CqHttp.imageCQCode(result);
-    }
 
-    static argsList() {
-        return [
-            {
-                name: 'item',
-                alias: 'item',
-                displayName: '物品名',
-                type: 'string',
-                defaultIndex: 1,
-                shortArgs: null,
-                longArgs: 'item',
-                limit: null,
-                nullable: false,
-                default: null
-            },
-            {
-                name: 'server',
-                alias: 'server',
-                displayName: '服务器',
-                type: 'server',
-                defaultIndex: 2,
-                shortArgs: null,
-                longArgs: 'map',
-                limit: null,
-                nullable: true,
-                default: '-'
-            },
-            {
-                name: 'update',
-                alias: null,
-                displayName: '刷新缓存',
-                type: 'boolean',
-                defaultIndex: 3,
-                shortArgs: 'u',
-                longArgs: 'update',
-                limit: null,
-                nullable: true,
-                default: false
-            }
-        ];
+        if (data.message_type == 'private') {
+            return CqHttp.sendPrivateMessage(CqHttp.CQ_image(result), data.user_id);
+        } else {
+            return CqHttp.sendGroupMessage(CqHttp.CQ_image(result), data.group_id);
+        }
     }
 }

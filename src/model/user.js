@@ -19,9 +19,9 @@ User.init({
     nickname: {
         type: DataTypes.STRING
     },
-    permissions: {
-        type: DataTypes.TINYINT,
-        defaultValue: 1
+    power: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     }
 }, {
     sequelize,

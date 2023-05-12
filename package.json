@@ -8,7 +8,7 @@
   "private": false,
   "dependencies": {
     "@jx3box/jx3box-common": "^5.5.1",
-    "@jx3box/jx3box-data": "^0.5.8",
+    "@jx3box/jx3box-data": "^2.0.0",
     "art-template": "^4.13.2",
     "async-redis": "^1.1.7",
     "axios": "^0.19.2",
@@ -28,6 +28,7 @@
     "mysql2": "^2.1.0",
     "puppeteer": "^5.5.0",
     "redis": "^3.0.2",
+    "require-all": "^3.0.0",
     "sequelize": "^6.3.4",
     "tencentcloud-sdk-nodejs": "^4.0.170",
     "tencentcloud-sdk-nodejs-nlp": "^4.0.165",
