@@ -41,10 +41,7 @@ module.exports = class SubscribeHandler {
                 },
             });
             if (!subscribe) return;
-            await subscribe.destroy({
-                group_id: data.group_id,
-                user_qq: user.qq,
-            });
+            await subscribe.destroy();
             return CqHttp.sendGroupMessage(`${opr_nickname} 取消了消息提醒`, data.group_id);
         }
     }
