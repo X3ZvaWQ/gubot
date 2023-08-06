@@ -36,8 +36,8 @@ module.exports = class SubscribeAtHandler {
         const qqs = subscribes.map((sub) => sub.user_qq);
 
         const chunks = lodash.chunk(qqs, 10);
-        const ret = chunks.map(
-            CqHttp.sendGroupMessage((qqs) => qqs.map((qq) => CqHttp.CQ_at(qq)).join(""), data.group_id)
+        const ret = chunks.map((chunk) =>
+            CqHttp.sendGroupMessage(chunk.map((qq) => CqHttp.CQ_at(qq)).join(""), data.group_id)
         );
         ret.push(CqHttp.sendGroupMessage(event.args.message, data.group_id));
         return ret;
