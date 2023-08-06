@@ -21,11 +21,7 @@ module.exports = class Injector {
     }
 
     isGroupMessage() {
-        if (
-            this.event.data &&
-            this.event.data.post_type == "message" &&
-            this.event.data.message_type == "group"
-        ) {
+        if (this.event.data && this.event.data.post_type == "message" && this.event.data.message_type == "group") {
             return true;
         }
     }
@@ -97,9 +93,7 @@ module.exports = class Injector {
                 if (arg.nullable) {
                     value = arg.default;
                 } else {
-                    throw `错误: ${
-                        arg.displayName || arg.name || ""
-                    } 必填参数缺失`;
+                    throw `错误: ${arg.displayName || arg.name || ""} 必填参数缺失`;
                 }
             }
             if (arg.type == "server" && value == "-") {
@@ -112,52 +106,32 @@ module.exports = class Injector {
             if (arg.alias != null && value != null) {
                 let _value = value;
                 if (event.group) {
-                    value = await Alias.get(
-                        value,
-                        arg.alias,
-                        event.group.group_id
-                    );
+                    value = await Alias.get(value, arg.alias, event.group.group_id);
                 }
-                if (value == _value)
-                    value = await Alias.get(value, arg.alias, "*");
+                if (value == _value) value = await Alias.get(value, arg.alias, "*");
             }
             if (arg.type == "string") {
-                value = `${value}`;
+                value = `${value}`.replace(/\"(.+)\"/, "$1");
             }
             if (arg.limit instanceof Object && arg.type == "integer") {
                 if (value < arg.limit.min || value > arg.limit.max) {
-                    throw `错误: ${
-                        arg.displayName || arg.name || ""
-                    } 参数不符合规范，参数要求取值范围[${arg.limit.min}, ${
-                        arg.limit.max
-                    }](闭区间)`;
+                    throw `错误: ${arg.displayName || arg.name || ""} 参数不符合规范，参数要求取值范围[${
+                        arg.limit.min
+                    }, ${arg.limit.max}](闭区间)`;
                 }
             }
             if (arg.limit instanceof Array && arg.type == "string") {
                 if (arg.limit.indexOf(`${value}`) == -1) {
-                    throw `错误: ${
-                        arg.displayName || arg.name || ""
-                    } 参数不符合规范，参数要求取值为{${arg.limit.join(
+                    throw `错误: ${arg.displayName || arg.name || ""} 参数不符合规范，参数要求取值为{${arg.limit.join(
                         ","
                     )}}中的一个, 你输入了[${value}]`;
                 }
             }
-            if (
-                arg.limit &&
-                arg.limit.min != undefined &&
-                arg.limit.max != undefined &&
-                arg.type == "string"
-            ) {
-                if (
-                    typeof value != "string" ||
-                    value.length < arg.limit.min ||
-                    value.length > arg.limit.max
-                ) {
-                    throw `错误: ${
-                        arg.displayName || arg.name || ""
-                    } 参数不符合规范，参数要求字符串长度在[${arg.limit.min},${
-                        arg.limit.max
-                    }](闭区间)之间`;
+            if (arg.limit && arg.limit.min != undefined && arg.limit.max != undefined && arg.type == "string") {
+                if (typeof value != "string" || value.length < arg.limit.min || value.length > arg.limit.max) {
+                    throw `错误: ${arg.displayName || arg.name || ""} 参数不符合规范，参数要求字符串长度在[${
+                        arg.limit.min
+                    },${arg.limit.max}](闭区间)之间`;
                 }
             }
             return value;

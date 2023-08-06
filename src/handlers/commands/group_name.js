@@ -34,7 +34,7 @@ module.exports = class GroupNameHandler {
         const user = event.user;
         const group = event.group;
 
-        if (user.power < 4096) return;
+        if (user.power < 2048) return;
         const new_name = args.name;
         Logger.info(
             `${this.name}: change groupname of [${group.group_id}] request by qq user [${user.qq}]`
