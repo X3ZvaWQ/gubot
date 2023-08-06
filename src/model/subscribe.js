@@ -9,8 +9,8 @@ Subscribe.init(
     },
     {
         sequelize,
-        modelName: "Group",
-        tableName: "groups",
+        modelName: "Subscribe",
+        tableName: "subscribe",
         timestamps: true,
         createdAt: "created_at",
         updatedAt: "updated_at",
