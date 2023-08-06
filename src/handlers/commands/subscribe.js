@@ -41,7 +41,7 @@ module.exports = class SubscribeHandler {
                 },
             });
             if (!subscribe) return;
-            await Subscribe.destroy({
+            await subscribe.destroy({
                 group_id: data.group_id,
                 user_qq: user.qq,
             });
