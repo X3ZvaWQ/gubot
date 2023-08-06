@@ -17,14 +17,18 @@ module.exports = class SubscribeAtHandler {
     ];
 
     init(registry) {
-        registry.registerHandler((data) => data.post_type == "message" && data.message.startsWith("通知订阅"), this);
+        registry.registerHandler(
+            (data) =>
+                data.post_type == "message" && data.message.startsWith("通知订阅") && data.message.startsWith("/as"),
+            this
+        );
     }
 
     async handle(event) {
         let data = event.data;
         let user = event.user;
         if (user.power < 512) return;
-
+        if (!event.args.message) return;
         const group_id = data.group_id;
         const subscribes = await Subscribe.findAll({
             where: { group_id },

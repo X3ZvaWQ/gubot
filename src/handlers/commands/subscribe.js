@@ -25,13 +25,22 @@ module.exports = class SubscribeHandler {
         const enable = data.message != "休息一会儿";
         if (enable) {
             const [subscribe, created] = await Subscribe.findOrCreate({
-                group_id: data.group_id,
-                user_qq: user.qq,
+                where: {
+                    group_id: data.group_id,
+                    user_qq: user.qq,
+                },
             });
             if (created) {
                 return CqHttp.sendGroupMessage(`${opr_nickname} 订阅了消息提醒`, data.group_id);
             }
         } else {
+            const subscribe = await Subscribe.findOne({
+                where: {
+                    group_id: data.group_id,
+                    user_qq: user.qq,
+                },
+            });
+            if (!subscribe) return;
             await Subscribe.destroy({
                 group_id: data.group_id,
                 user_qq: user.qq,
