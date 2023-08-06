@@ -19,7 +19,7 @@ module.exports = class SubscribeAtHandler {
     init(registry) {
         registry.registerHandler(
             (data) =>
-                data.post_type == "message" && data.message.startsWith("通知订阅") && data.message.startsWith("/as"),
+                data.post_type == "message" && (data.message.startsWith("通知订阅") || data.message.startsWith("/as")),
             this
         );
     }
